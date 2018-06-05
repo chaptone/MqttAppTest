@@ -19,16 +19,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class Activity2 extends AppCompatActivity {
 
-    static String MQTTHOST = "tcp://m14.cloudmqtt.com:13988";
-    static String USERNAME = "yirdixso";
-    static String PASSWORD = "1oP6Zo5aFRZe";
     String pubTopic = "Thailand amazing";
 
     MqttAndroidClient client;
+    MqttConnectOptions options;
 
     TextView subText;
-
-    MqttConnectOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +42,11 @@ public class Activity2 extends AppCompatActivity {
         subText = findViewById(R.id.subText);
 
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), MQTTHOST, clientId);
+        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
 
         options = new MqttConnectOptions();
-        options.setUserName(USERNAME);
-        options.setPassword(PASSWORD.toCharArray());
+        options.setUserName(user);
+        options.setPassword(pass.toCharArray());
 
         try {
             IMqttToken token = client.connect(options);
