@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_USERNAME = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_USERNAME";
     public static final String EXTRA_PASSWORD = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_PASSWORD";
 
-    static String MQTTHOST = "tcp://m14.cloudmqtt.com:13988";
-    static String USERNAME = "yirdixso";
-    static String PASSWORD = "1oP6Zo5aFRZe";
+    private String host ;
+    private String user ;
+    private String pass ;
 
     MqttAndroidClient client;
 
@@ -38,16 +38,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), MQTTHOST, clientId);
 
-        options = new MqttConnectOptions();
-        options.setUserName(USERNAME);
-        options.setPassword(PASSWORD.toCharArray());
 
     }
 
     public void connect(View v){
+        EditText editText1 = findViewById(R.id.editText1);
+        host = editText1.getText().toString();
+
+        EditText editText2 = findViewById(R.id.editText2);
+        user = editText2.getText().toString();
+
+        EditText editText3 = findViewById(R.id.editText3);
+        pass = editText3.getText().toString();
+
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+        options = new MqttConnectOptions();
+        options.setUserName(user);
+        options.setPassword(pass.toCharArray());
         try {
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
@@ -68,15 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openActivity2() {
-        EditText editText1 = findViewById(R.id.editText1);
-        String host = editText1.getText().toString();
-
-        EditText editText2 = findViewById(R.id.editText2);
-        String user = editText2.getText().toString();
-
-        EditText editText3 = findViewById(R.id.editText3);
-        String pass = editText3.getText().toString();
-
         Intent intent = new Intent(this,Activity2.class);
         intent.putExtra(EXTRA_HOST,host);
         intent.putExtra(EXTRA_USERNAME,user);
