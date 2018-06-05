@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     TextView subText;
 
+    MqttConnectOptions options;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), MQTTHOST, clientId);
 
-        MqttConnectOptions options = new MqttConnectOptions();
+        options = new MqttConnectOptions();
         options.setUserName(USERNAME);
         options.setPassword(PASSWORD.toCharArray());
 
@@ -91,6 +93,45 @@ public class MainActivity extends AppCompatActivity {
     private void setSubscription(){
         try {
             client.subscribe(pubTopic,0);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void connect(View v){
+        try {
+            IMqttToken token = client.connect(options);
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
+                    setSubscription();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast.makeText(MainActivity.this,"Connected Failed",Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect(View v){
+        try {
+            IMqttToken token = client.disconnect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast.makeText(MainActivity.this,"Disconnected!",Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast.makeText(MainActivity.this,"Couldn't disconnect",Toast.LENGTH_LONG).show();
+                }
+            });
         } catch (MqttException e) {
             e.printStackTrace();
         }
