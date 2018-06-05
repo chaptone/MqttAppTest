@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
+                    setSubscription();
                 }
 
                 @Override
@@ -57,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         String message = "Sawadee";
         try {
             client.publish(topic, message.getBytes(),0,false);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setSubscription(){
+        try {
+            client.subscribe(pubTopic,0);
         } catch (MqttException e) {
             e.printStackTrace();
         }
