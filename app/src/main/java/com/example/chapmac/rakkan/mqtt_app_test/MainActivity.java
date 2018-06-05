@@ -25,21 +25,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_USERNAME = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_USERNAME";
     public static final String EXTRA_PASSWORD = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_PASSWORD";
 
-    private String host ;
-    private String user ;
-    private String pass ;
+    private String host;
+    private String user;
+    private String pass;
 
     MqttAndroidClient client;
-
     MqttConnectOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
     }
 
     public void connect(View v){
