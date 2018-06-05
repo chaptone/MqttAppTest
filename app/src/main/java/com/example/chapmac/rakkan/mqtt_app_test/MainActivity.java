@@ -1,9 +1,11 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +21,15 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String MQTTHOST = "tcp://m14.cloudmqtt.com:13988";
-    static String USERNAME = "yirdixso";
-    static String PASSWORD = "1oP6Zo5aFRZe";
-    String pubTopic = "Thailand amazing";
+    public static final String EXTRA_HOST = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_HOST";
+    public static final String EXTRA_USERNAME = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_USERNAME";
+    public static final String EXTRA_PASSWORD = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_PASSWORD";
+
+    private String host ;
+    private String user ;
+    private String pass ;
 
     MqttAndroidClient client;
-
-    TextView subText;
 
     MqttConnectOptions options;
 
@@ -35,77 +38,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        subText = (TextView)findViewById(R.id.subText);
 
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), MQTTHOST, clientId);
 
-        options = new MqttConnectOptions();
-        options.setUserName(USERNAME);
-        options.setPassword(PASSWORD.toCharArray());
-
-        try {
-            IMqttToken token = client.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
-                    setSubscription();
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(MainActivity.this,"Connected Failed",Toast.LENGTH_LONG).show();
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-
-        client.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                subText.setText(new String(message.getPayload()));
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-
-            }
-        });
-    }
-
-    public void pub(View v){
-        String topic = pubTopic;
-        String message = "Sawadee";
-        try {
-            client.publish(topic, message.getBytes(),0,false);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setSubscription(){
-        try {
-            client.subscribe(pubTopic,0);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
     }
 
     public void connect(View v){
+        EditText editText1 = findViewById(R.id.editText1);
+        host = editText1.getText().toString();
+
+        EditText editText2 = findViewById(R.id.editText2);
+        user = editText2.getText().toString();
+
+        EditText editText3 = findViewById(R.id.editText3);
+        pass = editText3.getText().toString();
+
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+        options = new MqttConnectOptions();
+        options.setUserName(user);
+        options.setPassword(pass.toCharArray());
         try {
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
-                    setSubscription();
+                    openActivity2();
                 }
 
                 @Override
@@ -118,22 +77,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void disconnect(View v){
-        try {
-            IMqttToken token = client.disconnect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this,"Disconnected!",Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(MainActivity.this,"Couldn't disconnect",Toast.LENGTH_LONG).show();
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+    private void openActivity2() {
+        Intent intent = new Intent(this,Activity2.class);
+        intent.putExtra(EXTRA_HOST,host);
+        intent.putExtra(EXTRA_USERNAME,user);
+        intent.putExtra(EXTRA_PASSWORD,pass);
+        startActivity(intent);
     }
+
 }
