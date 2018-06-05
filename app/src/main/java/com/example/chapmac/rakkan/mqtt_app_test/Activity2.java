@@ -41,12 +41,7 @@ public class Activity2 extends AppCompatActivity {
         String pass = intent.getStringExtra(MainActivity.EXTRA_PASSWORD);
 
         TextView textView1 = findViewById(R.id.textView1);
-        TextView textView2 = findViewById(R.id.textView2);
-        TextView textView3 = findViewById(R.id.textView3);
-
         textView1.setText(host);
-        textView2.setText(user);
-        textView3.setText(pass);
 
         subText = findViewById(R.id.subText);
 
