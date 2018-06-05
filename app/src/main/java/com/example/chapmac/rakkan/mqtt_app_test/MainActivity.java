@@ -1,5 +1,6 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
+                    openActivity2();
                     setSubscription();
                 }
 
@@ -116,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    private void openActivity2() {
+        Intent intent = new Intent(this,Activity2.class);
+        startActivity(intent);
     }
 
     public void disconnect(View v){
