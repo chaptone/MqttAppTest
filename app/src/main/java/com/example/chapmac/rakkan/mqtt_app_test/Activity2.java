@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class Activity2 extends AppCompatActivity {
 
-    String pubTopic = "Thailand amazing";
+    private String topic ="123";
 
     MqttAndroidClient client;
     MqttConnectOptions options;
@@ -83,8 +84,12 @@ public class Activity2 extends AppCompatActivity {
     }
 
     public void pub(View v){
-        String topic = pubTopic;
-        String message = "Sawadee";
+        EditText editText1 = findViewById(R.id.editText1);
+        topic = editText1.getText().toString();
+
+        EditText editText2 = findViewById(R.id.editText2);
+        String message = editText2.getText().toString();
+
         try {
             client.publish(topic, message.getBytes(),0,false);
         } catch (MqttException e) {
@@ -94,7 +99,7 @@ public class Activity2 extends AppCompatActivity {
 
     private void setSubscription(){
         try {
-            client.subscribe(pubTopic,0);
+            client.subscribe(topic,0);
         } catch (MqttException e) {
             e.printStackTrace();
         }
