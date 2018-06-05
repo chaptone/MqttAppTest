@@ -72,7 +72,7 @@ public class Activity2 extends AppCompatActivity {
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
+            public void messageArrived(String topic, MqttMessage message) {
                 subText.setText(new String(message.getPayload()));
             }
 
@@ -90,10 +90,15 @@ public class Activity2 extends AppCompatActivity {
         EditText editText2 = findViewById(R.id.editText2);
         String message = editText2.getText().toString();
 
-        try {
-            client.publish(topic, message.getBytes(),0,false);
-        } catch (MqttException e) {
-            e.printStackTrace();
+        if(topic.equals("")||message.equals("")){
+            Toast.makeText(Activity2.this,"Input Topic or Payload",Toast.LENGTH_LONG).show();
+        }
+        else {
+            try {
+                client.publish(topic, message.getBytes(),0,false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
     }
 
