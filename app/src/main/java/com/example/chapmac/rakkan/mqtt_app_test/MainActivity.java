@@ -64,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
                     openActivity2();
                     proBar.setVisibility(View.GONE);
+                    try {
+                        IMqttToken token = client.disconnect();
+                        token.setActionCallback(new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                            }
+                        });
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
