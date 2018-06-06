@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Publish!"
-        android:onClick="pub"
+        android:onClick="publish"
         />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="172dp"
+        android:layout_marginBottom="77dp"
         android:text="Waiting for subscribe message..." />
 
     <Button
@@ -65,5 +65,26 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Payload" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="111dp"
+        android:onClick="subscribe"
+        android:text="Sub" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="177dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Topic"/>
 
 </RelativeLayout>

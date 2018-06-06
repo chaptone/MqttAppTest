@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_USERNAME,user);
         intent.putExtra(EXTRA_PASSWORD,pass);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
     }
 
 }
