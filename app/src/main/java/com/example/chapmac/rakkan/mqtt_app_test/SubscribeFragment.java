@@ -3,6 +3,8 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +25,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 public class SubscribeFragment extends Fragment {
 
     private String subTopic;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -33,13 +40,26 @@ public class SubscribeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
 
-        Button subBtn = view.findViewById(R.id.button2);
-        subBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                subscribe();
-            }
-        });
+//        Button subBtn = view.findViewById(R.id.button2);
+//        subBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                subscribe();
+//            }
+//        });
+
+        ArrayList<SubscribeItem> subscribeItems = new ArrayList<>();
+        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line1","Line2"));
+        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line2","Line2"));
+        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line3","Line2"));
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new Adapter(subscribeItems);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
