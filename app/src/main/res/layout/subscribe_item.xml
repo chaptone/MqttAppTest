@@ -13,7 +13,7 @@
             android:id="@+id/imageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="2dp" />
+            android:padding="15dp" />
 
         <TextView
             android:id="@+id/textView"
@@ -21,9 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageView"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="8dp"
             android:text="Line1"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+
+             />
 
         <TextView
             android:id="@+id/textView1"
@@ -33,7 +35,7 @@
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/imageView"
             android:text="Line2"
-            android:textSize="15sp" />
+             />
 
     </RelativeLayout>
 
