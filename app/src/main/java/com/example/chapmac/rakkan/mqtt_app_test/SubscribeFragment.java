@@ -8,9 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class SubscribeFragment extends Fragment {
+    private ArrayList<SubscribeItem> subscribeItems;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -27,10 +31,8 @@ public class SubscribeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
 
-        ArrayList<SubscribeItem> subscribeItems = new ArrayList<>();
-        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line1","Line2"));
-        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line2","Line2"));
-        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer,"Line3","Line2"));
+        subscribeItems = new ArrayList<>();
+        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, "Line1", "Line2"));
 
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -41,7 +43,15 @@ public class SubscribeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        adapter.notifyDataSetChanged();
+
         return view;
     }
 
+    public void addSub(String topic) {
+        Toast.makeText(getActivity(), "addSub Calllllll + "+topic, Toast.LENGTH_LONG).show();
+        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
+        adapter.notifyDataSetChanged();
+
+    }
 }

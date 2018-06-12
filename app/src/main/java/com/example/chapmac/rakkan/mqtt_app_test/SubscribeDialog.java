@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -16,8 +17,11 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class SubscribeDialog extends AppCompatDialogFragment {
 
+
+
     private EditText subText;
     private String subTopic;
+    private DialogListener dialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class SubscribeDialog extends AppCompatDialogFragment {
                 .setPositiveButton("add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        subscribe(subText);
+                        subscribe();
                     }
                 });
 
@@ -46,7 +50,22 @@ public class SubscribeDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
-    public void subscribe(EditText subText) {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            dialogListener = (DialogListener) context;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString()+" must implement DialogListener");
+        }
+    }
+
+    public interface DialogListener{
+        void applyTexts(String subscribe);
+    }
+
+    public void subscribe() {
         subTopic = subText.getText().toString();
         if(subTopic.equals("")){
             Toast.makeText(getActivity(),"Input topic for subscribe"+subTopic,Toast.LENGTH_LONG).show();
@@ -57,7 +76,8 @@ public class SubscribeDialog extends AppCompatDialogFragment {
                 subToken.setActionCallback(new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
-
+                        subTopic = subText.getText().toString();
+                        dialogListener.applyTexts(subTopic);
                     }
 
                     @Override

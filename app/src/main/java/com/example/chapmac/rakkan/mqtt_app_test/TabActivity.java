@@ -3,7 +3,6 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -21,7 +20,11 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class TabActivity extends AppCompatActivity {
+public class TabActivity extends AppCompatActivity implements SubscribeDialog.DialogListener  {
+
+    private SubscribeFragment subscribeFragment;
+    private PublishFragment publishFragment;
+    private HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,6 @@ public class TabActivity extends AppCompatActivity {
                 subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
-
     }
 
 
@@ -78,6 +80,12 @@ public class TabActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void applyTexts(String subscribe) {
+        Toast.makeText(this, "Subscribe to " + subscribe, Toast.LENGTH_LONG).show();
+        subscribeFragment.addSub(subscribe);
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -88,9 +96,14 @@ public class TabActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new PublishFragment();
+                    homeFragment = new HomeFragment();
+                    return homeFragment;
+                case 1:
+                    publishFragment = new PublishFragment();
+                    return publishFragment;
                 default:
-                    return new SubscribeFragment();
+                    subscribeFragment = new SubscribeFragment();
+                    return subscribeFragment;
             }
         }
 
@@ -104,8 +117,10 @@ public class TabActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position){
                 case 0 :
-                    return "Publish";
+                    return "Home";
                 case 1 :
+                    return "Publish";
+                case 2:
                     return "Subscribe";
             }
             return null;
@@ -121,7 +136,6 @@ public class TabActivity extends AppCompatActivity {
                     Toast.makeText(TabActivity.this,"Disconnected!",Toast.LENGTH_LONG).show();
                     finish();
                 }
-
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(TabActivity.this,"Couldn't disconnect",Toast.LENGTH_LONG).show();
