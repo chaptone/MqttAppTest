@@ -49,6 +49,11 @@ public class SubscribeFragment extends Fragment {
                 subscribeItems.get(position).changeText1("Click");
                 adapter.notifyItemChanged(position);
             }
+            @Override
+            public void onDeleteClick(int position) {
+                subscribeItems.remove(position);
+                adapter.notifyItemRemoved(position);
+            }
         });
 
         return view;
