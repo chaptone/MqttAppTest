@@ -49,9 +49,7 @@ public class SubscribeFragment extends Fragment {
     }
 
     public void addSub(String topic) {
-        Toast.makeText(getActivity(), "addSub Calllllll + "+topic, Toast.LENGTH_LONG).show();
         subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
-        adapter.notifyDataSetChanged();
-
+        adapter.notifyItemInserted(subscribeItems.size());
     }
 }
