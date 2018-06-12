@@ -17,7 +17,7 @@ public class SubscribeFragment extends Fragment {
     private ArrayList<SubscribeItem> subscribeItems;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     public SubscribeFragment() {
@@ -43,7 +43,13 @@ public class SubscribeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+        adapter.setOnCilckItemListener(new Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                subscribeItems.get(position).changeText1("Click");
+                adapter.notifyItemChanged(position);
+            }
+        });
 
         return view;
     }

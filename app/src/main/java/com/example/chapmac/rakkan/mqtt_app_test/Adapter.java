@@ -13,7 +13,15 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private ArrayList<SubscribeItem> subscribeList;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnCilckItemListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
     public static class ViewHolder  extends RecyclerView.ViewHolder{
 
@@ -21,11 +29,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public TextView mTextView1;
         public TextView mTextView2;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView, final OnItemClickListener listener){
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView1);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -37,7 +57,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.subscribe_item,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view,mListener);
         return viewHolder;
     }
 

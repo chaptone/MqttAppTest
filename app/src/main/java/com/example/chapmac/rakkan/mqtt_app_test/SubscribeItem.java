@@ -13,6 +13,10 @@ public class SubscribeItem {
         this.mtext2 = mtext2;
     }
 
+    public void changeText1(String text){
+        mtext2 = text;
+    }
+
     public int getmImageResource() {
         return mImageResource;
     }
