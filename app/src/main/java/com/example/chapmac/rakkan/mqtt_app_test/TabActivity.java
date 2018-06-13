@@ -65,8 +65,6 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                SubscribeDialog subscribeDialog = new SubscribeDialog();
-//                subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
                 animationFab();
             }
         });
@@ -80,22 +78,23 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TabActivity.this, "fab2 is clicked", Toast.LENGTH_LONG).show();
                 animationFab();
+                SubscribeDialog subscribeDialog = new SubscribeDialog();
+                subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
     }
 
     public void animationFab(){
         if (isOpen) {
-            fab.startAnimation(rotateForward);
+            fab.startAnimation(rotateBackward);
             fab1.startAnimation(fabClose);
             fab2.startAnimation(fabClose);
             fab1.setClickable(false);
             fab2.setClickable(false);
             isOpen = false;
         } else {
-            fab.startAnimation(rotateBackward);
+            fab.startAnimation(rotateForward);
             fab1.startAnimation(fabOpen);
             fab2.startAnimation(fabOpen);
             fab1.setClickable(true);
