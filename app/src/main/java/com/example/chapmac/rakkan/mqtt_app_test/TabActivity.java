@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -21,6 +23,10 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class TabActivity extends AppCompatActivity implements SubscribeDialog.DialogListener  {
+
+    FloatingActionButton fab,fab1,fab2;
+    Animation fabOpen,fabClose,rotateForward,rotateBackward;
+    boolean isOpen = false;
 
     private SubscribeFragment subscribeFragment;
     private PublishFragment publishFragment;
@@ -46,16 +52,57 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+
+        fabOpen = AnimationUtils.loadAnimation(this,R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(this,R.anim.fab_close);
+
+        rotateForward = AnimationUtils.loadAnimation(this,R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(this,R.anim.rotate_backward);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SubscribeDialog subscribeDialog = new SubscribeDialog();
-                subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
+//                SubscribeDialog subscribeDialog = new SubscribeDialog();
+//                subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
+                animationFab();
+            }
+        });
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TabActivity.this, "fab1 is clicked", Toast.LENGTH_LONG).show();
+                animationFab();
+            }
+        });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TabActivity.this, "fab2 is clicked", Toast.LENGTH_LONG).show();
+                animationFab();
             }
         });
     }
 
+    public void animationFab(){
+        if (isOpen) {
+            fab.startAnimation(rotateForward);
+            fab1.startAnimation(fabClose);
+            fab2.startAnimation(fabClose);
+            fab1.setClickable(false);
+            fab2.setClickable(false);
+            isOpen = false;
+        } else {
+            fab.startAnimation(rotateBackward);
+            fab1.startAnimation(fabOpen);
+            fab2.startAnimation(fabOpen);
+            fab1.setClickable(true);
+            fab2.setClickable(true);
+            isOpen = true;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
