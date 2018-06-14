@@ -10,7 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,6 +31,9 @@ public class SubscribeFragment extends Fragment {
     private Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private DatabaseReference mDatabase;
+    int count;
+
     public SubscribeFragment() {
         // Required empty public constructor
     }
@@ -34,6 +44,8 @@ public class SubscribeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("connect").child("sub");
 
 //        loadData();
         subscribeItems = new ArrayList<>();
@@ -56,6 +68,37 @@ public class SubscribeFragment extends Fragment {
             public void onDeleteClick(int position) {
                 subscribeItems.remove(position);
                 adapter.notifyItemRemoved(position);
+            }
+        });
+
+        mDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                count++;
+                Toast.makeText(getActivity(), count+"", Toast.LENGTH_LONG).show();
+                String topic = dataSnapshot.getValue(String.class);
+                subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
+                adapter.notifyItemInserted(subscribeItems.size());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
