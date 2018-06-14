@@ -35,7 +35,8 @@ public class SubscribeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
 
-        loadData();
+//        loadData();
+        subscribeItems = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -64,12 +65,12 @@ public class SubscribeFragment extends Fragment {
     public void addSub(String topic) {
         subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
         adapter.notifyItemInserted(subscribeItems.size());
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Shared preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(subscribeItems);
-        editor.putString("task list",json);
-        editor.apply();
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Shared preferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Gson gson = new Gson();
+//        String json = gson.toJson(subscribeItems);
+//        editor.putString("task list",json);
+//        editor.apply();
     }
 
     public void loadData(){
