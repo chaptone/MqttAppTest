@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SubscribeFragment"
+    android:background="@color/white"
    >
 
     <RelativeLayout
@@ -32,12 +33,17 @@
         <!--android:text="Subscribe"-->
         <!--/>-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scrollbars="vertical"-->
 
-            />
+            <!--/>-->
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="453dp"
+            android:background="@color/white"></ListView>
     </RelativeLayout>
 </FrameLayout>

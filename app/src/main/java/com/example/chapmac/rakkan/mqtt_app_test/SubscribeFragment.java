@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +36,7 @@ public class SubscribeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 
     private DatabaseReference mDatabase;
+    private ListView listView;
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -56,64 +60,78 @@ public class SubscribeFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("connect").child("sub");
 
 //        loadData();
-        subscribeItems = new ArrayList<>();
-
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new Adapter(subscribeItems);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnCilckItemListener(new Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                subscribeItems.get(position).changeText1("Click");
-                adapter.notifyItemChanged(position);
-            }
-            @Override
-            public void onDeleteClick(int position) {
-                subscribeItems.remove(position);
-                adapter.notifyItemRemoved(position);
-            }
-        });
-
-        mDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String topic = dataSnapshot.getValue(String.class);
-                subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
-                adapter.notifyItemInserted(subscribeItems.size());
-            }
+//        subscribeItems = new ArrayList<>();
+//
+//        recyclerView = view.findViewById(R.id.recyclerView);
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(getActivity());
+//        adapter = new Adapter(subscribeItems);
+//
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(adapter);
+        listView = view.findViewById(R.id.listView);
+        FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(
+                getActivity(),String.class,android.R.layout.simple_list_item_2,mDatabase
+        ){
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            protected void populateView(View v, String model, int position) {
+                TextView textView = v.findViewById(android.R.id.text1);
+                textView.setText(model);
+                TextView textView2 = v.findViewById(android.R.id.text2);
+                textView2.setText("555");
             }
+        };
+        listView.setAdapter(firebaseListAdapter);
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//        adapter.setOnCilckItemListener(new Adapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                subscribeItems.get(position).changeText1("Click");
+//                adapter.notifyItemChanged(position);
+//            }
+//            @Override
+//            public void onDeleteClick(int position) {
+//                subscribeItems.remove(position);
+//                adapter.notifyItemRemoved(position);
+//            }
+//        });
 
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        mDatabase.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                String topic = dataSnapshot.getValue(String.class);
+//                subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
+//                adapter.notifyItemInserted(subscribeItems.size());
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         return view;
     }
 
     public void addSub(String topic) {
-        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
-        adapter.notifyItemInserted(subscribeItems.size());
+//        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
+//        adapter.notifyItemInserted(subscribeItems.size());
 //        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Shared preferences", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        Gson gson = new Gson();
