@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ public class SubscribeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 
     private DatabaseReference mDatabase;
-    int count;
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -40,10 +40,18 @@ public class SubscribeFragment extends Fragment {
 
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i("Check","OnDestroyView");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
+
+        Log.i("Check","OnCreateView");
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("connect").child("sub");
 
@@ -74,8 +82,6 @@ public class SubscribeFragment extends Fragment {
         mDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                count++;
-                Toast.makeText(getActivity(), count+"", Toast.LENGTH_LONG).show();
                 String topic = dataSnapshot.getValue(String.class);
                 subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
                 adapter.notifyItemInserted(subscribeItems.size());
