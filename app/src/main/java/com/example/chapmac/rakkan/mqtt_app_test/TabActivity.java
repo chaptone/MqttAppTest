@@ -18,6 +18,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
+import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
+
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
