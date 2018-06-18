@@ -18,9 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -37,14 +34,11 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
 
     private ViewPager mViewPager;
 
-    private DatabaseReference mDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -140,8 +134,8 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
     @Override
     public void applyTexts(String subscribe) {
         Toast.makeText(this, "Subscribe to " + subscribe, Toast.LENGTH_LONG).show();
-        mDatabase.child("connect").child("sub").push().setValue(subscribe);
-//        subscribeFragment.addSub(subscribe);
+
+        subscribeFragment.addSub(subscribe);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
