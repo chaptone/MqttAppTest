@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
+import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;

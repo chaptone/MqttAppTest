@@ -1,14 +1,18 @@
-package com.example.chapmac.rakkan.mqtt_app_test;
+package com.example.chapmac.rakkan.mqtt_app_test.Home;
 
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Adapter;
+import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -20,10 +24,10 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    private ArrayList<SubscribeItem> subscribeItems;
+    private ArrayList<HomeItem> homeItems;
 
     private RecyclerView recyclerView;
-    private Adapter adapter;
+    private HomeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     public HomeFragment() {
@@ -37,17 +41,33 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        subscribeItems = new ArrayList<>();
-        subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, "Line1", "Line2"));
+        homeItems = new ArrayList<>();
+        homeItems.add(new HomeItem("Line1", "Line2"));
 
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new Adapter(subscribeItems);
+        adapter = new HomeAdapter(homeItems);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        adapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(int position) {
+                homeItems.get(position).changeText1("Click");
+                adapter.notifyItemChanged(position);
+            }
+            @Override
+            public void onDeleteClick(int position) {
+                homeItems.remove(position);
+                adapter.notifyItemRemoved(position);
+            }
+        });
 
         MainActivity.CLIENT.setCallback(new MqttCallback() {
             @Override
@@ -57,8 +77,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, new String(message.getPayload()), "Line2"));
-                adapter.notifyItemInserted(subscribeItems.size());
+                homeItems.add(new HomeItem(topic, new String(message.getPayload())));
+                adapter.notifyItemInserted(homeItems.size());
             }
 
             @Override
