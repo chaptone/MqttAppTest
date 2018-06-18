@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
+package com.example.chapmac.rakkan.mqtt_app_test.Publish;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,23 +18,25 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class SubscribeDialog extends AppCompatDialogFragment {
+public class PublishDialog extends AppCompatDialogFragment {
 
-
-
-    private EditText subText;
-    private String subTopic;
     private DialogListener dialogListener;
+
+    EditText editText1;
+    EditText editText2;
+
+    String topic;
+    String message;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.subscribe_dialog,null);
+        View view = inflater.inflate(R.layout.publish_dialog,null);
 
         builder.setView(view)
-                .setTitle("Add subscription")
+                .setTitle("Add Publisher")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -44,11 +46,13 @@ public class SubscribeDialog extends AppCompatDialogFragment {
                 .setPositiveButton("add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        subscribe();
+                        publish();
                     }
                 });
 
-        subText = view.findViewById(R.id.editText1);
+        editText1 = view.findViewById(R.id.editText1);
+        editText2 = view.findViewById(R.id.editText2);
+
 
         return builder.create();
     }
@@ -65,32 +69,20 @@ public class SubscribeDialog extends AppCompatDialogFragment {
     }
 
     public interface DialogListener{
-        void applyTextsFromSubscribeDialog(String subscribe);
+        void applyTextsFromPublishDialog(String topic,String message);
     }
 
-    public void subscribe() {
-        subTopic = subText.getText().toString();
-        if(subTopic.equals("")){
-            Toast.makeText(getActivity(),"Input topic for subscribe"+subTopic,Toast.LENGTH_LONG).show();
-        }else {
-            int qos = 1;
-            try {
-                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, qos);
-                subToken.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        subTopic = subText.getText().toString();
-                        dialogListener.applyTextsFromSubscribeDialog(subTopic);
-                    }
+    public void publish() {
+        topic = editText1.getText().toString();
+        message = editText2.getText().toString();
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken,
-                                          Throwable exception) {
-                        // The subscription could not be performed, maybe the user was not
-                        // authorized to subscribe on the specified topic e.g. using wildcards
-                        Toast.makeText(getActivity(),"Failed to subscribe "+subTopic,Toast.LENGTH_LONG).show();
-                    }
-                });
+        if(topic.equals("")||message.equals("")){
+            Toast.makeText(getActivity(),"Input topic or payload for publish",Toast.LENGTH_LONG).show();
+        }
+        else {
+            try {
+                MainActivity.CLIENT.publish(topic, message.getBytes(),0,false);
+                dialogListener.applyTextsFromPublishDialog(topic,message);
             } catch (MqttException e) {
                 e.printStackTrace();
             }

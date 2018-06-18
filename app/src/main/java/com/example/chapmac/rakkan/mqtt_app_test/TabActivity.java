@@ -18,6 +18,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
+import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
@@ -26,7 +28,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class TabActivity extends AppCompatActivity implements SubscribeDialog.DialogListener  {
+public class TabActivity extends AppCompatActivity implements SubscribeDialog.DialogListener,PublishDialog.DialogListener  {
 
     FloatingActionButton fab,fab1,fab2;
     Animation fabOpen,fabClose,rotateForward,rotateBackward;
@@ -80,8 +82,9 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TabActivity.this, "fab1 is clicked", Toast.LENGTH_LONG).show();
                 animationFab();
+                PublishDialog publishDialog = new PublishDialog();
+                publishDialog.show(getSupportFragmentManager(),"Publish Dialog");
             }
         });
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +139,17 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
     }
 
     @Override
-    public void applyTexts(String subscribe) {
+    public void applyTextsFromSubscribeDialog(String subscribe) {
         Toast.makeText(this, "Subscribe to " + subscribe, Toast.LENGTH_LONG).show();
 
         subscribeFragment.addSub(subscribe);
+    }
+
+    @Override
+    public void applyTextsFromPublishDialog(String topic, String message) {
+        Toast.makeText(this, "Publish topic " + topic + "/"+message, Toast.LENGTH_LONG).show();
+
+        publishFragment.addPublisher(topic,message);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
