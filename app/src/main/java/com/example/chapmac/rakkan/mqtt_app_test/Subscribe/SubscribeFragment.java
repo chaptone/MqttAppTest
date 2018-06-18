@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Adapter;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ public class SubscribeFragment extends Fragment {
     private ArrayList<SubscribeItem> subscribeItems;
 
     private RecyclerView recyclerView;
-    private Adapter adapter;
+    private SubscribeAdapter subscribeAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -40,22 +38,22 @@ public class SubscribeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new Adapter(subscribeItems);
-        recyclerView.setAdapter(adapter);
+        subscribeAdapter = new SubscribeAdapter(subscribeItems);
+        recyclerView.setAdapter(subscribeAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        adapter.setOnCilckItemListener(new Adapter.OnItemClickListener() {
+        subscribeAdapter.setOnCilckItemListener(new SubscribeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 subscribeItems.get(position).changeText1("Click");
-                adapter.notifyItemChanged(position);
+                subscribeAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
                 subscribeItems.remove(position);
-                adapter.notifyItemRemoved(position);
+                subscribeAdapter.notifyItemRemoved(position);
             }
         });
 
@@ -64,7 +62,7 @@ public class SubscribeFragment extends Fragment {
 
     public void addSub(String topic) {
         subscribeItems.add(new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2"));
-        adapter.notifyItemInserted(subscribeItems.size());
+        subscribeAdapter.notifyItemInserted(subscribeItems.size());
     }
 
 }
