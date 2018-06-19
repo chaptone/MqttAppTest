@@ -31,7 +31,7 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
     @NonNull
     @Override
     public SubscribeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.subscribe_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_subscribe_item,parent,false);
         SubscribeViewHolder subscribeViewHolder = new SubscribeViewHolder(view,mListener);
         return subscribeViewHolder;
     }

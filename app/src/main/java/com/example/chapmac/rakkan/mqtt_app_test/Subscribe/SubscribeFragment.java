@@ -9,18 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-
 import java.util.ArrayList;
 
 public class SubscribeFragment extends Fragment {
+
     private ArrayList<SubscribeItem> subscribeItems;
 
-    private RecyclerView recyclerView;
     private SubscribeAdapter subscribeAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -34,10 +30,9 @@ public class SubscribeFragment extends Fragment {
 
         subscribeItems = new ArrayList<>();
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         subscribeAdapter = new SubscribeAdapter(subscribeItems);
         recyclerView.setAdapter(subscribeAdapter);
 

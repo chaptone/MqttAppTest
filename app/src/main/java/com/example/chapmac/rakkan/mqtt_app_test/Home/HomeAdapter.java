@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     @NonNull
     @Override
     public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_item,parent,false);
         HomeViewHolder homeViewHolder = new HomeViewHolder(view,mListener);
         return homeViewHolder;
     }

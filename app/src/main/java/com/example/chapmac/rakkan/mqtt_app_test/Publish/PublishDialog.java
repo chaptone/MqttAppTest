@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class PublishDialog extends AppCompatDialogFragment {
@@ -33,7 +31,7 @@ public class PublishDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.publish_dialog,null);
+        View view = inflater.inflate(R.layout.fragment_publish_dialog,null);
 
         builder.setView(view)
                 .setTitle("Add Publisher")

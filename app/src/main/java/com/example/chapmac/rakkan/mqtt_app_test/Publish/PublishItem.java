@@ -1,14 +1,14 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Home;
+package com.example.chapmac.rakkan.mqtt_app_test.Publish;
 
-public class HomeItem {
+public class PublishItem {
 
     private String topic;
     private String message;
 
-    public HomeItem() {
+    public PublishItem() {
     }
 
-    public HomeItem(String topic, String message) {
+    public PublishItem(String topic, String message) {
         this.topic = topic;
         this.message = message;
     }
@@ -27,9 +27,5 @@ public class HomeItem {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public void changeText1(String text){
-        topic = text;
     }
 }
