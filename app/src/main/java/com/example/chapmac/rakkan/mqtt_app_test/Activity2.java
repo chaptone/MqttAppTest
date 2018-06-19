@@ -7,26 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class Activity2 extends AppCompatActivity {
 
-    private String topic;
     private String subTopic;
-
-    MqttAndroidClient client;
-    MqttConnectOptions options;
-
-    TextView subText;
+    private TextView subText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,38 +26,13 @@ public class Activity2 extends AppCompatActivity {
 
         Intent intent = getIntent();
         String host = intent.getStringExtra(MainActivity.EXTRA_HOST);
-        String user = intent.getStringExtra(MainActivity.EXTRA_USERNAME);
-        String pass = intent.getStringExtra(MainActivity.EXTRA_PASSWORD);
-
 
         TextView textView1 = findViewById(R.id.textView1);
         textView1.setText(host);
 
         subText = findViewById(R.id.subText);
 
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
-
-        options = new MqttConnectOptions();
-        options.setUserName(user);
-        options.setPassword(pass.toCharArray());
-
-        try {
-            IMqttToken token = client.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-
-                }
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-        client.setCallback(new MqttCallback() {
+        MainActivity.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
 
@@ -87,7 +53,7 @@ public class Activity2 extends AppCompatActivity {
 
     public void publish(View v){
         EditText editText1 = findViewById(R.id.editText1);
-        topic = editText1.getText().toString();
+        String topic = editText1.getText().toString();
 
         EditText editText2 = findViewById(R.id.editText2);
         String message = editText2.getText().toString();
@@ -97,8 +63,8 @@ public class Activity2 extends AppCompatActivity {
         }
         else {
             try {
-                client.publish(topic, message.getBytes(),0,false);
-                Toast.makeText(Activity2.this,"Publish "+topic,Toast.LENGTH_LONG).show();
+                MainActivity.CLIENT.publish(topic, message.getBytes(),0,false);
+                Toast.makeText(Activity2.this,"Publish "+ topic,Toast.LENGTH_LONG).show();
             } catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -113,7 +79,7 @@ public class Activity2 extends AppCompatActivity {
         }else {
             int qos = 1;
             try {
-                IMqttToken subToken = client.subscribe(subTopic, qos);
+                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, qos);
                 subToken.setActionCallback(new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
@@ -136,7 +102,7 @@ public class Activity2 extends AppCompatActivity {
 
     public void disconnect(View v){
         try {
-            IMqttToken token = client.disconnect();
+            IMqttToken token = MainActivity.CLIENT.disconnect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
