@@ -25,7 +25,6 @@
                 android:layout_marginRight="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_delete"
                 android:padding="4dp"/>
 
 </RelativeLayout>

@@ -44,6 +44,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuViewHolder
 
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
+        holder.mDeleteImage.setImageResource(currentItem.getImageResource1());
     }
 
     @Override
