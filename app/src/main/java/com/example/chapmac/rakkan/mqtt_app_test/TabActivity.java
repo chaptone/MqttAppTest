@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
@@ -119,6 +120,7 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tab, menu);
+
         return true;
     }
 
@@ -130,8 +132,9 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.disSet) {
-            disconnect();
+        if (id == R.id.menu) {
+            BottomMenu bottomMenu = new BottomMenu();
+            bottomMenu.show(getSupportFragmentManager(),"bottomMenu");
             return true;
         }
 
