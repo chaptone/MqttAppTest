@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this,TabActivity.class);
                     startActivity(intent);
                     proBar.setVisibility(View.GONE);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
 
                 @Override

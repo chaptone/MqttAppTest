@@ -251,6 +251,11 @@ public class TabActivity extends AppCompatActivity implements
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void finish() {
         super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 }
