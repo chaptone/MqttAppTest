@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.chapmac.rakkan.mqtt_app_test.TabActivity">
     <item
-        android:id="@+id/disSet"
-        android:title="Disconnect"
-        app:showAsAction="never"/>
+        android:id="@+id/menu"
+        android:title="Item1"
+        android:icon="@drawable/ic_more_horiz"
+        app:showAsAction="ifRoom"/>
 </menu>

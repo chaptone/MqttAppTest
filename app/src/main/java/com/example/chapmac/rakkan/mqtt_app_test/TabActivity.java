@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
@@ -28,7 +29,10 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class TabActivity extends AppCompatActivity implements SubscribeDialog.DialogListener,PublishDialog.DialogListener  {
+public class TabActivity extends AppCompatActivity implements
+        SubscribeDialog.DialogListener,
+        PublishDialog.DialogListener,
+        BottomMenu.BottomMenuListener{
 
     FloatingActionButton fab,fab1,fab2;
     Animation fabOpen,fabClose,rotateForward,rotateBackward;
@@ -119,6 +123,7 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tab, menu);
+
         return true;
     }
 
@@ -130,8 +135,9 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.disSet) {
-            disconnect();
+        if (id == R.id.menu) {
+            BottomMenu bottomMenu = new BottomMenu();
+            bottomMenu.show(getSupportFragmentManager(),"bottomMenu");
             return true;
         }
 
@@ -150,6 +156,13 @@ public class TabActivity extends AppCompatActivity implements SubscribeDialog.Di
         Toast.makeText(this, "Publish topic " + topic + "/"+message, Toast.LENGTH_LONG).show();
 
         publishFragment.addPublisher(topic,message);
+    }
+
+    @Override
+    public void applyTextsFromBottomMenu(String inform) {
+        Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
+
+        disconnect();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
