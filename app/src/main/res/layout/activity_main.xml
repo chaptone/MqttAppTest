@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout1"
@@ -60,8 +60,7 @@
             android:layout_height="wrap_content"
             android:hint="Host"
             android:inputType="text"
-            android:text="m14.cloudmqtt.com"
-            />
+            android:text="m14.cloudmqtt.com" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -200,7 +199,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80" />
+        app:layout_constraintGuide_percent="0.78" />
 
 
 </android.support.constraint.ConstraintLayout>
