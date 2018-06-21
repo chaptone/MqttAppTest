@@ -25,6 +25,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -174,22 +175,20 @@ public class TabActivity extends AppCompatActivity implements
 
     @Override
     public void applyTextsFromSubscribeDialog(String subscribe) {
-        Toast.makeText(this, "Subscribe to " + subscribe, Toast.LENGTH_LONG).show();
+        StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
 
         subscribeFragment.addSub(subscribe);
     }
 
     @Override
     public void applyTextsFromPublishDialog(String topic, String message) {
-        Toast.makeText(this, "Publish topic " + topic + "/"+message, Toast.LENGTH_LONG).show();
+        StyleableToast.makeText(this, "Publish topic " + topic + "/"+message, R.style.toastCorrect).show();
 
         publishFragment.addPublisher(topic,message);
     }
 
     @Override
     public void applyTextsFromBottomMenu(String inform) {
-        Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
-
         disconnect();
     }
 
@@ -240,12 +239,12 @@ public class TabActivity extends AppCompatActivity implements
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(TabActivity.this,"Disconnected!",Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(TabActivity.this,"Disconnected",R.style.toastCorrect).show();
                     finish();
                 }
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(TabActivity.this,"Couldn't disconnect",Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(TabActivity.this,"Couldn't disconnect",R.style.toastWrong).show();
                 }
             });
         } catch (MqttException e) {

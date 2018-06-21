@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this, "Connected!!", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(MainActivity.this, "Connected", R.style.toastCorrect).show();
                     Intent intent = new Intent(MainActivity.this, TabActivity.class);
                     startActivity(intent);
                     proBar.setVisibility(View.GONE);
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     proBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, "Connected Failed", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
                 }
             });
         } catch (MqttException e) {
