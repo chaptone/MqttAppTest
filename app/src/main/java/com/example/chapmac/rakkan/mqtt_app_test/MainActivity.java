@@ -1,6 +1,7 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_HOST = "com.example.chapmac.rakkan.mqtt_app_test.EXTRA_HOST";
 
+    private TextInputLayout textInputLayoutHost;
+    private TextInputLayout textInputLayoutPort;
+    private TextInputLayout textInputLayoutUser;
+    private TextInputLayout textInputLayoutPass;
+
+    private String host_root;
     private String host;
+    private String port;
     private String user;
     private String pass;
 
@@ -36,67 +44,49 @@ public class MainActivity extends AppCompatActivity {
         proBar = findViewById(R.id.progressBar);
         proBar.setVisibility(View.GONE);
 
+        textInputLayoutHost = findViewById(R.id.textInputLayout1);
+        textInputLayoutPort = findViewById(R.id.textInputLayout2);
+        textInputLayoutUser = findViewById(R.id.textInputLayout3);
+        textInputLayoutPass = findViewById(R.id.textInputLayout4);
+
     }
 
-    public void connect(View v){
-        proBar.setVisibility(View.VISIBLE);
+    public boolean validateHost() {
+        host = textInputLayoutHost.getEditText().getText().toString().trim();
 
-        EditText editText1 = findViewById(R.id.editText1);
-        host = editText1.getText().toString();
-
-        EditText editText2 = findViewById(R.id.editText2);
-        user = editText2.getText().toString();
-
-        EditText editText3 = findViewById(R.id.editText3);
-        pass = editText3.getText().toString();
-
-        String clientId = MqttClient.generateClientId();
-        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
-
-        OPTIONS = new MqttConnectOptions();
-        OPTIONS.setUserName(user);
-        OPTIONS.setPassword(pass.toCharArray());
-        try {
-            IMqttToken token = CLIENT.connect(OPTIONS);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
-                    openActivity2();
-                    proBar.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(MainActivity.this,"Connected Failed",Toast.LENGTH_LONG).show();
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
+        if (host.isEmpty()) {
+            textInputLayoutHost.setError("Host can't be empty");
+            return false;
+        } else {
+            textInputLayoutHost.setError(null);
+            return true;
         }
     }
 
-    private void openActivity2() {
-        Intent intent = new Intent(this,Activity2.class);
-        intent.putExtra(EXTRA_HOST,host);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+    public boolean validatePort() {
+        port = textInputLayoutPort.getEditText().getText().toString().trim();
+
+        if (host.isEmpty()) {
+            textInputLayoutPort.setError("Port can't be empty");
+            return false;
+        } else {
+            textInputLayoutPort.setError(null);
+            return true;
+        }
     }
 
-    public void connect2(View v){
+    public void connect(View v) {
+        if(!validateHost() | !validatePort()){
+            return;
+        }
         proBar.setVisibility(View.VISIBLE);
 
-        EditText editText1 = findViewById(R.id.editText1);
-        host = editText1.getText().toString();
+        user = textInputLayoutUser.getEditText().getText().toString();
+        pass = textInputLayoutPass.getEditText().getText().toString();
 
-        EditText editText2 = findViewById(R.id.editText2);
-        user = editText2.getText().toString();
-
-        EditText editText3 = findViewById(R.id.editText3);
-        pass = editText3.getText().toString();
-
+        host_root = "tcp://" + host + ":" + port;
         String clientId = MqttClient.generateClientId();
-        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host_root, clientId);
 
         OPTIONS = new MqttConnectOptions();
         OPTIONS.setUserName(user);
@@ -106,15 +96,17 @@ public class MainActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this,"Connected!!",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this,TabActivity.class);
+                    Toast.makeText(MainActivity.this, "Connected!!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, TabActivity.class);
                     startActivity(intent);
                     proBar.setVisibility(View.GONE);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(MainActivity.this,"Connected Failed",Toast.LENGTH_LONG).show();
+                    proBar.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "Connected Failed", Toast.LENGTH_LONG).show();
                 }
             });
         } catch (MqttException e) {

@@ -23,7 +23,7 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme"
-            app:title="@string/app_name">
+            app:title="Home">
 
         </android.support.v7.widget.Toolbar>
 
@@ -36,22 +36,19 @@
                 android:id="@+id/tabItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home"
-                app:title="Home"/>
+                android:icon="@drawable/ic_home"/>
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Publish"
-                app:title="Publish"/>
+                android:icon="@drawable/ic_publish_black" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subscribe"
-                app:title="Subscribe"/>
+                android:icon="@drawable/ic_subscribe_black" />
 
 
         </android.support.design.widget.TabLayout>
