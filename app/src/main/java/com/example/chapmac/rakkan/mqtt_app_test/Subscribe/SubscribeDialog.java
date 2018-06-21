@@ -98,7 +98,6 @@ public class SubscribeDialog extends AppCompatDialogFragment {
     }
 
     public void subscribe() {
-
         int qos = 1;
         try {
             IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, qos);
