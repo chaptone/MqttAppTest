@@ -8,8 +8,8 @@
         android:color="#000000">
     </stroke>
     <padding
-        android:left="85dp"
+        android:left="40dp"
 
-        android:right="100dp"
+        android:right="40dp"
          />
 </shape>
