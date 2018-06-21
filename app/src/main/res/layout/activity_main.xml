@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:hint="Host"
             android:inputType="text"
-
+            android:text="m14.cloudmqtt.com"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:hint="Port"
             android:inputType="number"
-
+            android:text="13988"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:hint="Username"
             android:inputType="text"
-
+            android:text="yirdixso"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-
+            android:text="1oP6Zo5aFRZe"
             />
 
     </android.support.design.widget.TextInputLayout>
