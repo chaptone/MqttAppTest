@@ -1,18 +1,18 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +21,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
-import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -47,6 +47,8 @@ public class TabActivity extends AppCompatActivity implements
     private HomeFragment homeFragment;
 
     private ViewPager mViewPager;
+
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +132,12 @@ public class TabActivity extends AppCompatActivity implements
             }
         });
 
-        showSnackBar();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSnackBar();
+            }
+        },1500);
     }
 
     public void animationFab(){
