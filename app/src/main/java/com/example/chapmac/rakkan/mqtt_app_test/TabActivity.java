@@ -1,8 +1,10 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -17,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
@@ -50,7 +52,6 @@ public class TabActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +129,8 @@ public class TabActivity extends AppCompatActivity implements
                 subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
+
+        showSnackBar();
     }
 
     public void animationFab(){
@@ -249,6 +252,16 @@ public class TabActivity extends AppCompatActivity implements
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showSnackBar() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MainActivity.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.white));
+
+        snackbar.show();
     }
 
     @Override
