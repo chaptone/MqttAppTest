@@ -239,7 +239,6 @@ public class TabActivity extends AppCompatActivity implements
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    StyleableToast.makeText(TabActivity.this,"Disconnected",R.style.toastCorrect).show();
                     finish();
                 }
                 @Override

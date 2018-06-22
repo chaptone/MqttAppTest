@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    StyleableToast.makeText(MainActivity.this, "Connected", R.style.toastCorrect).show();
                     Intent intent = new Intent(MainActivity.this, TabActivity.class);
                     startActivity(intent);
                     proBar.setVisibility(View.GONE);
