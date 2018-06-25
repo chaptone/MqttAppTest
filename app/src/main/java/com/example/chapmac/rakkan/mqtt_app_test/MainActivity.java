@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar proBar;
 
     public static MqttAndroidClient CLIENT;
-    MqttConnectOptions OPTIONS;
+    public static MqttConnectOptions OPTIONS;
 
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
