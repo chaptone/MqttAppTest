@@ -1,14 +1,21 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -37,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
     public static MqttAndroidClient CLIENT;
     MqttConnectOptions OPTIONS;
 
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            switch (i) {
+                case EditorInfo.IME_ACTION_SEND:
+                    connect();
+                    break;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +67,16 @@ public class MainActivity extends AppCompatActivity {
         textInputLayoutPort = findViewById(R.id.textInputLayout2);
         textInputLayoutUser = findViewById(R.id.textInputLayout3);
         textInputLayoutPass = findViewById(R.id.textInputLayout4);
+        TextInputEditText textInputEditTextPass =findViewById(R.id.editText);
+        textInputEditTextPass.setOnEditorActionListener(editorActionListener);
 
+        Button btn = findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connect();
+            }
+        });
     }
 
     public boolean validateHost() {
@@ -75,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void connect(View v) {
+    public void connect() {
         if(!validateHost() | !validatePort()){
             return;
         }
@@ -96,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(MainActivity.this, "Connected!!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, TabActivity.class);
                     startActivity(intent);
                     proBar.setVisibility(View.GONE);
@@ -106,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     proBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this, "Connected Failed", Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
                 }
             });
         } catch (MqttException e) {

@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,11 +22,11 @@ public class PublishDialog extends AppCompatDialogFragment {
 
     private DialogListener dialogListener;
 
-    EditText editText1;
-    EditText editText2;
+    private TextInputLayout textInputTopic;
+    private TextInputLayout textInputMessage;
 
-    String topic;
-    String message;
+    private String topic;
+    private String message;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -35,24 +37,40 @@ public class PublishDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Add Publisher")
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setNegativeButton("Cancel",null)
+                .setPositiveButton("Add",null);
 
-                    }
-                })
-                .setPositiveButton("add", new DialogInterface.OnClickListener() {
+        final AlertDialog alertDialog = builder.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        publish();
+                    public void onClick(View v) {
+                        if (!validateTopic() | !validateMessage()) {
+                        }else{
+                            publish();
+                            dialog.dismiss();
+                        }
                     }
                 });
 
-        editText1 = view.findViewById(R.id.editText1);
-        editText2 = view.findViewById(R.id.editText2);
+                Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
 
+        textInputTopic = view.findViewById(R.id.textInputLayout1);
+        textInputMessage = view.findViewById(R.id.textInputLayout2);
 
-        return builder.create();
+        return alertDialog;
     }
 
     @Override
@@ -70,20 +88,36 @@ public class PublishDialog extends AppCompatDialogFragment {
         void applyTextsFromPublishDialog(String topic,String message);
     }
 
-    public void publish() {
-        topic = editText1.getText().toString();
-        message = editText2.getText().toString();
+    public boolean validateTopic() {
+        topic = textInputTopic.getEditText().getText().toString().trim();
 
-        if(topic.equals("")||message.equals("")){
-            Toast.makeText(getActivity(),"Input topic or payload for publish",Toast.LENGTH_LONG).show();
+        if (topic.isEmpty()) {
+            textInputTopic.setError("Can't publish empty topic");
+            return false;
+        } else {
+            textInputTopic.setError(null);
+            return true;
         }
-        else {
-            try {
-                MainActivity.CLIENT.publish(topic, message.getBytes(),0,false);
-                dialogListener.applyTextsFromPublishDialog(topic,message);
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
+    }
+
+    public boolean validateMessage() {
+        message = textInputMessage.getEditText().getText().toString().trim();
+
+        if (message.isEmpty()) {
+            textInputMessage.setError("Can't publish topic with empty message");
+            return false;
+        } else {
+            textInputMessage.setError(null);
+            return true;
+        }
+    }
+
+    public void publish() {
+        try {
+            MainActivity.CLIENT.publish(topic, message.getBytes(),0,false);
+            dialogListener.applyTextsFromPublishDialog(topic,message);
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
 }

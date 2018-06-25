@@ -1,30 +1,33 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
-import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -45,11 +48,12 @@ public class TabActivity extends AppCompatActivity implements
 
     private ViewPager mViewPager;
 
+    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +131,13 @@ public class TabActivity extends AppCompatActivity implements
                 subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSnackBar();
+            }
+        },1500);
     }
 
     public void animationFab(){
@@ -174,22 +185,20 @@ public class TabActivity extends AppCompatActivity implements
 
     @Override
     public void applyTextsFromSubscribeDialog(String subscribe) {
-        Toast.makeText(this, "Subscribe to " + subscribe, Toast.LENGTH_LONG).show();
+        StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
 
         subscribeFragment.addSub(subscribe);
     }
 
     @Override
     public void applyTextsFromPublishDialog(String topic, String message) {
-        Toast.makeText(this, "Publish topic " + topic + "/"+message, Toast.LENGTH_LONG).show();
+        StyleableToast.makeText(this, "Publish topic " + topic + "/"+message, R.style.toastCorrect).show();
 
         publishFragment.addPublisher(topic,message);
     }
 
     @Override
     public void applyTextsFromBottomMenu(String inform) {
-        Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
-
         disconnect();
     }
 
@@ -240,17 +249,26 @@ public class TabActivity extends AppCompatActivity implements
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(TabActivity.this,"Disconnected!",Toast.LENGTH_LONG).show();
                     finish();
                 }
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(TabActivity.this,"Couldn't disconnect",Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(TabActivity.this,"Couldn't disconnect",R.style.toastWrong).show();
                 }
             });
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showSnackBar() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MainActivity.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.white));
+
+        snackbar.show();
     }
 
     @Override
