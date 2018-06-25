@@ -112,7 +112,7 @@ public class SubscribeDialog extends AppCompatDialogFragment {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    Toast.makeText(getActivity(), "Failed to subscribe " + subTopic, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Failed to subscribe " + subTopic + " " + exception.toString() , Toast.LENGTH_LONG).show();
                 }
             });
         } catch (MqttException e) {
