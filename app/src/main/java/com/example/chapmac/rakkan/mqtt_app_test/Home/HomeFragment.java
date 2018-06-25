@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment {
         MainActivity.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
-
             }
 
             @Override

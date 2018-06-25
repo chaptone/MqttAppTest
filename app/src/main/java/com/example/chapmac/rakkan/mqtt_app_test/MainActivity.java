@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         CLIENT = new MqttAndroidClient(this.getApplicationContext(), host_root, clientId);
 
         OPTIONS = new MqttConnectOptions();
+        OPTIONS.setAutomaticReconnect(true);
         OPTIONS.setUserName(user);
         OPTIONS.setPassword(pass.toCharArray());
         try {
