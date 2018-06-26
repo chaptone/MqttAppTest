@@ -17,10 +17,14 @@ import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -30,12 +34,8 @@ public class SubscribeFragment extends Fragment {
     private SubscribeItem subscribeItem;
     private SubscribeAdapter subscribeAdapter;
 
-    private static final String KEY_IMAGE = "image";
-    private static final String KEY_TOPIC = "topic";
-    private static final String KEY_DESCRIPTION = "description";
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference docRef = db.document("mqtt/connection");
+    private CollectionReference collectionReference = db.collection("connection").document().collection("sub");
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -75,27 +75,18 @@ public class SubscribeFragment extends Fragment {
     }
 
     public void addSub(String topic) {
-        subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, "Line2");
+        Calendar calender = Calendar.getInstance();
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy h:mm");
+        String currentDate = formatter.format(calender.getTime());
+
+        subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
         subscribeList.add(subscribeItem);
         subscribeAdapter.notifyItemInserted(subscribeList.size());
         addToDatabase(subscribeItem);
     }
 
     private void addToDatabase(SubscribeItem item) {
-        docRef.set(item)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "Note saved", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, e.toString());
-                    }
-                });
+        collectionReference.add(item);
     }
 
 }
