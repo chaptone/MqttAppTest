@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
 
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,13 +19,21 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.annotation.Nullable;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -35,10 +44,31 @@ public class SubscribeFragment extends Fragment {
     private SubscribeAdapter subscribeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("connection").document().collection("sub");
+    private CollectionReference collectionReference = db.collection("database");
+
+    private String aId;
 
     public SubscribeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("Check" ,"onStart call");
+
+//        collectionReference.document(aId).collection("sub").get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+//                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
+//
+//                            subscribeList.add(subscribeItem);
+//                        }
+//
+//                    }
+//                });
     }
 
     @Override
@@ -46,6 +76,7 @@ public class SubscribeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
+        aId = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID);
 
         subscribeList = new ArrayList<>();
 
@@ -58,6 +89,29 @@ public class SubscribeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        collectionReference.document(aId).collection("sub").orderBy("description")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(e!=null){
+                    return;
+                }
+                for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
+
+
+                    if(documentSnapshot.getType() == DocumentChange.Type.REMOVED){
+
+                    }else {
+                        SubscribeItem subscribeItem = documentSnapshot.getDocument().toObject(SubscribeItem.class);
+                        subscribeItem.setDocumentId(documentSnapshot.getDocument().getId());
+                        Log.i("Check",""+subscribeItem.getDocumentId());
+                        subscribeList.add(subscribeItem);
+                    }
+                }
+                subscribeAdapter.notifyDataSetChanged();
+            }
+        });
+
         subscribeAdapter.setOnCilckItemListener(new SubscribeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -66,6 +120,7 @@ public class SubscribeFragment extends Fragment {
             }
             @Override
             public void onDeleteClick(int position) {
+                collectionReference.document(aId).collection("sub").document(subscribeList.get(position).getDocumentId()).delete();
                 subscribeList.remove(position);
                 subscribeAdapter.notifyItemRemoved(position);
             }
@@ -76,17 +131,17 @@ public class SubscribeFragment extends Fragment {
 
     public void addSub(String topic) {
         Calendar calender = Calendar.getInstance();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy h:mm");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy H:mm:ss EEE:MMM W");
         String currentDate = formatter.format(calender.getTime());
 
         subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
-        subscribeList.add(subscribeItem);
-        subscribeAdapter.notifyItemInserted(subscribeList.size());
+//        subscribeList.add(subscribeItem);
+//        subscribeAdapter.notifyItemInserted(subscribeList.size());
         addToDatabase(subscribeItem);
     }
 
     private void addToDatabase(SubscribeItem item) {
-        collectionReference.add(item);
+        collectionReference.document(aId).collection("sub").add(item);
     }
 
 }
