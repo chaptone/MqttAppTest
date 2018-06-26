@@ -40,9 +40,9 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
     public void onBindViewHolder(@NonNull SubscribeViewHolder holder, int position) {
         SubscribeItem currentItem = subscribeList.get(position);
 
-        holder.mImageView.setImageResource(currentItem.getmImageResource());
-        holder.mTextView1.setText(currentItem.getMtext1());
-        holder.mTextView2.setText(currentItem.getMtext2());
+        holder.mImageView.setImageResource(currentItem.getImage());
+        holder.mTextView1.setText(currentItem.getTopic());
+        holder.mTextView2.setText(currentItem.getDescription());
     }
 
     @Override

@@ -2,30 +2,30 @@ package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
 
 public class SubscribeItem {
 
-    private int mImageResource;
-    private String mtext1;
-    private String mtext2;
+    private int image;
+    private String topic;
+    private String description;
 
-    public SubscribeItem(int mImageResource, String mtext1, String mtext2) {
+    public SubscribeItem(int image, String topic, String description) {
 
-        this.mImageResource = mImageResource;
-        this.mtext1 = mtext1;
-        this.mtext2 = mtext2;
+        this.image = image;
+        this.topic = topic;
+        this.description = description;
     }
 
     public void changeText1(String text){
-        mtext2 = text;
+        description = text;
     }
 
-    public int getmImageResource() {
-        return mImageResource;
+    public int getImage() {
+        return image;
     }
 
-    public String getMtext1() {
-        return mtext1;
+    public String getTopic() {
+        return topic;
     }
 
-    public String getMtext2() {
-        return mtext2;
+    public String getDescription() {
+        return description;
     }
 }

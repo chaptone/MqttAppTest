@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "673751080875",
+    "firebase_url": "https://android-simple-mqtt-app-cb83c.firebaseio.com",
+    "project_id": "android-simple-mqtt-app-cb83c",
+    "storage_bucket": "android-simple-mqtt-app-cb83c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673751080875:android:a57dc705e4c9f402",
+        "android_client_info": {
+          "package_name": "com.example.chapmac.rakkan.mqtt_app_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673751080875-ss8eoq3rk8t3q4fvd7ag3rrv8lq6kt1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chapmac.rakkan.mqtt_app_test",
+            "certificate_hash": "2c3a59079515978d16bbd3f0a142633734bd6256"
+          }
+        },
+        {
+          "client_id": "673751080875-29suk6bij7lh681sumibjf2vj10ij7q4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1I3dxcl3Ykth1DCcYCNsyB3g-V1iAxoo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673751080875-29suk6bij7lh681sumibjf2vj10ij7q4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
