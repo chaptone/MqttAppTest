@@ -83,9 +83,7 @@ public class SubscribeFragment extends Fragment {
                     return;
                 }
                 for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
-                    if(documentSnapshot.getType() == DocumentChange.Type.REMOVED){
-
-                    }else {
+                    if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
                         SubscribeItem subscribeItem = documentSnapshot.getDocument().toObject(SubscribeItem.class);
                         subscribeItem.setDocumentId(documentSnapshot.getDocument().getId());
                         subscribeList.add(subscribeItem);
@@ -114,7 +112,7 @@ public class SubscribeFragment extends Fragment {
 
     public void addSub(String topic) {
         Calendar calender = Calendar.getInstance();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy H:mm:ss EEE:MMM W");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W");
         String currentDate = formatter.format(calender.getTime());
 
         subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
@@ -133,40 +131,37 @@ public class SubscribeFragment extends Fragment {
 
         collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
                 .collection("sub").orderBy("description")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if(e!=null){
-                            return;
-                        }
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
 
-                            final String subTopic = subscribeItem.getTopic();
+                    final String subTopic = subscribeItem.getTopic();
 
-                            try {
-                                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
-                                subToken.setActionCallback(new IMqttActionListener() {
-                                    @Override
-                                    public void onSuccess(IMqttToken asyncActionToken) {
-                                        Log.i("Check","Success sub to : "+ subTopic);
-                                    }
-
-                                    @Override
-                                    public void onFailure(IMqttToken asyncActionToken,
-                                                          Throwable exception) {
-                                        // The subscription could not be performed, maybe the user was not
-                                        // authorized to subscribe on the specified topic e.g. using wildcards
-                                        Log.i("Check","Fail to sub : "+ subTopic);
-                                    }
-                                });
-                            } catch (MqttException e1) {
-                                e1.printStackTrace();
+                    try {
+                        IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
+                        subToken.setActionCallback(new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.i("Check","Success sub to : "+ subTopic);
                             }
 
-                        }
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken,
+                                                  Throwable exception) {
+                                // The subscription could not be performed, maybe the user was not
+                                // authorized to subscribe on the specified topic e.g. using wildcards
+                                Log.i("Check","Fail to sub : "+ subTopic);
+                            }
+                        });
+                    } catch (MqttException e1) {
+                        e1.printStackTrace();
                     }
-                });
+
+                }
+            }
+        });
     }
 
 }
