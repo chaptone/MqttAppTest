@@ -53,25 +53,6 @@ public class SubscribeFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.i("Check" ,"onStart call");
-
-//        collectionReference.document(aId).collection("sub").get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-//                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
-//
-//                            subscribeList.add(subscribeItem);
-//                        }
-//
-//                    }
-//                });
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -104,7 +85,6 @@ public class SubscribeFragment extends Fragment {
                     }else {
                         SubscribeItem subscribeItem = documentSnapshot.getDocument().toObject(SubscribeItem.class);
                         subscribeItem.setDocumentId(documentSnapshot.getDocument().getId());
-                        Log.i("Check",""+subscribeItem.getDocumentId());
                         subscribeList.add(subscribeItem);
                     }
                 }
