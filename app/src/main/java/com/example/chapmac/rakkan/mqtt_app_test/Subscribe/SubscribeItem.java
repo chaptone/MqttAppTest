@@ -7,16 +7,16 @@ public class SubscribeItem {
     private String documentId;
     private int image;
     private String topic;
-    private String description;
+    private String time;
 
     public SubscribeItem() {
     }
 
-    public SubscribeItem(int image, String topic, String description) {
+    public SubscribeItem(int image, String topic, String time) {
 
         this.image = image;
         this.topic = topic;
-        this.description = description;
+        this.time = time;
     }
 
     @Exclude
@@ -29,7 +29,7 @@ public class SubscribeItem {
     }
 
     public void changeText1(String text){
-        description = text;
+        time = text;
     }
 
     public int getImage() {
@@ -40,7 +40,7 @@ public class SubscribeItem {
         return topic;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTime() {
+        return time;
     }
 }

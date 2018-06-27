@@ -45,7 +45,7 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
 
         holder.mImageView.setImageResource(currentItem.getImage());
         holder.mTextView1.setText(currentItem.getTopic());
-        holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getDescription()));
+        holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
     @Override

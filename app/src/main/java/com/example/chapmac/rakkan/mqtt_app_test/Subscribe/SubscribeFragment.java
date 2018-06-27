@@ -110,7 +110,7 @@ public class SubscribeFragment extends Fragment {
         return view;
     }
 
-    public void addSub(String topic) {
+    public void addSubscription(String topic) {
         Calendar calender = Calendar.getInstance();
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W");
         String currentDate = formatter.format(calender.getTime());

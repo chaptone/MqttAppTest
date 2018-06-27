@@ -186,7 +186,7 @@ public class TabActivity extends AppCompatActivity implements
     public void applyTextsFromSubscribeDialog(String subscribe) {
         StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
 
-        subscribeFragment.addSub(subscribe);
+        subscribeFragment.addSubscription(subscribe);
     }
 
     @Override
