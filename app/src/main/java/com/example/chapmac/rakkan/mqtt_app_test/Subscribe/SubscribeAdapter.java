@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
 
@@ -40,9 +41,11 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
     public void onBindViewHolder(@NonNull SubscribeViewHolder holder, int position) {
         SubscribeItem currentItem = subscribeList.get(position);
 
-        holder.mImageView.setImageResource(currentItem.getmImageResource());
-        holder.mTextView1.setText(currentItem.getMtext1());
-        holder.mTextView2.setText(currentItem.getMtext2());
+        TimeConverter timeConverter = new TimeConverter();
+
+        holder.mImageView.setImageResource(currentItem.getImage());
+        holder.mTextView1.setText(currentItem.getTopic());
+        holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
     @Override

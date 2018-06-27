@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeViewHolder;
+import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
 
@@ -42,9 +43,12 @@ public class PublishAdapter extends RecyclerView.Adapter<PublishViewHolder> {
     public void onBindViewHolder(@NonNull PublishViewHolder holder, int position) {
         PublishItem currentItem = publishList.get(position);
 
+        TimeConverter timeConverter = new TimeConverter();
 
+        holder.mImage.setImageResource(currentItem.getImage());
         holder.mTextView1.setText(currentItem.getTopic());
         holder.mTextView2.setText(currentItem.getMessage());
+        holder.mTextView3.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
     @Override

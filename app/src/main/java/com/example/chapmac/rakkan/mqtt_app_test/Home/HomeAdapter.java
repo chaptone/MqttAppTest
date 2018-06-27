@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         HomeItem currentItem = homeList.get(position);
 
-        holder.textView.setText(currentItem.getTopic());
-        holder.textView1.setText(currentItem.getMessage());
+        TimeConverter timeConverter = new TimeConverter();
+
+        holder.mImageView.setImageResource(currentItem.getImage());
+        holder.mTextView.setText(currentItem.getTopic());
+        holder.mTextView1.setText(currentItem.getMessage());
+        holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
     @Override

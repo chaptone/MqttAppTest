@@ -3,26 +3,38 @@ package com.example.chapmac.rakkan.mqtt_app_test.Home;
 
 import android.app.Notification;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishItem;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.Notification.CHANNEL_1_ID;
 
@@ -31,11 +43,13 @@ public class HomeFragment extends Fragment {
 
     private NotificationManagerCompat notificationManager;
 
-    private ArrayList<HomeItem> homeItems;
+    private ArrayList<HomeItem> homeList;
+    private HomeAdapter homeAdapter;
 
-    private RecyclerView recyclerView;
-    private HomeAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference = db.collection("database");
+
+    private String aId;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -47,34 +61,51 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        aId = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID);
 
         notificationManager = NotificationManagerCompat.from(getActivity());
 
-        homeItems = new ArrayList<>();
-        homeItems.add(new HomeItem("Line1", "Line2"));
+        homeList = new ArrayList<>();
 
-
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new HomeAdapter(homeItems);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        homeAdapter = new HomeAdapter(homeList);
+        recyclerView.setAdapter(homeAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        adapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
+        collectionReference.document(aId).collection("home").orderBy("time")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if(e!=null){
+                            return;
+                        }
+                        for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
+                            if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
+                                HomeItem homeItem = documentSnapshot.getDocument().toObject(HomeItem.class);
+                                homeItem.setDocumentId(documentSnapshot.getDocument().getId());
+
+                                homeList.add(homeItem);
+                            }
+                        }
+                        homeAdapter.notifyDataSetChanged();
+                    }
+                });
+
+        homeAdapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
-                homeItems.get(position).changeText1("Click");
-                adapter.notifyItemChanged(position);
+//                homeList.get(position).changeText1("Click");
+//                homeAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
-                homeItems.remove(position);
-                adapter.notifyItemRemoved(position);
+                collectionReference.document(aId).collection("home").document(homeList.get(position).getDocumentId()).delete();
+                homeList.remove(position);
+                homeAdapter.notifyItemRemoved(position);
             }
         });
 
@@ -86,8 +117,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void messageArrived(String topic, MqttMessage message) {
                 String messageStr = new String(message.getPayload());
-                homeItems.add(new HomeItem(topic, messageStr));
-                adapter.notifyItemInserted(homeItems.size());
+                String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
+                        .format(Calendar.getInstance().getTime());
+
+                HomeItem homeItem = new HomeItem(R.drawable.ic_send_gray, topic, messageStr,currentDate);
+//                homeList.add(new HomeItem(topic, messageStr));
+//                homeAdapter.notifyItemInserted(homeList.size());
+                addToDatabase(homeItem);
+
 
                 Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_send)
@@ -107,6 +144,10 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void addToDatabase(HomeItem homeItem) {
+        collectionReference.document(aId).collection("home").add(homeItem);
     }
 
 }

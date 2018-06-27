@@ -72,7 +72,6 @@ public class TabActivity extends AppCompatActivity implements
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
-                Log.i("Check",tab.getPosition()+"");
                 switch (tab.getPosition()){
                     case 0:
                         getSupportActionBar().setTitle("Home");
@@ -187,7 +186,7 @@ public class TabActivity extends AppCompatActivity implements
     public void applyTextsFromSubscribeDialog(String subscribe) {
         StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
 
-        subscribeFragment.addSub(subscribe);
+        subscribeFragment.addSubscription(subscribe);
     }
 
     @Override
