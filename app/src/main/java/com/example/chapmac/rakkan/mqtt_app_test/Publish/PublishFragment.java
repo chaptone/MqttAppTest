@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 public class PublishFragment extends Fragment {
 
     private ArrayList<PublishItem> publishList;
-    private PublishItem publishItem;
     private PublishAdapter publishAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -98,11 +97,10 @@ public class PublishFragment extends Fragment {
     }
 
     public void addPublisher(String topic,String message){
-        Calendar calender = Calendar.getInstance();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W");
-        String currentDate = formatter.format(calender.getTime());
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
+                .format(Calendar.getInstance().getTime());
 
-        publishItem = new PublishItem(R.drawable.ic_local_offer, topic, message, currentDate);
+        PublishItem publishItem = new PublishItem(R.drawable.ic_publish_gray, topic, message, currentDate);
 //        publishList.add(new PublishItem( topic, message));
 //        publishAdapter.notifyItemInserted(publishList.size());
         addToDatabase(publishItem);

@@ -45,7 +45,6 @@ import static android.support.constraint.Constraints.TAG;
 public class SubscribeFragment extends Fragment {
 
     private ArrayList<SubscribeItem> subscribeList;
-    private SubscribeItem subscribeItem;
     private SubscribeAdapter subscribeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -75,7 +74,7 @@ public class SubscribeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.document(aId).collection("sub").orderBy("description")
+        collectionReference.document(aId).collection("sub").orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -111,11 +110,10 @@ public class SubscribeFragment extends Fragment {
     }
 
     public void addSubscription(String topic) {
-        Calendar calender = Calendar.getInstance();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W");
-        String currentDate = formatter.format(calender.getTime());
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
+                .format(Calendar.getInstance().getTime());
 
-        subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
+        SubscribeItem subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
 //        subscribeList.add(subscribeItem);
 //        subscribeAdapter.notifyItemInserted(subscribeList.size());
         addToDatabase(subscribeItem);

@@ -9,16 +9,20 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 public class HomeViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView textView;
-        public TextView textView1;
-        public ImageView imageView;
+        public ImageView mImageView;
+        public TextView mTextView;
+        public TextView mTextView1;
+        public TextView mTextView2;
+        public ImageView mDeleteImage;
 
         public HomeViewHolder(View itemView, final HomeAdapter.OnItemClickListener listener){
             super(itemView);
 
-            textView = itemView.findViewById(R.id.textView);
-            textView1 = itemView.findViewById(R.id.textView1);
-            imageView = itemView.findViewById(R.id.image_delete);
+            mImageView = itemView.findViewById(R.id.imageView);
+            mTextView = itemView.findViewById(R.id.textView);
+            mTextView1 = itemView.findViewById(R.id.textView1);
+            mTextView2 = itemView.findViewById(R.id.textView2);
+            mDeleteImage = itemView.findViewById(R.id.image_delete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -32,7 +36,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder{
                 }
             });
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            mDeleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
