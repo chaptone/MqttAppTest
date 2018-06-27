@@ -58,48 +58,6 @@ public class SubscribeFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
-                .collection("sub").orderBy("description")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if(e!=null){
-                            return;
-                        }
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
-
-                            final String subTopic = subscribeItem.getTopic();
-
-                            try {
-                                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
-                                subToken.setActionCallback(new IMqttActionListener() {
-                                    @Override
-                                    public void onSuccess(IMqttToken asyncActionToken) {
-                                        Log.i("Check","Success sub to : "+ subTopic);
-                                    }
-
-                                    @Override
-                                    public void onFailure(IMqttToken asyncActionToken,
-                                                          Throwable exception) {
-                                        // The subscription could not be performed, maybe the user was not
-                                        // authorized to subscribe on the specified topic e.g. using wildcards
-                                        Log.i("Check","Fail to sub : "+ subTopic);
-                                    }
-                                });
-                            } catch (MqttException e1) {
-                                e1.printStackTrace();
-                            }
-
-                        }
-                    }
-                });
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -167,6 +125,48 @@ public class SubscribeFragment extends Fragment {
 
     private void addToDatabase(SubscribeItem item) {
         collectionReference.document(aId).collection("sub").add(item);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
+                .collection("sub").orderBy("description")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if(e!=null){
+                            return;
+                        }
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
+
+                            final String subTopic = subscribeItem.getTopic();
+
+                            try {
+                                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
+                                subToken.setActionCallback(new IMqttActionListener() {
+                                    @Override
+                                    public void onSuccess(IMqttToken asyncActionToken) {
+                                        Log.i("Check","Success sub to : "+ subTopic);
+                                    }
+
+                                    @Override
+                                    public void onFailure(IMqttToken asyncActionToken,
+                                                          Throwable exception) {
+                                        // The subscription could not be performed, maybe the user was not
+                                        // authorized to subscribe on the specified topic e.g. using wildcards
+                                        Log.i("Check","Fail to sub : "+ subTopic);
+                                    }
+                                });
+                            } catch (MqttException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
+                    }
+                });
     }
 
 }
