@@ -19,6 +19,7 @@ public class SubscribeViewHolder extends RecyclerView.ViewHolder{
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
             mTextView2 = itemView.findViewById(R.id.textView1);
+
             mDeleteImage = itemView.findViewById(R.id.image_delete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
