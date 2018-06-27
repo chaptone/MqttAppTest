@@ -98,8 +98,8 @@ public class HomeFragment extends Fragment {
         homeAdapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
-                homeList.get(position).changeText1("Click");
-                homeAdapter.notifyItemChanged(position);
+//                homeList.get(position).changeText1("Click");
+//                homeAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {

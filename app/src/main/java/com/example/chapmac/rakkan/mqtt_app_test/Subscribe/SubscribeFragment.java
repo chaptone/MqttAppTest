@@ -95,18 +95,41 @@ public class SubscribeFragment extends Fragment {
         subscribeAdapter.setOnCilckItemListener(new SubscribeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                subscribeList.get(position).changeText1("Click");
-                subscribeAdapter.notifyItemChanged(position);
+//                subscribeList.get(position).changeText1("Click");
+//                subscribeAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
-                collectionReference.document(aId).collection("sub").document(subscribeList.get(position).getDocumentId()).delete();
-                subscribeList.remove(position);
-                subscribeAdapter.notifyItemRemoved(position);
+                unSubscription(subscribeList.get(position).getTopic(),position);
             }
         });
 
         return view;
+    }
+
+    private void unSubscription(String topic, final int position) {
+        final int pos = position;
+        try {
+            IMqttToken unsubToken = MainActivity.CLIENT.unsubscribe(topic);
+            unsubToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    collectionReference.document(aId).collection("sub").document(subscribeList.get(position).getDocumentId()).delete();
+                    subscribeList.remove(pos);
+                    subscribeAdapter.notifyItemRemoved(pos);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    // some error occurred, this is very unlikely as even if the client
+                    // did not had a subscription to the topic the unsubscribe action
+                    // will be successfully
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addSubscription(String topic) {
@@ -128,7 +151,7 @@ public class SubscribeFragment extends Fragment {
         super.onAttach(context);
 
         collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
-                .collection("sub").orderBy("description")
+                .collection("sub").orderBy("time")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

@@ -82,8 +82,8 @@ public class PublishFragment extends Fragment {
         publishAdapter.setOnCilckItemListener(new PublishAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                publishList.get(position).setMessage("Click");
-                publishAdapter.notifyItemChanged(position);
+//                publishList.get(position).setMessage("Click");
+//                publishAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
