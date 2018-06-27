@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,6 +143,8 @@ public class TabActivity extends AppCompatActivity implements
             fab.startAnimation(rotateBackward);
             fab1.startAnimation(fabClose);
             fab2.startAnimation(fabClose);
+            fab1.setVisibility(View.GONE);
+            fab2.setVisibility(View.GONE);
             fab1.setClickable(false);
             fab2.setClickable(false);
             isOpen = false;
@@ -151,6 +152,8 @@ public class TabActivity extends AppCompatActivity implements
             fab.startAnimation(rotateForward);
             fab1.startAnimation(fabOpen);
             fab2.startAnimation(fabOpen);
+            fab1.setVisibility(View.VISIBLE);
+            fab2.setVisibility(View.VISIBLE);
             fab1.setClickable(true);
             fab2.setClickable(true);
             isOpen = true;

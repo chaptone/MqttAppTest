@@ -165,7 +165,7 @@ public class SubscribeFragment extends Fragment {
                         subToken.setActionCallback(new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
-                                Log.i("Check","Success sub to : "+ subTopic);
+
                             }
 
                             @Override
