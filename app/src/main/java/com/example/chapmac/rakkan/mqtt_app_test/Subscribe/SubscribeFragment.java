@@ -1,6 +1,7 @@
 package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -28,6 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +55,48 @@ public class SubscribeFragment extends Fragment {
 
     public SubscribeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
+                .collection("sub").orderBy("description")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if(e!=null){
+                            return;
+                        }
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            SubscribeItem subscribeItem = documentSnapshot.toObject(SubscribeItem.class);
+
+                            final String subTopic = subscribeItem.getTopic();
+
+                            try {
+                                IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
+                                subToken.setActionCallback(new IMqttActionListener() {
+                                    @Override
+                                    public void onSuccess(IMqttToken asyncActionToken) {
+                                        Log.i("Check","Success sub to : "+ subTopic);
+                                    }
+
+                                    @Override
+                                    public void onFailure(IMqttToken asyncActionToken,
+                                                          Throwable exception) {
+                                        // The subscription could not be performed, maybe the user was not
+                                        // authorized to subscribe on the specified topic e.g. using wildcards
+                                        Log.i("Check","Fail to sub : "+ subTopic);
+                                    }
+                                });
+                            } catch (MqttException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
+                    }
+                });
     }
 
     @Override
@@ -78,8 +125,6 @@ public class SubscribeFragment extends Fragment {
                     return;
                 }
                 for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
-
-
                     if(documentSnapshot.getType() == DocumentChange.Type.REMOVED){
 
                     }else {
