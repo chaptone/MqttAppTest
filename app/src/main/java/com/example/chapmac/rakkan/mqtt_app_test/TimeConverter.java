@@ -6,12 +6,15 @@ import java.util.Calendar;
 
 public class TimeConverter {
 
+    private String nowDate;
     private String nowWeek;
     private String nowMonth;
     private String nowYear;
 
     public TimeConverter() {
 
+        nowDate = new SimpleDateFormat("dd")
+                .format(Calendar.getInstance().getTime());
         nowWeek = new SimpleDateFormat("W")
                 .format(Calendar.getInstance().getTime());
         nowMonth = new SimpleDateFormat("MM")
@@ -42,6 +45,10 @@ public class TimeConverter {
             return date + " " + nameMonth;
         }
         if(!nowWeek.equals(week)){
+            //e.g. 25 Jun
+            return date + " " + nameMonth;
+        }
+        if(!nowDate.equals(date)){
             //e.g. Wed
             return nameDate;
         }
@@ -49,6 +56,7 @@ public class TimeConverter {
         String timeH = tmp2[0];
         String timeM = tmp2[1];
 
+        // Same date e.g. 11:40
         return timeH+":"+timeM;
     }
 }
