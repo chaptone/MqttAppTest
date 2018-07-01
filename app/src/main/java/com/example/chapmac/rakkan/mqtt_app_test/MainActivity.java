@@ -3,6 +3,7 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,7 +30,6 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.parceler.Parcels;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
     public static MqttConnectOptions OPTIONS;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("database");
+    private CollectionReference collectionReference;
 
-    private String aId;
-    private Connection connection;
+    public static String _ID;
+
+    public static AppConnectionPreferences _PERF;
 
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
@@ -72,57 +75,67 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        aId = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
+        _ID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
+        collectionReference = db.collection("database")
+                .document(_ID).collection("connection");
+        _PERF = new AppConnectionPreferences(this);
+
+        proBar = findViewById(R.id.progressBar);
+        proBar.setVisibility(View.GONE);
+
+        if(_PERF.containsConnection()){
+            proBar.setVisibility(View.VISIBLE);
+            connectTo(_PERF.getConnection());
+        }
 
 //        if(savedInstanceState != null){
 //            Log.i("Check","not null");
 //        }
 
-        collectionReference.document(aId)
-                .collection("con")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Connection connectionDB = documentSnapshot.toObject(Connection.class);
-                    Log.i("Check","Find connection" + connectionDB.getHost());
-                    if(connectionDB.getStatus().equals("on")){
-                        connection = connectionDB;
-                        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
-                        String clientId = MqttClient.generateClientId();
-                        CLIENT = new MqttAndroidClient(getApplicationContext(), host_root, clientId);
+//        collectionReference.document(aId)
+//                .collection("con")
+//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+//                    Connection connectionDB = documentSnapshot.toObject(Connection.class);
+//                    Log.i("Check","Find connection" + connectionDB.getHost());
+//                    if(connectionDB.isConnected()){
+//                        connection = connectionDB;
+//                        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
+//                        String clientId = MqttClient.generateClientId();
+//                        CLIENT = new MqttAndroidClient(getApplicationContext(), host_root, clientId);
+//
+//                        OPTIONS = new MqttConnectOptions();
+//                        OPTIONS.setAutomaticReconnect(true);
+//                        OPTIONS.setUserName(connection.getUser());
+//                        OPTIONS.setPassword(connection.getPass().toCharArray());
+//                        try {
+//                            IMqttToken token = CLIENT.connect(OPTIONS);
+//                            token.setActionCallback(new IMqttActionListener() {
+//                                @Override
+//                                public void onSuccess(IMqttToken asyncActionToken) {
+//                                    Intent intent = new Intent(MainActivity.this, TabActivity.class);
+//                                    startActivity(intent);
+//                                    proBar.setVisibility(View.GONE);
+//                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                                }
+//
+//                                @Override
+//                                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//                                    proBar.setVisibility(View.GONE);
+//                                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
+//                                }
+//                            });
+//                        } catch (MqttException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//        });
 
-                        OPTIONS = new MqttConnectOptions();
-                        OPTIONS.setAutomaticReconnect(true);
-                        OPTIONS.setUserName(connection.getUser());
-                        OPTIONS.setPassword(connection.getPass().toCharArray());
-                        try {
-                            IMqttToken token = CLIENT.connect(OPTIONS);
-                            token.setActionCallback(new IMqttActionListener() {
-                                @Override
-                                public void onSuccess(IMqttToken asyncActionToken) {
-                                    Intent intent = new Intent(MainActivity.this, TabActivity.class);
-                                    startActivity(intent);
-                                    proBar.setVisibility(View.GONE);
-                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                                }
 
-                                @Override
-                                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                                    proBar.setVisibility(View.GONE);
-                                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
-                                }
-                            });
-                        } catch (MqttException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-
-        proBar = findViewById(R.id.progressBar);
-        proBar.setVisibility(View.GONE);
 
         textInputLayoutHost = findViewById(R.id.textInputLayout1);
         textInputLayoutPort = findViewById(R.id.textInputLayout2);
@@ -131,11 +144,19 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText textInputEditTextPass =findViewById(R.id.editText);
         textInputEditTextPass.setOnEditorActionListener(editorActionListener);
 
+
+        user = textInputLayoutUser.getEditText().getText().toString();
+        pass = textInputLayoutPass.getEditText().getText().toString();
+
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                connect();
+                proBar.setVisibility(View.VISIBLE);
+                if(!validateHost() | !validatePort()){
+                    return;
+                }
+                connectTo(new Connection(host,port,user,pass));
             }
         });
     }
@@ -170,21 +191,49 @@ public class MainActivity extends AppCompatActivity {
 //                return;
 //            }
 //        }
-        Log.i("Check","Connect call ");
-        proBar.setVisibility(View.VISIBLE);
+//        Log.i("Check","Connect call ");
+//        proBar.setVisibility(View.VISIBLE);
+//
+//        user = textInputLayoutUser.getEditText().getText().toString();
+//        pass = textInputLayoutPass.getEditText().getText().toString();
+//
+//        connection = new Connection();
+//        connection.setHost(host);
+//        connection.setPort(port);
+//        connection.setUser(user);
+//        connection.setPass(pass);
+//
+//        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
+//        String clientId = MqttClient.generateClientId();
+//        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host_root, clientId);
+//
+//        OPTIONS = new MqttConnectOptions();
+//        OPTIONS.setAutomaticReconnect(true);
+//        OPTIONS.setUserName(connection.getUser());
+//        OPTIONS.setPassword(connection.getPass().toCharArray());
+//        try {
+//            IMqttToken token = CLIENT.connect(OPTIONS);
+//            token.setActionCallback(new IMqttActionListener() {
+//                @Override
+//                public void onSuccess(IMqttToken asyncActionToken) {
+//                    MainActivity.this.connect();
+//                }
+//
+//                @Override
+//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//                    proBar.setVisibility(View.GONE);
+//                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
+//                }
+//            });
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
+    }
 
-        user = textInputLayoutUser.getEditText().getText().toString();
-        pass = textInputLayoutPass.getEditText().getText().toString();
-
-        connection = new Connection();
-        connection.setHost(host);
-        connection.setPort(port);
-        connection.setUser(user);
-        connection.setPass(pass);
-
-        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
-        String clientId = MqttClient.generateClientId();
-        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host_root, clientId);
+    public void connectTo(final Connection connection){
+        CLIENT = new MqttAndroidClient(this.getApplicationContext(),
+                "tcp://" + connection.getHost() + ":" + connection.getPort(),
+                MqttClient.generateClientId());
 
         OPTIONS = new MqttConnectOptions();
         OPTIONS.setAutomaticReconnect(true);
@@ -195,15 +244,20 @@ public class MainActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    String id = collectionReference.document(aId).collection("con").document().getId();
-                    connection.setStatus("on");
-                    connection.setId(id);
-                    collectionReference.document(aId).collection("con").document(id).set(connection);
-//                    connection = new Connection(host,port,user,pass);
-                    Intent intent = new Intent(MainActivity.this, TabActivity.class);
-                    startActivity(intent);
-                    proBar.setVisibility(View.GONE);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    collectionReference.whereEqualTo("id",connection.getId())
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                if(task.getResult().isEmpty()){
+                                    Log.d("Check", "empty");
+                                }else{
+                                    Log.d("Check", "not empty");
+                                }
+
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -217,45 +271,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("connection", Parcels.wrap(connection));
-
-        Log.i("Check","saveeee "+connection.getHost());
+    public void pushNewConnection(Connection connection){
+        Log.i("Check","pushNewCall");
+        String id = collectionReference.document().getId();
+        connection.setConnected(true);
+        connection.setId(id);
+        collectionReference.document(id).set(connection);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        connection = Parcels.unwrap(savedInstanceState.getParcelable("connection"));
-        Log.i("Check","Host "+ connection);
+    public void setCurrentConnect(Connection connection){
+        _PERF.edit().putConnection(connection).apply();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Log.i("Check","Stoppp");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Log.i("Check","Pauseeee");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("Check","Deadddd");
+    public void openNextActivity(){
+        Log.i("Check","OpenNextCall");
+        Intent intent = new Intent(MainActivity.this, TabActivity.class);
+        startActivity(intent);
+        proBar.setVisibility(View.GONE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }
