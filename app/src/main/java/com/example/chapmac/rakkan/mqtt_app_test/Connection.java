@@ -2,27 +2,16 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 
 import com.google.firebase.firestore.Exclude;
 
-import org.parceler.Parcel;
-
-@Parcel
 public class Connection {
-    String id;
-    String host;
-    String port;
-    String user;
-    String pass;
-    String status;
+
+     String id;
+     String host;
+     String port;
+     String user;
+     String pass;
+     boolean connected;
 
     public Connection() {
-    }
-
-    public Connection(String id, String host, String port, String user, String pass, String status) {
-        this.id = id;
-        this.host = host;
-        this.port = port;
-        this.user = user;
-        this.pass = pass;
-        this.status = status;
     }
 
     public Connection(String host, String port, String user, String pass) {
@@ -30,6 +19,7 @@ public class Connection {
         this.port = port;
         this.user = user;
         this.pass = pass;
+        this.connected = false;
     }
 
     @Exclude
@@ -73,11 +63,11 @@ public class Connection {
         this.pass = pass;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isConnected() {
+        return connected;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }
