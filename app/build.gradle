@@ -41,6 +41,13 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.muddzdev:styleabletoast:2.0.1'
 
+    implementation 'org.parceler:parceler-api:1.1.11'
+    annotationProcessor 'org.parceler:parceler:1.1.11'
+
+    implementation 'io.t28:shade:0.9.0'
+    annotationProcessor 'io.t28:shade-processor:0.9.0'
+
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
 
 

@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.MainActivity._PERF;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,
@@ -53,6 +56,9 @@ public class TabActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
+
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -251,6 +257,8 @@ public class TabActivity extends AppCompatActivity implements
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    _PERF.edit().removeConnection().apply();
+                    Log.i("Check",""+_PERF.containsConnection());
                     finish();
                 }
                 @Override
