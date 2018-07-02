@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
             switch (i) {
                 case EditorInfo.IME_ACTION_SEND:
-                    connect();
+                    proBar.setVisibility(View.VISIBLE);
+                    if(!validateHost() | !validatePort()){
+                        break;
+                    }
+                    connectTo(new Connection(host,port,user,pass));
                     break;
             }
             return false;
@@ -87,55 +91,6 @@ public class MainActivity extends AppCompatActivity {
             proBar.setVisibility(View.VISIBLE);
             connectTo(_PERF.getConnection());
         }
-
-//        if(savedInstanceState != null){
-//            Log.i("Check","not null");
-//        }
-
-//        collectionReference.document(aId)
-//                .collection("con")
-//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-//                    Connection connectionDB = documentSnapshot.toObject(Connection.class);
-//                    Log.i("Check","Find connection" + connectionDB.getHost());
-//                    if(connectionDB.isConnected()){
-//                        connection = connectionDB;
-//                        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
-//                        String clientId = MqttClient.generateClientId();
-//                        CLIENT = new MqttAndroidClient(getApplicationContext(), host_root, clientId);
-//
-//                        OPTIONS = new MqttConnectOptions();
-//                        OPTIONS.setAutomaticReconnect(true);
-//                        OPTIONS.setUserName(connection.getUser());
-//                        OPTIONS.setPassword(connection.getPass().toCharArray());
-//                        try {
-//                            IMqttToken token = CLIENT.connect(OPTIONS);
-//                            token.setActionCallback(new IMqttActionListener() {
-//                                @Override
-//                                public void onSuccess(IMqttToken asyncActionToken) {
-//                                    Intent intent = new Intent(MainActivity.this, TabActivity.class);
-//                                    startActivity(intent);
-//                                    proBar.setVisibility(View.GONE);
-//                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                                }
-//
-//                                @Override
-//                                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-//                                    proBar.setVisibility(View.GONE);
-//                                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
-//                                }
-//                            });
-//                        } catch (MqttException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//        });
-
-
 
         textInputLayoutHost = findViewById(R.id.textInputLayout1);
         textInputLayoutPort = findViewById(R.id.textInputLayout2);
@@ -185,51 +140,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void connect() {
-//        if(!isConnected()){
-//            if(!validateHost() | !validatePort()){
-//                return;
-//            }
-//        }
-//        Log.i("Check","Connect call ");
-//        proBar.setVisibility(View.VISIBLE);
-//
-//        user = textInputLayoutUser.getEditText().getText().toString();
-//        pass = textInputLayoutPass.getEditText().getText().toString();
-//
-//        connection = new Connection();
-//        connection.setHost(host);
-//        connection.setPort(port);
-//        connection.setUser(user);
-//        connection.setPass(pass);
-//
-//        host_root = "tcp://" + connection.getHost() + ":" + connection.getPort();
-//        String clientId = MqttClient.generateClientId();
-//        CLIENT = new MqttAndroidClient(this.getApplicationContext(), host_root, clientId);
-//
-//        OPTIONS = new MqttConnectOptions();
-//        OPTIONS.setAutomaticReconnect(true);
-//        OPTIONS.setUserName(connection.getUser());
-//        OPTIONS.setPassword(connection.getPass().toCharArray());
-//        try {
-//            IMqttToken token = CLIENT.connect(OPTIONS);
-//            token.setActionCallback(new IMqttActionListener() {
-//                @Override
-//                public void onSuccess(IMqttToken asyncActionToken) {
-//                    MainActivity.this.connect();
-//                }
-//
-//                @Override
-//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-//                    proBar.setVisibility(View.GONE);
-//                    StyleableToast.makeText(MainActivity.this, "Connected Failed", R.style.toastWrong).show();
-//                }
-//            });
-//        } catch (MqttException e) {
-//            e.printStackTrace();
-//        }
-    }
-
     public void connectTo(final Connection connection){
         CLIENT = new MqttAndroidClient(this.getApplicationContext(),
                 "tcp://" + connection.getHost() + ":" + connection.getPort(),
@@ -251,8 +161,12 @@ public class MainActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 if(task.getResult().isEmpty()){
                                     Log.d("Check", "empty");
+                                    pushNewConnection(connection);
+                                    setCurrentConnect(connection);
+                                    openNextActivity();
                                 }else{
                                     Log.d("Check", "not empty");
+                                    openNextActivity();
                                 }
 
                             }
