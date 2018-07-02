@@ -2,7 +2,6 @@ package com.example.chapmac.rakkan.mqtt_app_test.Publish;
 
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -20,12 +18,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.annotation.Nullable;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
 
 public class PublishFragment extends Fragment {
 
@@ -33,9 +33,9 @@ public class PublishFragment extends Fragment {
     private PublishAdapter publishAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("database");
-
-    private String aId;
+    private CollectionReference collectionReference = db.collection("database")
+            .document(_ID).collection("connection")
+            .document(_PERF.getConnection().getId()).collection("publish");
 
     public PublishFragment() {
         // Required empty public constructor
@@ -47,7 +47,6 @@ public class PublishFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_publish, container, false);
-        aId = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID);
 
         publishList = new ArrayList<>();
 
@@ -60,7 +59,7 @@ public class PublishFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.document(aId).collection("pub").orderBy("time")
+        collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -87,7 +86,7 @@ public class PublishFragment extends Fragment {
             }
             @Override
             public void onDeleteClick(int position) {
-                collectionReference.document(aId).collection("pub").document(publishList.get(position).getDocumentId()).delete();
+                collectionReference.document(publishList.get(position).getDocumentId()).delete();
                 publishList.remove(position);
                 publishAdapter.notifyItemRemoved(position);
             }
@@ -107,7 +106,7 @@ public class PublishFragment extends Fragment {
     }
 
     private void addToDatabase(PublishItem publishItem) {
-        collectionReference.document(aId).collection("pub").add(publishItem);
+        collectionReference.add(publishItem);
     }
 
 }

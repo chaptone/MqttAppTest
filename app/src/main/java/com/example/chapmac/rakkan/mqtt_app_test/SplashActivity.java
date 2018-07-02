@@ -45,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         _PERF = new AppConnectionPreferences(this);
 
         proBar = findViewById(R.id.progressBar);
+        proBar.setVisibility(View.VISIBLE);
 
         if(_PERF.containsConnection()){
             connectTo(_PERF.getConnection());
@@ -87,9 +88,8 @@ public class SplashActivity extends AppCompatActivity {
 
     public void openNextActivity(){
         Log.i("Check","OpenNextCall");
-        Intent intent = new Intent(SplashActivity.this, TabActivity.class);
+        Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
         startActivity(intent);
         proBar.setVisibility(View.GONE);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

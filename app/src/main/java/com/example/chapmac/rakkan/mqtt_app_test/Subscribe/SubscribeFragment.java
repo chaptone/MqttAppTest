@@ -42,6 +42,8 @@ import java.util.Calendar;
 import javax.annotation.Nullable;
 
 import static android.support.constraint.Constraints.TAG;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
 
 public class SubscribeFragment extends Fragment {
 
@@ -49,7 +51,9 @@ public class SubscribeFragment extends Fragment {
     private SubscribeAdapter subscribeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("database");
+    private CollectionReference collectionReference = db.collection("database")
+            .document(_ID).collection("connection")
+            .document(_PERF.getConnection().getId()).collection("subscribe");
 
     private String aId;
 
@@ -62,7 +66,6 @@ public class SubscribeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_subscribe, container, false);
-        aId = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID);
 
         subscribeList = new ArrayList<>();
 
@@ -75,7 +78,7 @@ public class SubscribeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.document(aId).collection("sub").orderBy("time")
+        collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -115,7 +118,7 @@ public class SubscribeFragment extends Fragment {
             unsubToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    collectionReference.document(aId).collection("sub").document(subscribeList.get(position).getDocumentId()).delete();
+                    collectionReference.document(subscribeList.get(position).getDocumentId()).delete();
                     subscribeList.remove(pos);
                     subscribeAdapter.notifyItemRemoved(pos);
                 }
@@ -144,15 +147,14 @@ public class SubscribeFragment extends Fragment {
     }
 
     private void addToDatabase(SubscribeItem item) {
-        collectionReference.document(aId).collection("sub").add(item);
+        collectionReference.add(item);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        collectionReference.document(Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID))
-                .collection("sub").orderBy("time")
+        collectionReference.orderBy("time")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
