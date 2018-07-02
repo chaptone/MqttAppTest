@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -110,7 +111,7 @@ public class SubscribeFragment extends Fragment {
     private void unSubscription(String topic, final int position) {
         final int pos = position;
         try {
-            IMqttToken unsubToken = MainActivity.CLIENT.unsubscribe(topic);
+            IMqttToken unsubToken = MqttHelper.CLIENT.unsubscribe(topic);
             unsubToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -161,7 +162,7 @@ public class SubscribeFragment extends Fragment {
                     final String subTopic = subscribeItem.getTopic();
 
                     try {
-                        IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, 1);
+                        IMqttToken subToken = MqttHelper.CLIENT.subscribe(subTopic, 1);
                         subToken.setActionCallback(new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {

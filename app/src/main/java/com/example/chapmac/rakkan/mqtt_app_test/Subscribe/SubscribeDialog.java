@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -100,7 +101,7 @@ public class SubscribeDialog extends AppCompatDialogFragment {
     public void subscribe() {
         int qos = 1;
         try {
-            IMqttToken subToken = MainActivity.CLIENT.subscribe(subTopic, qos);
+            IMqttToken subToken = MqttHelper.CLIENT.subscribe(subTopic, qos);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {

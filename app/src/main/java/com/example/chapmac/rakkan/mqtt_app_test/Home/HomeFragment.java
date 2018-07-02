@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishItem;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
@@ -109,7 +110,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        MainActivity.CLIENT.setCallback(new MqttCallback() {
+        MqttHelper.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
             }

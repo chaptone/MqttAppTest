@@ -33,7 +33,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.MainActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,
@@ -57,7 +57,7 @@ public class TabActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
 
-
+        Log.i("Check",_PERF.containsConnection()+"");
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -253,7 +253,7 @@ public class TabActivity extends AppCompatActivity implements
 
     public void disconnect(){
         try {
-            IMqttToken token = MainActivity.CLIENT.disconnect();
+            IMqttToken token = MqttHelper.CLIENT.disconnect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -272,7 +272,7 @@ public class TabActivity extends AppCompatActivity implements
     }
 
     private void showSnackBar() {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MainActivity.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MqttHelper.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
