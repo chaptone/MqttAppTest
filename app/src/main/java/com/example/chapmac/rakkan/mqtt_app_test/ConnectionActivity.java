@@ -7,7 +7,11 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -94,6 +98,18 @@ public class ConnectionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_connection, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, TabActivity.class);
+        return super.onOptionsItemSelected(item);
     }
 
     public void connectTo(final Connection connection){
