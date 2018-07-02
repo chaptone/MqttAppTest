@@ -39,7 +39,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ConnectionCreator">
+            android:name=".ConnectionCreator"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 
