@@ -108,7 +108,8 @@ public class ConnectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this, TabActivity.class);
+        Intent intent = new Intent(this, ConnectionCreator.class);
+        startActivityForResult(intent,1);
         return super.onOptionsItemSelected(item);
     }
 
