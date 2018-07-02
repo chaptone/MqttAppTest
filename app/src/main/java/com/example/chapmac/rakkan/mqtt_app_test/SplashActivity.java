@@ -45,11 +45,13 @@ public class SplashActivity extends AppCompatActivity {
         _PERF = new AppConnectionPreferences(this);
 
         proBar = findViewById(R.id.progressBar);
-        proBar.setVisibility(View.GONE);
 
         if(_PERF.containsConnection()){
-            proBar.setVisibility(View.VISIBLE);
             connectTo(_PERF.getConnection());
+        }else{
+            Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
+            startActivity(intent);
+            proBar.setVisibility(View.GONE);
         }
 
     }
