@@ -46,8 +46,10 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionViewHolder
         TimeConverter timeConverter = new TimeConverter();
 
 //        holder.mImageView.setImageResource(currentItem.getImage());
-        holder.mTextView.setText(currentItem.getHost());
-        holder.mTextView1.setText(currentItem.getUser());
+        holder.mTextView.setText(currentItem.getName());
+
+        String hostWithPort = currentItem.getHost()+":"+currentItem.getPort();
+        holder.mTextView1.setText(hostWithPort);
     }
 
     @Override
