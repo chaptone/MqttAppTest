@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeAdapter;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
@@ -34,7 +35,7 @@ public class BottomMenu extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.fragment_bottom_menu,container,false);
 
         bottomMenuItems = new ArrayList<>();
-        bottomMenuItems.add(new BottomMenuItem(R.drawable.ic_cloud_done, MainActivity.CLIENT.getServerURI(),R.drawable.ic_info));
+        bottomMenuItems.add(new BottomMenuItem(R.drawable.ic_cloud_done, MqttHelper.CLIENT.getServerURI(),R.drawable.ic_info));
         bottomMenuItems.add(new BottomMenuItem(R.drawable.ic_cloud_off, "Disconnect",0));
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);

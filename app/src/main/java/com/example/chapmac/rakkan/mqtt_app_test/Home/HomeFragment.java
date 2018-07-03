@@ -14,10 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
-import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishItem;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -29,7 +27,6 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +34,8 @@ import java.util.Calendar;
 import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.Notification.CHANNEL_1_ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
 
 
 public class HomeFragment extends Fragment {
@@ -47,9 +46,9 @@ public class HomeFragment extends Fragment {
     private HomeAdapter homeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("database");
-
-    private String aId;
+    private CollectionReference collectionReference = db.collection("database")
+            .document(_ID).collection("connection")
+            .document(_PERF.getConnection().getId()).collection("home");
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,7 +60,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        aId = Settings.Secure.getString(getActivity().getContentResolver(),Settings.Secure.ANDROID_ID);
 
         notificationManager = NotificationManagerCompat.from(getActivity());
 
@@ -76,7 +74,7 @@ public class HomeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.document(aId).collection("home").orderBy("time")
+        collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -103,13 +101,13 @@ public class HomeFragment extends Fragment {
             }
             @Override
             public void onDeleteClick(int position) {
-                collectionReference.document(aId).collection("home").document(homeList.get(position).getDocumentId()).delete();
+                collectionReference.document(homeList.get(position).getDocumentId()).delete();
                 homeList.remove(position);
                 homeAdapter.notifyItemRemoved(position);
             }
         });
 
-        MainActivity.CLIENT.setCallback(new MqttCallback() {
+        MqttHelper.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
             }
@@ -147,7 +145,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void addToDatabase(HomeItem homeItem) {
-        collectionReference.document(aId).collection("home").add(homeItem);
+        collectionReference.add(homeItem);
     }
 
 }

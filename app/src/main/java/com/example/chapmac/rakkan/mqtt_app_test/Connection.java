@@ -1,20 +1,26 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
 
 public class Connection {
 
-     String id;
-     String host;
-     String port;
-     String user;
-     String pass;
-     boolean connected;
+     private String id;
+     private String name;
+     private String host;
+     private String port;
+     private String user;
+     private String pass;
+     private boolean connected;
+     @ServerTimestamp Date time;
 
     public Connection() {
     }
 
-    public Connection(String host, String port, String user, String pass) {
+    public Connection(String name, String host, String port, String user, String pass) {
+        this.name = name;
         this.host = host;
         this.port = port;
         this.user = user;
@@ -29,6 +35,14 @@ public class Connection {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getHost() {
@@ -69,5 +83,13 @@ public class Connection {
 
     public void setConnected(boolean connected) {
         this.connected = connected;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
