@@ -14,8 +14,10 @@ import android.view.MenuItem;
 
 import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -81,6 +83,7 @@ public class ConnectionActivity extends AppCompatActivity {
                         for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
                             if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
                                 Connection connection = documentSnapshot.getDocument().toObject(Connection.class);
+                                connection.setId(documentSnapshot.getDocument().getId());
 
                                 connectionList.add(connection);
                             }
@@ -163,13 +166,14 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == 1){
+        if(requestCode == 1){
             if(resultCode == RESULT_OK){
                 String name = data.getStringExtra("name");
                 String host = data.getStringExtra("host");
                 String port = data.getStringExtra("port");
                 String user = data.getStringExtra("user");
                 String pass = data.getStringExtra("pass");
+                Log.i("Check","Data = "+name+host+port+user+pass);
                 addConnection(new Connection(name,host,port,user,pass));
             }
         }
@@ -182,5 +186,6 @@ public class ConnectionActivity extends AppCompatActivity {
                 StyleableToast.makeText(ConnectionActivity.this, "Fail to connect database", R.style.toastWrong).show();
             }
         });
+
     }
 }
