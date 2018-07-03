@@ -19,7 +19,8 @@ public class Connection {
     public Connection() {
     }
 
-    public Connection(String host, String port, String user, String pass) {
+    public Connection(String name, String host, String port, String user, String pass) {
+        this.name = name;
         this.host = host;
         this.port = port;
         this.user = user;
