@@ -21,6 +21,9 @@ repositories {
     maven {
         url "https://repo.eclipse.org/content/repositories/paho-releases/"
     }
+    maven {
+        url 'http://dl.bintray.com/amulyakhare/maven'
+    }
 }
 
 dependencies {
@@ -48,6 +51,9 @@ dependencies {
     annotationProcessor 'io.t28:shade-processor:0.9.0'
 
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    //circle image with letter text
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
 
 
