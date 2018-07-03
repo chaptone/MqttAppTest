@@ -12,12 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeAdapter;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 
 import java.util.ArrayList;
 
