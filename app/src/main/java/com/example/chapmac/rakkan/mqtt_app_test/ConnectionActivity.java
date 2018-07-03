@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,6 +31,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.Nullable;
 
@@ -67,7 +71,7 @@ public class ConnectionActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference
+        collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -88,8 +92,6 @@ public class ConnectionActivity extends AppCompatActivity {
         connectionAdapter.setOnCilckItemListener(new ConnectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                subscribeList.get(position).changeText1("Click");
-//                subscribeAdapter.notifyItemChanged(position);
                 connectTo(connectionList.get(position));
             }
             @Override
@@ -155,5 +157,30 @@ public class ConnectionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TabActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 1){
+            if(resultCode == RESULT_OK){
+                String name = data.getStringExtra("name");
+                String host = data.getStringExtra("host");
+                String port = data.getStringExtra("port");
+                String user = data.getStringExtra("user");
+                String pass = data.getStringExtra("pass");
+                addConnection(new Connection(name,host,port,user,pass));
+            }
+        }
+    }
+
+    public void addConnection(Connection connection){
+        collectionReference.add(connection).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                StyleableToast.makeText(ConnectionActivity.this, "Fail to connect database", R.style.toastWrong).show();
+            }
+        });
     }
 }
