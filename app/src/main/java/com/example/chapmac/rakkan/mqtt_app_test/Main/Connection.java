@@ -1,5 +1,6 @@
 package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -13,7 +14,7 @@ public class Connection {
      private String port;
      private String user;
      private String pass;
-     private boolean connected;
+     private int color;
      @ServerTimestamp Date time;
 
     public Connection() {
@@ -25,7 +26,7 @@ public class Connection {
         this.port = port;
         this.user = user;
         this.pass = pass;
-        this.connected = false;
+        this.color = ColorGenerator.MATERIAL.getRandomColor();
     }
 
     @Exclude
@@ -77,19 +78,15 @@ public class Connection {
         this.pass = pass;
     }
 
-    public boolean isConnected() {
-        return connected;
-    }
-
-    public void setConnected(boolean connected) {
-        this.connected = connected;
-    }
-
     public Date getTime() {
         return time;
     }
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public int getColor() {
+        return color;
     }
 }
