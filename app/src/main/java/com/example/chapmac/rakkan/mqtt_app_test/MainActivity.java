@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     if(!validateHost() | !validatePort()){
                         break;
                     }
-                    connectTo(new Connection(host,port,user,pass));
+                    connectTo(new Connection("",host,port,user,pass));
                     break;
             }
             return false;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!validateHost() | !validatePort()){
                     return;
                 }
-                connectTo(new Connection(host,port,user,pass));
+                connectTo(new Connection("",host,port,user,pass));
             }
         });
     }

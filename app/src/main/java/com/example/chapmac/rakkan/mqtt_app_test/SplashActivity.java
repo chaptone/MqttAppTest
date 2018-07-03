@@ -48,6 +48,7 @@ public class SplashActivity extends AppCompatActivity {
         proBar.setVisibility(View.VISIBLE);
 
         if(_PERF.containsConnection()){
+//            _PERF.edit().removeConnection().apply();
             connectTo(_PERF.getConnection());
         }else{
             Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);

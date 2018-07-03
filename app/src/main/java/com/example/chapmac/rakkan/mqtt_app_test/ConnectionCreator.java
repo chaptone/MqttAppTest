@@ -42,11 +42,6 @@ public class ConnectionCreator extends AppCompatActivity {
         TextInputEditText textInputEditTextPass =findViewById(R.id.editText);
         textInputEditTextPass.setOnEditorActionListener(editorActionListener);
 
-        name = textInputLayoutName.getEditText().getText().toString().trim();
-        host = textInputLayoutHost.getEditText().getText().toString().trim();
-        port = textInputLayoutPort.getEditText().getText().toString().trim();
-        user = textInputLayoutUser.getEditText().getText().toString().trim();
-        pass = textInputLayoutPass.getEditText().getText().toString().trim();
 
     }
 
@@ -66,6 +61,9 @@ public class ConnectionCreator extends AppCompatActivity {
         if(!validateName() | !validateHost() | !validatePort()){
             return;
         }
+
+        user = textInputLayoutUser.getEditText().getText().toString().trim();
+        pass = textInputLayoutPass.getEditText().getText().toString().trim();
         Intent intent = new Intent();
         intent.putExtra("name",name);
         intent.putExtra("host",host);
@@ -78,6 +76,7 @@ public class ConnectionCreator extends AppCompatActivity {
     }
 
     public boolean validateName() {
+        name = textInputLayoutName.getEditText().getText().toString().trim();
         if (name.isEmpty()) {
             textInputLayoutName.setError("Please assign client name");
             return false;
@@ -88,6 +87,7 @@ public class ConnectionCreator extends AppCompatActivity {
     }
 
     public boolean validateHost() {
+        host = textInputLayoutHost.getEditText().getText().toString().trim();
         if (host.isEmpty()) {
             textInputLayoutHost.setError("Host can't be empty");
             return false;
@@ -98,6 +98,7 @@ public class ConnectionCreator extends AppCompatActivity {
     }
 
     public boolean validatePort() {
+        port = textInputLayoutPort.getEditText().getText().toString().trim();
         if (host.isEmpty()) {
             textInputLayoutPort.setError("Port can't be empty");
             return false;
