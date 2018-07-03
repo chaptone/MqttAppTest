@@ -3,8 +3,6 @@ package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,17 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,16 +27,14 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-import static android.support.constraint.Constraints.TAG;
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class SubscribeFragment extends Fragment {
 

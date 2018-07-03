@@ -33,7 +33,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,

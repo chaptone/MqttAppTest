@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test;
+package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,12 +32,11 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class ConnectionActivity extends AppCompatActivity {
 

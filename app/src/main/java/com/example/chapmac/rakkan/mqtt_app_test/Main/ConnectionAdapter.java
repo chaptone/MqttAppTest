@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test;
+package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeItem;
-import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeViewHolder;
+import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
 

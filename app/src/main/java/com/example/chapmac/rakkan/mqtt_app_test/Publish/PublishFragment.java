@@ -24,8 +24,8 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class PublishFragment extends Fragment {
 

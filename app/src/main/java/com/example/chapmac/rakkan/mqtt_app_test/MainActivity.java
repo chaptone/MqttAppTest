@@ -15,12 +15,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Main.AppConnectionPreferences;
+import com.example.chapmac.rakkan.mqtt_app_test.Main.Connection;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
