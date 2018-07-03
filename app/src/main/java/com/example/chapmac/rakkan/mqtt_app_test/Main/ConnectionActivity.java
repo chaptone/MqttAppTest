@@ -93,6 +93,7 @@ public class ConnectionActivity extends AppCompatActivity {
         connectionAdapter.setOnCilckItemListener(new ConnectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                connectionAdapter.notifyItemChanged(position);
                 connectTo(connectionList.get(position));
             }
             @Override

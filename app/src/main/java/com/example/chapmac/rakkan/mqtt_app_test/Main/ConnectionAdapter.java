@@ -1,11 +1,14 @@
 package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
@@ -45,7 +48,12 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionViewHolder
 
         TimeConverter timeConverter = new TimeConverter();
 
-//        holder.mImageView.setImageResource(currentItem.getImage());
+        String letter = currentItem.getName().substring(0,1).toUpperCase();
+
+        int color = ColorGenerator.MATERIAL.getRandomColor();
+        TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
+        holder.mImageView.setImageDrawable(drawable);
+
         holder.mTextView.setText(currentItem.getName());
 
         String hostWithPort = currentItem.getHost()+":"+currentItem.getPort();
