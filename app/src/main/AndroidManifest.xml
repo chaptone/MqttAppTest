@@ -18,7 +18,6 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
-        <activity android:name=".Activity2" />
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
