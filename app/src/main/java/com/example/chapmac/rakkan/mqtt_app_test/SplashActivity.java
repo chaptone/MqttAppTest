@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         }else{
             Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
             startActivity(intent);
-            proBar.setVisibility(View.GONE);
+
         }
 
     }
@@ -73,7 +73,6 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     openNextActivity();
-                    proBar.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -91,6 +90,5 @@ public class SplashActivity extends AppCompatActivity {
         Log.i("Check","OpenNextCall");
         Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
         startActivity(intent);
-        proBar.setVisibility(View.GONE);
     }
 }
