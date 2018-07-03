@@ -46,11 +46,9 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionViewHolder
     public void onBindViewHolder(@NonNull ConnectionViewHolder holder, int position) {
         Connection currentItem = connectionList.get(position);
 
-        TimeConverter timeConverter = new TimeConverter();
-
         String letter = currentItem.getName().substring(0,1).toUpperCase();
 
-        int color = ColorGenerator.MATERIAL.getRandomColor();
+        int color = currentItem.getColor();
         TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
         holder.mImageView.setImageDrawable(drawable);
 
