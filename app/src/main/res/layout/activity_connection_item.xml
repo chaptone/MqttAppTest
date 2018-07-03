@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
+    android:background="@drawable/highlight_background"
     android:orientation="vertical"
     android:paddingBottom="@dimen/padding_list_row"
     android:paddingStart="?listPreferredItemPaddingLeft"
