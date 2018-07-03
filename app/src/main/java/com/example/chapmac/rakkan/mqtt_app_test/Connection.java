@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class Connection {
 
-     String id;
-     String name;
-     String host;
-     String port;
-     String user;
-     String pass;
-     boolean connected;
+     private String id;
+     private String name;
+     private String host;
+     private String port;
+     private String user;
+     private String pass;
+     private boolean connected;
      @ServerTimestamp Date time;
 
     public Connection() {
