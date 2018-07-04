@@ -46,6 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editText1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Client name"
@@ -64,6 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout1">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Host"
@@ -82,6 +84,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editText3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Port"
@@ -100,6 +103,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editText4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Username"
@@ -117,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/editText"
+                    android:id="@+id/editText5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionSend"

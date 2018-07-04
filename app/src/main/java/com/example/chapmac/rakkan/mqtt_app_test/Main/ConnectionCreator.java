@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 public class ConnectionCreator extends AppCompatActivity {
@@ -42,7 +43,7 @@ public class ConnectionCreator extends AppCompatActivity {
         textInputLayoutPort = findViewById(R.id.textInputLayout3);
         textInputLayoutUser = findViewById(R.id.textInputLayout4);
         textInputLayoutPass = findViewById(R.id.textInputLayout5);
-        TextInputEditText textInputEditTextPass =findViewById(R.id.editText);
+        TextInputEditText textInputEditTextPass =findViewById(R.id.editText5);
         textInputEditTextPass.setOnEditorActionListener(editorActionListener);
 
 
@@ -56,7 +57,12 @@ public class ConnectionCreator extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        sendAnswerBack();
+        if (item.getItemId() == R.id.menu) {
+            sendAnswerBack();
+        } else{
+            addDummyConnection();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -122,4 +128,16 @@ public class ConnectionCreator extends AppCompatActivity {
             return false;
         }
     };
+
+    private void addDummyConnection() {
+        TextInputEditText eHost =findViewById(R.id.editText2);
+        TextInputEditText ePort =findViewById(R.id.editText3);
+        TextInputEditText eUser =findViewById(R.id.editText4);
+        TextInputEditText ePass =findViewById(R.id.editText5);
+
+        eHost.setText("m14.cloudmqtt.com");
+        ePort.setText(13988+"");
+        eUser.setText("yirdixso");
+        ePass.setText("1oP6Zo5aFRZe");
+    }
 }
