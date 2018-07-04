@@ -54,6 +54,9 @@ dependencies {
 
     //circle image with letter text
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+    implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
+
 }
 
 

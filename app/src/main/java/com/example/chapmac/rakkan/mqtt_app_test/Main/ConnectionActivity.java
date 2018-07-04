@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
@@ -47,6 +49,8 @@ public class ConnectionActivity extends AppCompatActivity {
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection");
 
+    private PullRefreshLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,22 @@ public class ConnectionActivity extends AppCompatActivity {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        layout = findViewById(R.id.swipeRefreshLayout);
+
+        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        connectionAdapter.notifyDataSetChanged();
+                        layout.setRefreshing(false);
+                    }
+                },500);
+            }
+        });
 
         collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
