@@ -12,16 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class BottomMenu extends BottomSheetDialogFragment {
 
     private BottomMenuListener bottomMenuListener;
 
-    private ArrayList<BottomMenuItem> bottomMenuItems;
+    private ArrayList<BottomMenuItem> bottomMenuList;
 
     private BottomMenuAdapter bottomMenuAdapter;
 
@@ -30,14 +32,21 @@ public class BottomMenu extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_menu,container,false);
 
-        bottomMenuItems = new ArrayList<>();
-        bottomMenuItems.add(new BottomMenuItem(R.drawable.ic_cloud_done, MqttHelper.CLIENT.getServerURI(),R.drawable.ic_info));
-        bottomMenuItems.add(new BottomMenuItem(R.drawable.ic_cloud_off, "Disconnect",0));
+        String name = _PERF.getConnection().getName();
+        String host = "tcp://"+_PERF.getConnection().getHost()+":"+_PERF.getConnection().getPort();
+        String letter = _PERF.getConnection().getName().substring(0,1).toUpperCase();
+
+        int color = _PERF.getConnection().getColor();
+        TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
+
+        bottomMenuList = new ArrayList<>();
+        bottomMenuList.add(new BottomMenuItem(1,0,name,host,R.drawable.ic_info));
+        bottomMenuList.add(new BottomMenuItem(0,0, "Disconnect","",0));
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bottomMenuAdapter = new BottomMenuAdapter(bottomMenuItems);
+        bottomMenuAdapter = new BottomMenuAdapter(bottomMenuList);
         recyclerView.setAdapter(bottomMenuAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);

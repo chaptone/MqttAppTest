@@ -6,27 +6,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeAdapter;
 
-public class BottomMenuViewHolder extends RecyclerView.ViewHolder{
+public class BottomMenuViewHolderLarge extends RecyclerView.ViewHolder{
 
+        public ImageView mImageView;
         public TextView mTextView1;
+        public TextView mTextView2;
+        public ImageView mDeleteImage;
 
-        public BottomMenuViewHolder(View itemView, final BottomMenuAdapter.OnItemClickListener listener){
+        public BottomMenuViewHolderLarge(View itemView, final BottomMenuAdapter.OnItemClickListener listener){
             super(itemView);
+            mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
+            mTextView2 = itemView.findViewById(R.id.textView1);
+            mDeleteImage = itemView.findViewById(R.id.image_delete);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mDeleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
+                            listener.onDeleteClick(position);
                         }
                     }
                 }
             });
-
         }
     }
