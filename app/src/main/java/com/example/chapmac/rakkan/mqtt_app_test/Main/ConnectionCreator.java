@@ -31,6 +31,7 @@ public class ConnectionCreator extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getTheme().applyStyle(R.style.AppTheme_Green,true);
         setContentView(R.layout.activity_connection_creator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

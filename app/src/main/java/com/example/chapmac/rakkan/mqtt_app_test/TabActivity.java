@@ -1,5 +1,6 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -55,9 +56,14 @@ public class TabActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final int color = _PERF.getConnection().getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        int resId = getResourceByFilename(this,"style", "AppTheme.0xff"+hexColor.substring(1).toLowerCase());
+        getTheme().applyStyle(resId,true);
         setContentView(R.layout.activity_tab);
 
-        Log.i("Check",_PERF.containsConnection()+"");
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,6 +77,7 @@ public class TabActivity extends AppCompatActivity implements
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setSelectedTabIndicatorColor(color);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -139,7 +146,7 @@ public class TabActivity extends AppCompatActivity implements
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showSnackBar();
+                showSnackBar(color);
             }
         },1500);
     }
@@ -271,14 +278,18 @@ public class TabActivity extends AppCompatActivity implements
         }
     }
 
-    private void showSnackBar() {
+    private void showSnackBar(int color) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MqttHelper.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        snackBarView.setBackgroundColor(color);
         TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(getResources().getColor(R.color.white));
 
         snackbar.show();
+    }
+
+    public static int getResourceByFilename(Context context, String resourceType, String filename) {
+        return context.getResources().getIdentifier(filename, resourceType, context.getPackageName());
     }
 
     @Override

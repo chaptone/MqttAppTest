@@ -50,6 +50,7 @@ public class ConnectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(_PERF.containsConnection()){
             openNextActivity();
             onPause();
