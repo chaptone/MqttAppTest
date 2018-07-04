@@ -337,12 +337,16 @@ public class TabActivity extends AppCompatActivity implements
     }
 
     public void showSnackBarConnection(){
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), _PERF.getConnection().getName() +
-                "\n" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort(), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), "I don't know anything.", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundColor(color);
         TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setMaxLines(2);
+        String content1 = _PERF.getConnection().getName();
+        String content2 =  "tcp://" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort();
+        String finalContent = content1 + System.getProperty ("line.separator") + content2;
+        textView.setText(finalContent);
+        textView.setLineSpacing(2,(float)1.2);
         textView.setTextSize(16);
         textView.setTextColor(getResources().getColor(R.color.white));
 
