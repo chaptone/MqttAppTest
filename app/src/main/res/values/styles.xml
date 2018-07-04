@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/Black</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:textColorPrimary">@color/Black</item>
@@ -42,6 +42,74 @@
         <item name="colorBackground">@color/colorWrong</item>
         <item name="textColor">@color/white</item>
         <item name="length">SHORT</item>
+    </style>
+
+    <style name="AppTheme.0xffe57373">
+        <item name="colorAccent">#e57373</item>
+    </style>
+
+    <style name="AppTheme.0xfff06292">
+        <item name="colorAccent">#f06292</item>
+    </style>
+
+    <style name="AppTheme.0xffba68c8">
+        <item name="colorAccent">#ba68c8</item>
+    </style>
+
+    <style name="AppTheme.0xff9575cd">
+        <item name="colorAccent">#9575cd</item>
+    </style>
+
+    <style name="AppTheme.0xff7986cb">
+        <item name="colorAccent">#7986cb</item>
+    </style>
+
+    <style name="AppTheme.0xff64b5f6">
+        <item name="colorAccent">#64b5f6</item>
+    </style>
+
+    <style name="AppTheme.0xff4fc3f7">
+        <item name="colorAccent">#4fc3f7</item>
+    </style>
+
+    <style name="AppTheme.0xff4dd0e1">
+        <item name="colorAccent">#4dd0e1</item>
+    </style>
+
+    <style name="AppTheme.0xff4db6ac">
+        <item name="colorAccent">#4db6ac</item>
+    </style>
+
+    <style name="AppTheme.0xff81c784">
+        <item name="colorAccent">#81c784</item>
+    </style>
+
+    <style name="AppTheme.0xffaed581">
+        <item name="colorAccent">#aed581</item>
+    </style>
+
+    <style name="AppTheme.0xffff8a65">
+        <item name="colorAccent">#ff8a65</item>
+    </style>
+
+    <style name="AppTheme.0xffd4e157">
+        <item name="colorAccent">#d4e157</item>
+    </style>
+
+    <style name="AppTheme.0xffffd54f">
+        <item name="colorAccent">#ffd54f</item>
+    </style>
+
+    <style name="AppTheme.0xffffb74d">
+        <item name="colorAccent">#ffb74d</item>
+    </style>
+
+    <style name="AppTheme.0xffa1887f">
+        <item name="colorAccent">#a1887f</item>
+    </style>
+
+    <style name="AppTheme.0xff90a4ae">
+        <item name="colorAccent">#90a4ae</item>
     </style>
 
 </resources>
