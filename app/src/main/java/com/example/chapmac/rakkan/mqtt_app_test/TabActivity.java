@@ -1,6 +1,8 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,6 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,11 +57,13 @@ public class TabActivity extends AppCompatActivity implements
 
     private Handler handler = new Handler();
 
+    private int color;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final int color = _PERF.getConnection().getColor();
+        color = _PERF.getConnection().getColor();
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
         int resId = getResourceByFilename(this,"style", "AppTheme.0xff"+hexColor.substring(1).toLowerCase());
         getTheme().applyStyle(resId,true);
@@ -146,7 +152,7 @@ public class TabActivity extends AppCompatActivity implements
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showSnackBar(color);
+                showSnackBarConnection();
             }
         },1500);
     }
@@ -199,16 +205,14 @@ public class TabActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void applyTextsFromSubscribeDialog(String subscribe) {
-        StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
-
-        subscribeFragment.addSubscription(subscribe);
+    public void applyTextsFromSubscribeDialog(String status ,String topic) {
+        showSnackBar(status,"Subscribe",topic,"0");
+        subscribeFragment.addSubscription(topic);
     }
 
     @Override
-    public void applyTextsFromPublishDialog(String topic, String message) {
-        StyleableToast.makeText(this, "Publish topic " + topic + "/"+message, R.style.toastCorrect).show();
-
+    public void applyTextsFromPublishDialog(String status ,String topic, String message) {
+        showSnackBar(status,"Publish",topic,message);
         publishFragment.addPublisher(topic,message);
     }
 
@@ -265,7 +269,6 @@ public class TabActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     _PERF.edit().removeConnection().apply();
-                    Log.i("Check",""+_PERF.containsConnection());
                     finish();
                 }
                 @Override
@@ -278,11 +281,69 @@ public class TabActivity extends AppCompatActivity implements
         }
     }
 
-    private void showSnackBar(int color) {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MqttHelper.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
+    private void showSnackBar(String status,String operation,String topic,String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"I don't know content.", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundColor(color);
         TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        SpannableString content;
+        switch (status){
+            case "successful":
+                switch (operation) {
+                    case "Subscribe":
+                        //Subscribe to topic successful.
+                        content = new SpannableString("Subscribe to " + topic + " successful.");
+                        content.setSpan(new UnderlineSpan(), 13, 13 + topic.length(), 0);
+                        break;
+                    case "Publish":
+                        //Publish topic with message successful.
+                        content = new SpannableString("Publish " + topic + " with " + message + " successful.");
+                        content.setSpan(new UnderlineSpan(), 8, 8 + topic.length(), 0);
+                        content.setSpan(new UnderlineSpan(), 19, 19 + message.length(), 0);
+                        break;
+                    default:
+                        content = new SpannableString("I don't know publish or subscribe when success.");
+                        break;
+                }
+                break;
+            case "Failed":
+                switch (operation) {
+                    case "Subscribe":
+                        //Failed to subscribe topic.
+                        content = new SpannableString("Failed to subscribe " + topic + ".");
+                        content.setSpan(new UnderlineSpan(), 10, 10 + topic.length(), 0);
+                        snackBarView.setBackgroundColor(Color.parseColor("#d50000"));
+                        break;
+                    case "Publish":
+                        //Failed to publish topic with message.
+                        content = new SpannableString("Failed to publish " + topic + " with " + message + ".");
+                        content.setSpan(new UnderlineSpan(), 8, 8 + topic.length(), 0);
+                        content.setSpan(new UnderlineSpan(), 18, 18 + message.length(), 0);
+                        snackBarView.setBackgroundColor(Color.parseColor("#d50000"));
+                        break;
+                    default:
+                        content = new SpannableString("I don't know publish or subscribe when failed.");
+                        break;
+                }
+                break;
+            default:
+                content = new SpannableString("I don't know success or failed");
+        }
+        textView.setText(content);
+        textView.setTextSize(16);
+        textView.setTextColor(getResources().getColor(R.color.white));
+
+        snackbar.show();
+    }
+
+    public void showSnackBarConnection(){
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), _PERF.getConnection().getName() +
+                "\n" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort(), Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(color);
+        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setMaxLines(2);
+        textView.setTextSize(16);
         textView.setTextColor(getResources().getColor(R.color.white));
 
         snackbar.show();
