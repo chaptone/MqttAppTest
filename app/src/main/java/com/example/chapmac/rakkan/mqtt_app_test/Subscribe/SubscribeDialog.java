@@ -81,7 +81,7 @@ public class SubscribeDialog extends AppCompatDialogFragment {
     }
 
     public interface DialogListener {
-        void applyTextsFromSubscribeDialog(String subscribe);
+        void applyTextsFromSubscribeDialog(String status , String topic);
     }
 
     public boolean validateTopic() {
@@ -103,15 +103,13 @@ public class SubscribeDialog extends AppCompatDialogFragment {
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    dialogListener.applyTextsFromSubscribeDialog(subTopic);
+                    dialogListener.applyTextsFromSubscribeDialog("successful",subTopic);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken,
                                       Throwable exception) {
-                    // The subscription could not be performed, maybe the user was not
-                    // authorized to subscribe on the specified topic e.g. using wildcards
-                    Toast.makeText(getActivity(), "Failed to subscribe " + subTopic + " " + exception.toString() , Toast.LENGTH_LONG).show();
+                    dialogListener.applyTextsFromSubscribeDialog("Failed",subTopic);
                 }
             });
         } catch (MqttException e) {
