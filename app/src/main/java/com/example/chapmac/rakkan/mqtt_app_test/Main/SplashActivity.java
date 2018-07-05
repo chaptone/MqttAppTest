@@ -85,7 +85,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void openNextActivity(){
-        Log.i("Check","OpenNextCall");
         Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
         startActivity(intent);
     }

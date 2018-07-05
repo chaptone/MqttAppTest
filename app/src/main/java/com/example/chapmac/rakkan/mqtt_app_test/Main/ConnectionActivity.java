@@ -192,7 +192,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 String port = data.getStringExtra("port");
                 String user = data.getStringExtra("user");
                 String pass = data.getStringExtra("pass");
-                Log.i("Check","Data = "+name+host+port+user+pass);
+
                 addConnection(new Connection(name,host,port,user,pass));
             }
         }

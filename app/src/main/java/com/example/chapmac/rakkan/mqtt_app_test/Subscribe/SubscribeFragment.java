@@ -100,7 +100,6 @@ public class SubscribeFragment extends Fragment {
                         SubscribeItem subscribeItem = documentSnapshot.getDocument().toObject(SubscribeItem.class);
                         subscribeItem.setDocumentId(documentSnapshot.getDocument().getId());
                         subscribeList.add(0,subscribeItem);
-                        Log.i("Check","Doc type = "+ documentSnapshot.getType());
                     }
                     subscribeAdapter.notifyItemInserted(0);
                 }
