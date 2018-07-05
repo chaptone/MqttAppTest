@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
@@ -45,9 +48,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
         TimeConverter timeConverter = new TimeConverter();
 
-        holder.mImageView.setImageResource(currentItem.getImage());
-        holder.mTextView.setText(currentItem.getTopic());
-        holder.mTextView1.setText(currentItem.getMessage());
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound("", _PERF.getConnection().getColor() );
+
+        holder.mImageView.setImageDrawable(drawable);
+        holder.mTextView.setText("Topic : "+currentItem.getTopic());
+        holder.mTextView1.setText("Message : "+currentItem.getMessage());
         holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
