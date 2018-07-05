@@ -102,8 +102,8 @@ public class SubscribeFragment extends Fragment {
                         subscribeList.add(0,subscribeItem);
                     }
                     subscribeAdapter.notifyItemInserted(0);
+                    subscribeAdapter.notifyDataSetChanged();
                 }
-
             }
         });
 
