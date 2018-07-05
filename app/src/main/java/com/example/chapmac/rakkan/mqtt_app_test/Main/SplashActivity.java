@@ -75,8 +75,8 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    proBar.setVisibility(View.GONE);
-                    StyleableToast.makeText(SplashActivity.this, "Connected Failed", R.style.toastWrong).show();
+                    _PERF.edit().removeConnection().apply();
+                    openNextActivity();
                 }
             });
         } catch (MqttException e) {
