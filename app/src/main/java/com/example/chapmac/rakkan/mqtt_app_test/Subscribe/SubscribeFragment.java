@@ -3,6 +3,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +22,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -46,7 +49,7 @@ public class SubscribeFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PERF.getConnection().getId()).collection("subscribe");
 
-    private String aId;
+    private PullRefreshLayout layout;
 
     public SubscribeFragment() {
         // Required empty public constructor
@@ -69,7 +72,23 @@ public class SubscribeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.orderBy("time")
+        layout = view.findViewById(R.id.swipeRefreshLayout);
+
+        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        subscribeAdapter.notifyDataSetChanged();
+                        layout.setRefreshing(false);
+                    }
+                },500);
+            }
+        });
+
+        collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -80,10 +99,12 @@ public class SubscribeFragment extends Fragment {
                     if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
                         SubscribeItem subscribeItem = documentSnapshot.getDocument().toObject(SubscribeItem.class);
                         subscribeItem.setDocumentId(documentSnapshot.getDocument().getId());
-                        subscribeList.add(subscribeItem);
+                        subscribeList.add(0,subscribeItem);
+                        Log.i("Check","Doc type = "+ documentSnapshot.getType());
                     }
+                    subscribeAdapter.notifyItemInserted(0);
                 }
-                subscribeAdapter.notifyDataSetChanged();
+
             }
         });
 
