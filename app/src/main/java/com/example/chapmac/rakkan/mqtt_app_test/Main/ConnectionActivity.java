@@ -99,6 +99,11 @@ public class ConnectionActivity extends AppCompatActivity {
                         if(e!=null){
                             return;
                         }
+                        if(queryDocumentSnapshots.isEmpty()){
+                            Intent intent = new Intent(ConnectionActivity.this, ConnectionCreator.class);
+                            startActivityForResult(intent,1);
+                            return;
+                        }
                         for (DocumentChange documentSnapshot : queryDocumentSnapshots.getDocumentChanges()) {
                             if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
                                 Connection connection = documentSnapshot.getDocument().toObject(Connection.class);
