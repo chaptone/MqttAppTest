@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
@@ -47,7 +48,7 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
         TimeConverter timeConverter = new TimeConverter();
 
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound("", _PERF.getConnection().getColor() );
+                .buildRound("", ColorGenerator.MATERIAL.getColor(currentItem.getTopic()));
 
         holder.mImageView.setImageDrawable(drawable);
         holder.mTextView1.setText("Topic : "+currentItem.getTopic());
