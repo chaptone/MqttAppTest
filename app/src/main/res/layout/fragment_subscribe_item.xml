@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="15dp" />
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingStart="40dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/imageView"
+                android:textColor="@color/from"
+                android:textSize="@dimen/msg_text_primary"
                 android:text="Line1" />
 
             <TextView
@@ -23,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/image_delete"
+                android:textSize="@dimen/msg_text_secondary"
                 android:layout_marginEnd="8dp"
                 android:layout_centerVertical="true"
                 android:text="time" />
@@ -31,7 +40,6 @@
                 android:id="@+id/image_delete"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_delete"
