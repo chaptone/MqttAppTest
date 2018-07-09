@@ -1,11 +1,15 @@
 package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Handler;
 import android.provider.Settings;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.chapmac.rakkan.mqtt_app_test.Main.*;
@@ -31,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
 
-    private ProgressBar proBar;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +47,30 @@ public class SplashActivity extends AppCompatActivity {
                 .document(_ID).collection("connection");
         _PERF = new AppConnectionPreferences(this);
 
-        proBar = findViewById(R.id.progressBar);
-        proBar.setVisibility(View.VISIBLE);
+        ImageView imageView = findViewById(R.id.imageView);
+        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getBackground();
+        animationDrawable.setEnterFadeDuration(1000);
+        animationDrawable.setExitFadeDuration(1200);
+        animationDrawable.start();
 
-        if(_PERF.containsConnection()){
-//            _PERF.edit().removeConnection().apply();
-            connectTo(_PERF.getConnection());
-        }else{
-            Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
-            startActivity(intent);
-        }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(_PERF.containsConnection()){
+//                  _PERF.edit().removeConnection().apply();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            connectTo(_PERF.getConnection());
+                        }
+                    },5000);
+
+                }else{
+                    Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
+                    startActivity(intent);
+                }
+            }
+        },3000);
 
     }
 
