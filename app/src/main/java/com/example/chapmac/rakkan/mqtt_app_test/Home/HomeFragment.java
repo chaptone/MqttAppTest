@@ -138,11 +138,8 @@ public class HomeFragment extends Fragment {
                 String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                         .format(Calendar.getInstance().getTime());
 
-                HomeItem homeItem = new HomeItem(R.drawable.ic_send_gray, topic, messageStr,currentDate);
-//                homeList.add(new HomeItem(topic, messageStr));
-//                homeAdapter.notifyItemInserted(homeList.size());
+                HomeItem homeItem = new HomeItem(topic, messageStr,currentDate);
                 addToDatabase(homeItem);
-
 
                 Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_send)
