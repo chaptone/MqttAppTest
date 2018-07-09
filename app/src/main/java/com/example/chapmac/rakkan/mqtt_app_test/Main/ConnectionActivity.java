@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
@@ -171,7 +174,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    StyleableToast.makeText(ConnectionActivity.this, "Connected Failed", R.style.toastWrong).show();
+                    showFailSnackBar("Connected Failed");
                     dialog.cancel();
                 }
             });
@@ -217,10 +220,21 @@ public class ConnectionActivity extends AppCompatActivity {
         collectionReference.add(connection).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                StyleableToast.makeText(ConnectionActivity.this, "Fail to connect database", R.style.toastWrong).show();
+                showFailSnackBar("Fail to connect database");
             }
         });
 
+    }
+
+    public void showFailSnackBar(String text){
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), "I don't know anything.", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.colorWrong));
+        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setText(text);
+        textView.setTextColor(getResources().getColor(R.color.white));
+
+        snackbar.show();
     }
 
     @Override

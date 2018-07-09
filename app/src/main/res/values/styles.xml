@@ -30,20 +30,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="toastCorrect">
-        <item name="iconLeft">@drawable/ic_check</item>
-        <item name="colorBackground">@color/colorAccent</item>
-        <item name="textColor">@color/white</item>
-        <item name="length">SHORT</item>
-    </style>
-
-    <style name="toastWrong">
-        <item name="iconLeft">@drawable/ic_clear</item>
-        <item name="colorBackground">@color/colorWrong</item>
-        <item name="textColor">@color/white</item>
-        <item name="length">SHORT</item>
-    </style>
-
     <style name="AppTheme.0xffe57373">
         <item name="colorAccent">#e57373</item>
     </style>
