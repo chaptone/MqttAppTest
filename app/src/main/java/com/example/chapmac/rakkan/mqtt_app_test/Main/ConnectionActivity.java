@@ -172,6 +172,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     StyleableToast.makeText(ConnectionActivity.this, "Connected Failed", R.style.toastWrong).show();
+                    dialog.cancel();
                 }
             });
         } catch (MqttException e) {
