@@ -1,5 +1,6 @@
 package com.example.chapmac.rakkan.mqtt_app_test.Main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
@@ -51,6 +53,8 @@ public class ConnectionActivity extends AppCompatActivity {
 
     private PullRefreshLayout layout;
 
+    private ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,10 @@ public class ConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Connecting");
+        dialog.setMessage("Please wait ...");
 
         getSupportActionBar().setTitle("Connection");
 
@@ -119,6 +127,7 @@ public class ConnectionActivity extends AppCompatActivity {
         connectionAdapter.setOnCilckItemListener(new ConnectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                dialog.show();
                 connectTo(connectionList.get(position));
             }
             @Override
@@ -158,6 +167,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     setCurrentConnect(connection);
                     openNextActivity();
+                    dialog.cancel();
                 }
 
                 @Override
