@@ -120,9 +120,7 @@ public class PublishFragment extends Fragment {
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                 .format(Calendar.getInstance().getTime());
 
-        PublishItem publishItem = new PublishItem(R.drawable.ic_publish_gray, topic, message, currentDate);
-//        publishList.add(new PublishItem( topic, message));
-//        publishAdapter.notifyItemInserted(publishList.size());
+        PublishItem publishItem = new PublishItem(topic, message, currentDate);
         addToDatabase(publishItem);
     }
 

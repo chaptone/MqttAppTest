@@ -5,7 +5,6 @@ import com.google.firebase.firestore.Exclude;
 public class PublishItem {
 
     private String documentId;
-    private int image;
     private String topic;
     private String message;
     private String time;
@@ -14,8 +13,7 @@ public class PublishItem {
 
     }
 
-    public PublishItem(int image, String topic, String message, String time) {
-        this.image = image;
+    public PublishItem(String topic, String message, String time) {
         this.topic = topic;
         this.message = message;
         this.time = time;
@@ -28,14 +26,6 @@ public class PublishItem {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 
     public String getTime() {
