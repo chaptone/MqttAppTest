@@ -88,10 +88,6 @@
         <item name="colorAccent">#aed581</item>
     </style>
 
-    <style name="AppTheme.0xffff8a65">
-        <item name="colorAccent">#ff8a65</item>
-    </style>
-
     <style name="AppTheme.0xffd4e157">
         <item name="colorAccent">#d4e157</item>
     </style>
@@ -102,6 +98,10 @@
 
     <style name="AppTheme.0xffffb74d">
         <item name="colorAccent">#ffb74d</item>
+    </style>
+
+    <style name="AppTheme.0xffff8a65">
+        <item name="colorAccent">#ff8a65</item>
     </style>
 
     <style name="AppTheme.0xffa1887f">

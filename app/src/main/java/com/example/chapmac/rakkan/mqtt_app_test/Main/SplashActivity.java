@@ -49,8 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.imageView);
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getBackground();
-        animationDrawable.setEnterFadeDuration(1000);
-        animationDrawable.setExitFadeDuration(1200);
+        animationDrawable.setExitFadeDuration(500);
         animationDrawable.start();
 
         handler.postDelayed(new Runnable() {
