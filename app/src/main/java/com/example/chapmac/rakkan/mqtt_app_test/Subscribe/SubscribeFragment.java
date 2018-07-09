@@ -152,9 +152,7 @@ public class SubscribeFragment extends Fragment {
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                 .format(Calendar.getInstance().getTime());
 
-        SubscribeItem subscribeItem = new SubscribeItem(R.drawable.ic_local_offer, topic, currentDate);
-//        subscribeList.add(subscribeItem);
-//        subscribeAdapter.notifyItemInserted(subscribeList.size());
+        SubscribeItem subscribeItem = new SubscribeItem(topic, currentDate);
         addToDatabase(subscribeItem);
     }
 
