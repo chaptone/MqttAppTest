@@ -1,23 +1,17 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Main;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Main.*;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;

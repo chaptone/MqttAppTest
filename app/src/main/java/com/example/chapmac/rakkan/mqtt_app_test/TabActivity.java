@@ -2,7 +2,6 @@ package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -12,13 +11,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,19 +23,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Home.HomeFragment;
-import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
-import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishDialog;
-import com.example.chapmac.rakkan.mqtt_app_test.Publish.PublishFragment;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeDialog;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeFragment;
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
+import com.example.chapmac.rakkan.mqtt_app_test.home.HomeFragment;
+import com.example.chapmac.rakkan.mqtt_app_test.menu.BottomMenu;
+import com.example.chapmac.rakkan.mqtt_app_test.publish.PublishDialog;
+import com.example.chapmac.rakkan.mqtt_app_test.publish.PublishFragment;
+import com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeDialog;
+import com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeFragment;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,

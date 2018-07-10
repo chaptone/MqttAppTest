@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Menu;
+package com.example.chapmac.rakkan.mqtt_app_test.menu;
 
 public class BottomMenuModel {
     public static final int LARGE_TYPE=0;

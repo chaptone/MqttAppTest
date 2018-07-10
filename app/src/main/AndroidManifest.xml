@@ -23,7 +23,7 @@
             android:label="@string/title_activity_tab"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Main.SplashActivity"
+            android:name=".main.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,12 +32,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main.ConnectionActivity"
+            android:name=".main.ConnectionActivity"
             android:label="@string/title_activity_connection"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".Main.ConnectionCreator"
+            android:name=".main.ConnectionCreator"
             android:windowSoftInputMode="adjustResize">
         </activity>
     </application>

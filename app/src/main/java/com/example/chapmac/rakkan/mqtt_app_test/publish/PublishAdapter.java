@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Publish;
+package com.example.chapmac.rakkan.mqtt_app_test.publish;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +9,9 @@ import android.view.ViewGroup;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeViewHolder;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
-
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class PublishAdapter extends RecyclerView.Adapter<PublishViewHolder> {
 

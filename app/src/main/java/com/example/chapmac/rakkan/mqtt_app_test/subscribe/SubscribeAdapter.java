@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
+package com.example.chapmac.rakkan.mqtt_app_test.subscribe;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,6 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
-
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> {
 

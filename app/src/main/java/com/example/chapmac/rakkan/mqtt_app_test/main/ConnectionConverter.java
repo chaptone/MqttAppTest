@@ -1,9 +1,8 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Main;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Main.Connection;
 import com.google.gson.Gson;
 
 import io.t28.shade.converter.Converter;

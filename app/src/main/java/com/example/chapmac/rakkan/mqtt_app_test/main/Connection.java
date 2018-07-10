@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Main;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.firestore.Exclude;

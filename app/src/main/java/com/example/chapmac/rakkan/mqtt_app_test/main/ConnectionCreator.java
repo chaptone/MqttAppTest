@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Main;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import com.example.chapmac.rakkan.mqtt_app_test.Menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 public class ConnectionCreator extends AppCompatActivity {

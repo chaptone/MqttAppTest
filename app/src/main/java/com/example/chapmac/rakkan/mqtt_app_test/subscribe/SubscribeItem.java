@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
+package com.example.chapmac.rakkan.mqtt_app_test.subscribe;
 
 import com.google.firebase.firestore.Exclude;
 

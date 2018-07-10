@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Publish;
+package com.example.chapmac.rakkan.mqtt_app_test.subscribe;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,25 +18,21 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class PublishDialog extends AppCompatDialogFragment {
-
-    private DialogListener dialogListener;
+public class SubscribeDialog extends AppCompatDialogFragment {
 
     private TextInputLayout textInputTopic;
-    private TextInputLayout textInputMessage;
-
-    private String topic;
-    private String message;
+    private String subTopic;
+    private DialogListener dialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_publish_dialog,null);
+        View view = inflater.inflate(R.layout.fragment_subscribe_dialog, null);
 
         builder.setView(view)
-                .setTitle("Add Publisher")
+                .setTitle("Add subscription")
                 .setNegativeButton("Cancel",null)
                 .setPositiveButton("Add",null);
 
@@ -49,9 +45,9 @@ public class PublishDialog extends AppCompatDialogFragment {
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!validateTopic() | !validateMessage()) {
+                        if (!validateTopic()) {
                         }else{
-                            publish();
+                            subscribe();
                             dialog.dismiss();
                         }
                     }
@@ -67,8 +63,7 @@ public class PublishDialog extends AppCompatDialogFragment {
             }
         });
 
-        textInputTopic = view.findViewById(R.id.textInputLayout1);
-        textInputMessage = view.findViewById(R.id.textInputLayout2);
+        textInputTopic = view.findViewById(R.id.textInputLayout);
 
         return alertDialog;
     }
@@ -79,20 +74,20 @@ public class PublishDialog extends AppCompatDialogFragment {
 
         try {
             dialogListener = (DialogListener) context;
-        }catch (ClassCastException e){
-            throw new ClassCastException(context.toString()+" must implement DialogListener");
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement DialogListener");
         }
     }
 
-    public interface DialogListener{
-        void applyTextsFromPublishDialog(String status , String topic , String message);
+    public interface DialogListener {
+        void applyTextsFromSubscribeDialog(String status , String topic);
     }
 
     public boolean validateTopic() {
-        topic = textInputTopic.getEditText().getText().toString().trim();
+        subTopic = textInputTopic.getEditText().getText().toString().trim();
 
-        if (topic.isEmpty()) {
-            textInputTopic.setError("Can't publish empty topic");
+        if (subTopic.isEmpty()) {
+            textInputTopic.setError("Can't subscribe empty topic");
             return false;
         } else {
             textInputTopic.setError(null);
@@ -100,30 +95,20 @@ public class PublishDialog extends AppCompatDialogFragment {
         }
     }
 
-    public boolean validateMessage() {
-        message = textInputMessage.getEditText().getText().toString().trim();
-
-        if (message.isEmpty()) {
-            textInputMessage.setError("Can't publish topic with empty message");
-            return false;
-        } else {
-            textInputMessage.setError(null);
-            return true;
-        }
-    }
-
-    public void publish() {
+    public void subscribe() {
+        int qos = 1;
         try {
-            MqttHelper.CLIENT.publish(topic, message.getBytes(),0,false)
-                    .setActionCallback(new IMqttActionListener() {
+            IMqttToken subToken = MqttHelper.CLIENT.subscribe(subTopic, qos);
+            subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    dialogListener.applyTextsFromPublishDialog("successful",topic,message);
+                    dialogListener.applyTextsFromSubscribeDialog("successful",subTopic);
                 }
 
                 @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    dialogListener.applyTextsFromPublishDialog("Failed",topic,message);
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    dialogListener.applyTextsFromSubscribeDialog("Failed",subTopic);
                 }
             });
         } catch (MqttException e) {

@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Subscribe;
+package com.example.chapmac.rakkan.mqtt_app_test.subscribe;
 
 
 import android.content.Context;
@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
@@ -37,8 +36,8 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 public class SubscribeFragment extends Fragment {
 

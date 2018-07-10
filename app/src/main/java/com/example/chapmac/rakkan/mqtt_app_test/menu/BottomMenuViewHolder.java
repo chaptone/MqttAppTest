@@ -1,12 +1,10 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Menu;
+package com.example.chapmac.rakkan.mqtt_app_test.menu;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeAdapter;
 
 public class BottomMenuViewHolder extends RecyclerView.ViewHolder{
 

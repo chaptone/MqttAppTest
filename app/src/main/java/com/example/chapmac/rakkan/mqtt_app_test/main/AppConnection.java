@@ -1,7 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Main;
-
-import com.example.chapmac.rakkan.mqtt_app_test.Main.Connection;
-import com.example.chapmac.rakkan.mqtt_app_test.Main.ConnectionConverter;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import io.t28.shade.annotation.Preferences;
 import io.t28.shade.annotation.Property;
