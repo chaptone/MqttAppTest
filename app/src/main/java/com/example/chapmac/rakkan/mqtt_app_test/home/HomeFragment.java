@@ -5,12 +5,14 @@ import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,12 @@ import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -109,18 +115,29 @@ public class HomeFragment extends Fragment {
                                 HomeItem homeItem = documentSnapshot.getDocument().toObject(HomeItem.class);
                                 homeItem.setDocumentId(documentSnapshot.getDocument().getId());
                                 homeList.add(0,homeItem);
+                                homeAdapter.notifyItemInserted(0);
+                                homeAdapter.notifyDataSetChanged();
+                            }
+                            if (documentSnapshot.getType() == DocumentChange.Type.MODIFIED) {
+                                HomeItem homeItem = documentSnapshot.getDocument().toObject(HomeItem.class);
+                                homeItem.setDocumentId(documentSnapshot.getDocument().getId());
+                                for (int i = 0 ; i < homeList.size() ; i++){
+                                    if(homeList.get(i).getTopic().equals(homeItem.getTopic())){
+                                        homeList.remove(i);
+                                        homeAdapter.notifyItemRemoved(i);
+                                    }
+                                }
+                                homeList.add(0,homeItem);
+                                homeAdapter.notifyItemInserted(0);
+                                homeAdapter.notifyDataSetChanged();
                             }
                         }
-                        homeAdapter.notifyItemInserted(0);
-                        homeAdapter.notifyDataSetChanged();
                     }
                 });
 
         homeAdapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
-//                homeList.get(position).changeText1("Click");
-//                homeAdapter.notifyItemChanged(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -161,8 +178,38 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void addToDatabase(HomeItem homeItem) {
-        collectionReference.add(homeItem);
+    private void addToDatabase(final HomeItem homeItem) {
+        collectionReference.whereEqualTo("topic",homeItem.getTopic())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isComplete()){
+                    if(task.getResult().isEmpty()){
+                        collectionReference.add(homeItem).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                if (task.isComplete()){
+                                    String topicId = task.getResult().getId();
+                                    DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
+                                    collectionReference.document(topicId).collection("detail").add(detailItem);
+                                }
+                            }
+                        });
+                    }else{
+                        final String topicId = task.getResult().getDocuments().get(0).getId();
+                        DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
+                        collectionReference.document(topicId).collection("detail").add(detailItem).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                if(task.isComplete()){
+                                    collectionReference.document(topicId).set(homeItem);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
 }
