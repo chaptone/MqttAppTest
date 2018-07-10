@@ -6,12 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeViewHolder;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class PublishAdapter extends RecyclerView.Adapter<PublishViewHolder> {
 
@@ -45,9 +49,12 @@ public class PublishAdapter extends RecyclerView.Adapter<PublishViewHolder> {
 
         TimeConverter timeConverter = new TimeConverter();
 
-        holder.mImage.setImageResource(currentItem.getImage());
-        holder.mTextView1.setText(currentItem.getTopic());
-        holder.mTextView2.setText(currentItem.getMessage());
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound("", ColorGenerator.MATERIAL.getColor(currentItem.getTopic()));
+
+        holder.mImage.setImageDrawable(drawable);
+        holder.mTextView1.setText("Topic : "+currentItem.getTopic());
+        holder.mTextView2.setText("Message : "+currentItem.getMessage());
         holder.mTextView3.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 

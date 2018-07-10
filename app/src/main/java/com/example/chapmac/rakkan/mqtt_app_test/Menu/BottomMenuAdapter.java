@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
 import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeViewHolder;
 
 import java.util.ArrayList;
 
-public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuViewHolder> {
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+
+public class BottomMenuAdapter extends RecyclerView.Adapter {
 
     private ArrayList<BottomMenuItem> bottomMenuList;
     private OnItemClickListener mListener;
@@ -30,21 +33,52 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuViewHolder
         bottomMenuList = bottomMenuItems;
     }
 
-    @NonNull
     @Override
-    public BottomMenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_bottom_menu_item,parent,false);
-        BottomMenuViewHolder bottomMenuViewHolder = new BottomMenuViewHolder(view,mListener);
-        return bottomMenuViewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view;
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_bottom_menu_item, parent, false);
+                return new BottomMenuViewHolder(view,mListener);
+            case 1:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_bottom_menu_large_item, parent, false);
+                return new BottomMenuViewHolderLarge(view,mListener);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BottomMenuViewHolder holder, int position) {
-        BottomMenuItem currentItem = bottomMenuList.get(position);
+    public int getItemViewType(int position) {
 
-        holder.mImageView.setImageResource(currentItem.getImageResource());
-        holder.mTextView1.setText(currentItem.getText1());
-        holder.mDeleteImage.setImageResource(currentItem.getImageResource1());
+        switch (bottomMenuList.get(position).getType()) {
+            case 0:
+                return 0;
+            case 1:
+                return 1;
+            default:
+                return -1;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        BottomMenuItem object = bottomMenuList.get(position);
+        if (object != null) {
+            switch (object.getType()) {
+                case 0:
+                    ((BottomMenuViewHolder) holder).mTextView1.setText(object.getText1());
+                    break;
+                case 1:
+                    String letter = _PERF.getConnection().getName().substring(0,1).toUpperCase();
+                    int color = _PERF.getConnection().getColor();
+                    TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
+                    ((BottomMenuViewHolderLarge) holder).mImageView.setImageDrawable(drawable);
+                    ((BottomMenuViewHolderLarge) holder).mTextView1.setText(object.getText1());
+                    ((BottomMenuViewHolderLarge) holder).mTextView2.setText(object.getText2());
+                    ((BottomMenuViewHolderLarge) holder).mDeleteImage.setImageResource(object.getImageResource1());
+            }
+        }
     }
 
     @Override

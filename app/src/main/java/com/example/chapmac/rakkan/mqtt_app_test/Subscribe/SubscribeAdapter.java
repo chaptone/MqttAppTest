@@ -6,10 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> {
 
@@ -43,8 +47,11 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeViewHolder> 
 
         TimeConverter timeConverter = new TimeConverter();
 
-        holder.mImageView.setImageResource(currentItem.getImage());
-        holder.mTextView1.setText(currentItem.getTopic());
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound("", ColorGenerator.MATERIAL.getColor(currentItem.getTopic()));
+
+        holder.mImageView.setImageDrawable(drawable);
+        holder.mTextView1.setText("Topic : "+currentItem.getTopic());
         holder.mTextView2.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 

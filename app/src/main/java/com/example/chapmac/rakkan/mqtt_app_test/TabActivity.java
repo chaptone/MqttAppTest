@@ -1,5 +1,8 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,6 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +38,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,
@@ -52,12 +57,19 @@ public class TabActivity extends AppCompatActivity implements
 
     private Handler handler = new Handler();
 
+    private int color;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        color = _PERF.getConnection().getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        int resId = getResourceByFilename(this,"style", "AppTheme.0xff"+hexColor.substring(1).toLowerCase());
+        getTheme().applyStyle(resId,true);
         setContentView(R.layout.activity_tab);
 
-        Log.i("Check",_PERF.containsConnection()+"");
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,6 +83,7 @@ public class TabActivity extends AppCompatActivity implements
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setSelectedTabIndicatorColor(color);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -139,7 +152,7 @@ public class TabActivity extends AppCompatActivity implements
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showSnackBar();
+                showSnackBarConnection("connect");
             }
         },1500);
     }
@@ -192,16 +205,14 @@ public class TabActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void applyTextsFromSubscribeDialog(String subscribe) {
-        StyleableToast.makeText(this, "Subscribe to " + subscribe, R.style.toastCorrect).show();
-
-        subscribeFragment.addSubscription(subscribe);
+    public void applyTextsFromSubscribeDialog(String status ,String topic) {
+        showSnackBar(status,"Subscribe",topic,"0");
+        subscribeFragment.addSubscription(topic);
     }
 
     @Override
-    public void applyTextsFromPublishDialog(String topic, String message) {
-        StyleableToast.makeText(this, "Publish topic " + topic + "/"+message, R.style.toastCorrect).show();
-
+    public void applyTextsFromPublishDialog(String status ,String topic, String message) {
+        showSnackBar(status,"Publish",topic,message);
         publishFragment.addPublisher(topic,message);
     }
 
@@ -258,12 +269,11 @@ public class TabActivity extends AppCompatActivity implements
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     _PERF.edit().removeConnection().apply();
-                    Log.i("Check",""+_PERF.containsConnection());
                     finish();
                 }
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    StyleableToast.makeText(TabActivity.this,"Couldn't disconnect",R.style.toastWrong).show();
+
                 }
             });
         } catch (MqttException e) {
@@ -271,14 +281,88 @@ public class TabActivity extends AppCompatActivity implements
         }
     }
 
-    private void showSnackBar() {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"Connection : "+MqttHelper.CLIENT.getServerURI(),Snackbar.LENGTH_LONG);
+    private void showSnackBar(String status,String operation,String topic,String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"I don't know content.", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        snackBarView.setBackgroundColor(color);
         TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        SpannableString content;
+        switch (status){
+            case "successful":
+                switch (operation) {
+                    case "Subscribe":
+                        //Subscribe to topic successful.
+                        content = new SpannableString("Subscribe to " + topic + " successful.");
+                        content.setSpan(new UnderlineSpan(), 13, 13 + topic.length(), 0);
+                        break;
+                    case "Publish":
+                        //Publish topic with message successful.
+                        content = new SpannableString("Publish " + topic + " with " + message + " successful.");
+                        content.setSpan(new UnderlineSpan(), 8, 8 + topic.length(), 0);
+                        content.setSpan(new UnderlineSpan(), 19, 19 + message.length(), 0);
+                        break;
+                    default:
+                        content = new SpannableString("I don't know publish or subscribe when success.");
+                        break;
+                }
+                break;
+            case "Failed":
+                switch (operation) {
+                    case "Subscribe":
+                        //Failed to subscribe topic.
+                        content = new SpannableString("Failed to subscribe " + topic + ".");
+                        content.setSpan(new UnderlineSpan(), 10, 10 + topic.length(), 0);
+                        snackBarView.setBackgroundColor(Color.parseColor("#d50000"));
+                        break;
+                    case "Publish":
+                        //Failed to publish topic with message.
+                        content = new SpannableString("Failed to publish " + topic + " with " + message + ".");
+                        content.setSpan(new UnderlineSpan(), 8, 8 + topic.length(), 0);
+                        content.setSpan(new UnderlineSpan(), 18, 18 + message.length(), 0);
+                        snackBarView.setBackgroundColor(Color.parseColor("#d50000"));
+                        break;
+                    default:
+                        content = new SpannableString("I don't know publish or subscribe when failed.");
+                        break;
+                }
+                break;
+            default:
+                content = new SpannableString("I don't know success or failed");
+        }
+        textView.setText(content);
+        textView.setTextSize(16);
         textView.setTextColor(getResources().getColor(R.color.white));
 
         snackbar.show();
+    }
+
+    public void showSnackBarConnection(String text){
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), "I don't know anything.", Snackbar.LENGTH_LONG);
+        if(text.equals("connect")){
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(color);
+            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(2);
+            String content1 = _PERF.getConnection().getName();
+            String content2 =  "tcp://" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort();
+            String finalContent = content1 + System.getProperty ("line.separator") + content2;
+            textView.setText(finalContent);
+            textView.setLineSpacing(2,(float)1.2);
+            textView.setTextSize(16);
+            textView.setTextColor(getResources().getColor(R.color.white));
+        }else{
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(getResources().getColor(R.color.colorWrong));
+            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setText("Couldn't disconnect");
+            textView.setTextColor(getResources().getColor(R.color.white));
+        }
+
+        snackbar.show();
+    }
+
+    public static int getResourceByFilename(Context context, String resourceType, String filename) {
+        return context.getResources().getIdentifier(filename, resourceType, context.getPackageName());
     }
 
     @Override

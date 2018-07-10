@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.Publish;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +27,8 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
 
 public class PublishFragment extends Fragment {
 
@@ -36,6 +39,8 @@ public class PublishFragment extends Fragment {
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection")
             .document(_PERF.getConnection().getId()).collection("publish");
+
+    private PullRefreshLayout layout;
 
     public PublishFragment() {
         // Required empty public constructor
@@ -59,7 +64,23 @@ public class PublishFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        collectionReference.orderBy("time")
+        layout = view.findViewById(R.id.swipeRefreshLayout);
+
+        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        publishAdapter.notifyDataSetChanged();
+                        layout.setRefreshing(false);
+                    }
+                },500);
+            }
+        });
+
+        collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -70,10 +91,10 @@ public class PublishFragment extends Fragment {
                             if (documentSnapshot.getType() == DocumentChange.Type.ADDED) {
                                 PublishItem publishItem = documentSnapshot.getDocument().toObject(PublishItem.class);
                                 publishItem.setDocumentId(documentSnapshot.getDocument().getId());
-
-                                publishList.add(publishItem);
+                                publishList.add(0,publishItem);
                             }
                         }
+                        publishAdapter.notifyItemInserted(0);
                         publishAdapter.notifyDataSetChanged();
                     }
                 });
@@ -99,9 +120,7 @@ public class PublishFragment extends Fragment {
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                 .format(Calendar.getInstance().getTime());
 
-        PublishItem publishItem = new PublishItem(R.drawable.ic_publish_gray, topic, message, currentDate);
-//        publishList.add(new PublishItem( topic, message));
-//        publishAdapter.notifyItemInserted(publishList.size());
+        PublishItem publishItem = new PublishItem(topic, message, currentDate);
         addToDatabase(publishItem);
     }
 

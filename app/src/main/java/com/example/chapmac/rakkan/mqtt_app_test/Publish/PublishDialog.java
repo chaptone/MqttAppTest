@@ -10,13 +10,12 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MainActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class PublishDialog extends AppCompatDialogFragment {
@@ -86,7 +85,7 @@ public class PublishDialog extends AppCompatDialogFragment {
     }
 
     public interface DialogListener{
-        void applyTextsFromPublishDialog(String topic,String message);
+        void applyTextsFromPublishDialog(String status , String topic , String message);
     }
 
     public boolean validateTopic() {
@@ -115,8 +114,18 @@ public class PublishDialog extends AppCompatDialogFragment {
 
     public void publish() {
         try {
-            MqttHelper.CLIENT.publish(topic, message.getBytes(),0,false);
-            dialogListener.applyTextsFromPublishDialog(topic,message);
+            MqttHelper.CLIENT.publish(topic, message.getBytes(),0,false)
+                    .setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    dialogListener.applyTextsFromPublishDialog("successful",topic,message);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    dialogListener.applyTextsFromPublishDialog("Failed",topic,message);
+                }
+            });
         } catch (MqttException e) {
             e.printStackTrace();
         }

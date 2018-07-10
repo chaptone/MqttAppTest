@@ -5,7 +5,6 @@ import com.google.firebase.firestore.Exclude;
 public class HomeItem {
 
     private String documentId;
-    private int image;
     private String topic;
     private String message;
     private String time;
@@ -13,8 +12,7 @@ public class HomeItem {
     public HomeItem() {
     }
 
-    public HomeItem(int image, String topic, String message, String time) {
-        this.image = image;
+    public HomeItem(String topic, String message, String time) {
         this.topic = topic;
         this.message = message;
         this.time = time;
@@ -27,14 +25,6 @@ public class HomeItem {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 
     public String getTime() {
@@ -59,9 +49,5 @@ public class HomeItem {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public void changeText1(String text){
-        topic = text;
     }
 }
