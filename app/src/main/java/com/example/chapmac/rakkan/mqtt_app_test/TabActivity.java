@@ -152,7 +152,7 @@ public class TabActivity extends AppCompatActivity implements
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showSnackBarConnection();
+                showSnackBarConnection("connect");
             }
         },1500);
     }
@@ -273,7 +273,7 @@ public class TabActivity extends AppCompatActivity implements
                 }
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    StyleableToast.makeText(TabActivity.this,"Couldn't disconnect",R.style.toastWrong).show();
+
                 }
             });
         } catch (MqttException e) {
@@ -336,19 +336,27 @@ public class TabActivity extends AppCompatActivity implements
         snackbar.show();
     }
 
-    public void showSnackBarConnection(){
+    public void showSnackBarConnection(String text){
         Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), "I don't know anything.", Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(color);
-        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setMaxLines(2);
-        String content1 = _PERF.getConnection().getName();
-        String content2 =  "tcp://" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort();
-        String finalContent = content1 + System.getProperty ("line.separator") + content2;
-        textView.setText(finalContent);
-        textView.setLineSpacing(2,(float)1.2);
-        textView.setTextSize(16);
-        textView.setTextColor(getResources().getColor(R.color.white));
+        if(text.equals("connect")){
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(color);
+            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(2);
+            String content1 = _PERF.getConnection().getName();
+            String content2 =  "tcp://" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort();
+            String finalContent = content1 + System.getProperty ("line.separator") + content2;
+            textView.setText(finalContent);
+            textView.setLineSpacing(2,(float)1.2);
+            textView.setTextSize(16);
+            textView.setTextColor(getResources().getColor(R.color.white));
+        }else{
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(getResources().getColor(R.color.colorWrong));
+            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setText("Couldn't disconnect");
+            textView.setTextColor(getResources().getColor(R.color.white));
+        }
 
         snackbar.show();
     }
