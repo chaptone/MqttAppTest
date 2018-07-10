@@ -41,30 +41,13 @@ public class SplashActivity extends AppCompatActivity {
                 .document(_ID).collection("connection");
         _PERF = new AppConnectionPreferences(this);
 
-        ImageView imageView = findViewById(R.id.imageView);
-        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getBackground();
-        animationDrawable.setExitFadeDuration(500);
-        animationDrawable.start();
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(_PERF.containsConnection()){
-//                  _PERF.edit().removeConnection().apply();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            connectTo(_PERF.getConnection());
-                        }
-                    },5000);
-
-                }else{
-                    Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
-                    startActivity(intent);
-                }
-            }
-        },3000);
-
+        if(_PERF.containsConnection()){
+//           _PERF.edit().removeConnection().apply();
+            connectTo(_PERF.getConnection());
+        }else{
+            Intent intent = new Intent(SplashActivity.this, ConnectionActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void connectTo(final Connection connection){
