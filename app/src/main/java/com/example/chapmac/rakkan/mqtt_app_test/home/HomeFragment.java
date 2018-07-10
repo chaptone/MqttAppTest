@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.home;
 
 
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
+import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailActivity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -118,12 +121,9 @@ public class HomeFragment extends Fragment {
             public void onItemClick(int position) {
 //                homeList.get(position).changeText1("Click");
 //                homeAdapter.notifyItemChanged(position);
-            }
-            @Override
-            public void onDeleteClick(int position) {
-                collectionReference.document(homeList.get(position).getDocumentId()).delete();
-                homeList.remove(position);
-                homeAdapter.notifyItemRemoved(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

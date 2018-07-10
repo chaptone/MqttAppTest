@@ -13,7 +13,6 @@ public class HomeViewHolder extends RecyclerView.ViewHolder{
         public TextView mTextView;
         public TextView mTextView1;
         public TextView mTextView2;
-        public ImageView mDeleteImage;
 
         public HomeViewHolder(View itemView, final HomeAdapter.OnItemClickListener listener){
             super(itemView);
@@ -22,7 +21,6 @@ public class HomeViewHolder extends RecyclerView.ViewHolder{
             mTextView = itemView.findViewById(R.id.textView);
             mTextView1 = itemView.findViewById(R.id.textView1);
             mTextView2 = itemView.findViewById(R.id.textView2);
-            mDeleteImage = itemView.findViewById(R.id.image_delete);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -31,18 +29,6 @@ public class HomeViewHolder extends RecyclerView.ViewHolder{
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-
-            mDeleteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(listener != null){
-                        int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION){
-                            listener.onDeleteClick(position);
                         }
                     }
                 }

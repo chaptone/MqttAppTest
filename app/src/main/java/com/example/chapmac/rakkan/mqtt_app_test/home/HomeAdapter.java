@@ -20,7 +20,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     public interface OnItemClickListener{
         void onItemClick(int position);
-        void onDeleteClick(int position);
     }
 
     public void setOnCilckItemListener(OnItemClickListener listener){
