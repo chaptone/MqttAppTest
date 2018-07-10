@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Menu;
+package com.example.chapmac.rakkan.mqtt_app_test.menu;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeItem;
-import com.example.chapmac.rakkan.mqtt_app_test.Subscribe.SubscribeViewHolder;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter {
 

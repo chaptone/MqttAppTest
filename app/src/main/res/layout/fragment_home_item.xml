@@ -51,7 +51,7 @@
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_delete"
+        android:src="@drawable/ic_chevron_right"
         android:padding="4dp"/>
 
 </RelativeLayout>

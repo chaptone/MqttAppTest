@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Home;
+package com.example.chapmac.rakkan.mqtt_app_test.home;
 
 
 import android.app.Notification;
@@ -36,8 +36,8 @@ import java.util.Calendar;
 import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.Notification.CHANNEL_1_ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 
 public class HomeFragment extends Fragment {

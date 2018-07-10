@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Menu;
+package com.example.chapmac.rakkan.mqtt_app_test.menu;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 public class BottomMenu extends BottomSheetDialogFragment {
 
