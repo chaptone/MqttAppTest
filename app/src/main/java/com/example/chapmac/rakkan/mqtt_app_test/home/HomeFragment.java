@@ -140,6 +140,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("TOPIC_ID",homeList.get(position).getDocumentId());
+                intent.putExtra("TOPIC_NAME",homeList.get(position).getTopic());
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
