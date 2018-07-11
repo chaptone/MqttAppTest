@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="1"
-        android:paddingStart="40dp"
+        android:paddingStart="20dp"
         android:layout_centerVertical="true"
         android:textColor="@color/from"
         android:textSize="@dimen/msg_text_primary"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="textEnd"
         android:textSize="@dimen/msg_text_secondary"
-        android:paddingEnd="40dp"
+        android:paddingEnd="20dp"
         android:layout_centerVertical="true"
         android:text="time" />
 

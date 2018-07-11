@@ -37,7 +37,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder> {
 
         TimeConverter timeConverter = new TimeConverter();
 
-        holder.mTextView.setText("Message : "+currentItem.getMessage());
+        holder.mTextView.setText(currentItem.getMessage());
         holder.mTextView1.setText(timeConverter.convertTimeFrom(currentItem.getTime()));
     }
 
