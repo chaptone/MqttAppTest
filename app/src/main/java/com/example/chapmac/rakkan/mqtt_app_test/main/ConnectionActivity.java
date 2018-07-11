@@ -60,7 +60,8 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if(_PERF.containsConnection()){
-            openNextActivity();
+            Intent intent = new Intent(this, TabActivity.class);
+            startActivity(intent);
             onPause();
             onStop();
         }
