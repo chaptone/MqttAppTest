@@ -1,6 +1,7 @@
 package com.example.chapmac.rakkan.mqtt_app_test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,7 +42,7 @@ public class TabActivity extends AppCompatActivity implements
         PublishDialog.DialogListener,
         BottomMenu.BottomMenuListener{
 
-    FloatingActionButton fab,fab1,fab2;
+    FloatingActionButton fab,fab1,fab2,fab3;
     Animation fabOpen,fabClose,rotateForward,rotateBackward;
     boolean isOpen = false;
 
@@ -115,6 +116,7 @@ public class TabActivity extends AppCompatActivity implements
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
 
         fabOpen = AnimationUtils.loadAnimation(this,R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(this,R.anim.fab_close);
@@ -144,6 +146,14 @@ public class TabActivity extends AppCompatActivity implements
                 subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animationFab();
+                Intent intent = new Intent(TabActivity.this, TemperatureActivity.class);
+                startActivity(intent);
+            }
+        });
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -158,19 +168,25 @@ public class TabActivity extends AppCompatActivity implements
             fab.startAnimation(rotateBackward);
             fab1.startAnimation(fabClose);
             fab2.startAnimation(fabClose);
+            fab3.startAnimation(fabClose);
             fab1.setVisibility(View.GONE);
             fab2.setVisibility(View.GONE);
+            fab3.setVisibility(View.GONE);
             fab1.setClickable(false);
             fab2.setClickable(false);
+            fab3.setClickable(false);
             isOpen = false;
         } else {
             fab.startAnimation(rotateForward);
             fab1.startAnimation(fabOpen);
             fab2.startAnimation(fabOpen);
+            fab3.startAnimation(fabOpen);
             fab1.setVisibility(View.VISIBLE);
             fab2.setVisibility(View.VISIBLE);
+            fab3.setVisibility(View.VISIBLE);
             fab1.setClickable(true);
             fab2.setClickable(true);
+            fab3.setClickable(true);
             isOpen = true;
         }
     }

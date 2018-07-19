@@ -88,4 +88,14 @@
         android:visibility="invisible"
         android:src="@drawable/ic_subscribe_white" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="164dp"
+        android:visibility="invisible"
+        android:src="@drawable/ic_timeline" />
+
 </android.support.design.widget.CoordinatorLayout>

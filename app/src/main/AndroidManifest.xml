@@ -33,10 +33,10 @@
         <activity
             android:name=".main.ConnectionActivity"
             android:label="@string/title_activity_connection"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".main.ConnectionCreator"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".detail.DetailActivity"
             android:label="@string/title_activity_detail"
@@ -45,6 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.chapmac.rakkan.mqtt_app_test.TabActivity" />
         </activity>
+        <activity android:name=".TemperatureActivity"></activity>
     </application>
 
 </manifest>

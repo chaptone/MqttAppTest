@@ -146,6 +146,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
         MqttHelper.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
