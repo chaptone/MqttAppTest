@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test.Home;
+package com.example.chapmac.rakkan.mqtt_app_test.home;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
