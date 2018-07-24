@@ -31,7 +31,6 @@ public class ConnectionCreator extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getTheme().applyStyle(R.style.AppTheme_Green,true);
         setContentView(R.layout.activity_connection_creator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -42,9 +41,8 @@ public class ConnectionCreator extends AppCompatActivity {
         textInputLayoutPort = findViewById(R.id.textInputLayout3);
         textInputLayoutUser = findViewById(R.id.textInputLayout4);
         textInputLayoutPass = findViewById(R.id.textInputLayout5);
-        TextInputEditText textInputEditTextPass =findViewById(R.id.editText5);
+        TextInputEditText textInputEditTextPass = findViewById(R.id.editText5);
         textInputEditTextPass.setOnEditorActionListener(editorActionListener);
-
 
     }
 
