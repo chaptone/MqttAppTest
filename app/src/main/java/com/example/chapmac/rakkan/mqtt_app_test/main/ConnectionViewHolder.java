@@ -28,7 +28,6 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder{
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-//                            view.setSelected(true);
                             listener.onItemClick(position);
                         }
                     }
