@@ -49,8 +49,6 @@ public class SubscribeFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("subscribe");
 
-    private PullRefreshLayout layout;
-
     public SubscribeFragment() {
         // Required empty public constructor
     }
@@ -71,22 +69,6 @@ public class SubscribeFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        layout = view.findViewById(R.id.swipeRefreshLayout);
-
-        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        subscribeAdapter.notifyDataSetChanged();
-                        layout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
 
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -110,8 +92,6 @@ public class SubscribeFragment extends Fragment {
         subscribeAdapter.setOnCilckItemListener(new SubscribeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                subscribeList.get(position).changeText1("Click");
-//                subscribeAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
@@ -163,6 +143,7 @@ public class SubscribeFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        // Load subscribeItem from data base and subscribe them all.
         collectionReference.orderBy("time")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
