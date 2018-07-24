@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -65,9 +64,6 @@ public class TabActivity extends AppCompatActivity implements
         int resId = getResourceByFilename(this,"style", "AppTheme.0xff"+hexColor.substring(1).toLowerCase());
         getTheme().applyStyle(resId,true);
         setContentView(R.layout.activity_tab);
-
-
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -259,19 +255,6 @@ public class TabActivity extends AppCompatActivity implements
             return 3;
         }
 
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0 :
-                    return "Home";
-                case 1 :
-                    return "Publish";
-                case 2:
-                    return "Subscribe";
-            }
-            return null;
-        }
     }
 
     public void disconnect(){
