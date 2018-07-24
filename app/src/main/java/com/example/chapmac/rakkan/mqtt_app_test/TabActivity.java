@@ -35,7 +35,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
 public class TabActivity extends AppCompatActivity implements
         SubscribeDialog.DialogListener,
@@ -60,7 +60,7 @@ public class TabActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        color = _PERF.getConnection().getColor();
+        color = _PREFER.getConnection().getColor();
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
         int resId = getResourceByFilename(this,"style", "AppTheme.0xff"+hexColor.substring(1).toLowerCase());
         getTheme().applyStyle(resId,true);
@@ -280,7 +280,7 @@ public class TabActivity extends AppCompatActivity implements
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    _PERF.edit().removeConnection().apply();
+                    _PREFER.edit().removeConnection().apply();
                     finish();
                 }
                 @Override
@@ -354,7 +354,7 @@ public class TabActivity extends AppCompatActivity implements
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(color);
             TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-            String content2 =  "tcp://" + _PERF.getConnection().getHost() + ":" + _PERF.getConnection().getPort();
+            String content2 =  "tcp://" + _PREFER.getConnection().getHost() + ":" + _PREFER.getConnection().getPort();
             textView.setText(content2);
             textView.setTextColor(getResources().getColor(R.color.white));
         }else{

@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
 public class ConnectionActivity extends AppCompatActivity {
 
@@ -59,7 +59,7 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(_PERF.containsConnection()){
+        if(_PREFER.containsConnection()){
             Intent intent = new Intent(this, TabActivity.class);
             startActivity(intent);
             onPause();
@@ -183,7 +183,7 @@ public class ConnectionActivity extends AppCompatActivity {
     }
 
     public void setCurrentConnect(Connection connection){
-        _PERF.edit().putConnection(connection).apply();
+        _PREFER.edit().putConnection(connection).apply();
     }
 
     private void deleteConnection(int position) {

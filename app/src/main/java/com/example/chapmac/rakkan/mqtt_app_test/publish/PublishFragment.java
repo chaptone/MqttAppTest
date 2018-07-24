@@ -28,7 +28,7 @@ import java.util.Calendar;
 import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
 public class PublishFragment extends Fragment {
 
@@ -38,7 +38,7 @@ public class PublishFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection")
-            .document(_PERF.getConnection().getId()).collection("publish");
+            .document(_PREFER.getConnection().getId()).collection("publish");
 
     private PullRefreshLayout layout;
 

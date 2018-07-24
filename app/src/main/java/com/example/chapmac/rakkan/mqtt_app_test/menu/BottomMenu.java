@@ -17,7 +17,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
 public class BottomMenu extends BottomSheetDialogFragment {
 
@@ -32,11 +32,11 @@ public class BottomMenu extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_menu,container,false);
 
-        String name = _PERF.getConnection().getName();
-        String host = "tcp://"+_PERF.getConnection().getHost()+":"+_PERF.getConnection().getPort();
-        String letter = _PERF.getConnection().getName().substring(0,1).toUpperCase();
+        String name = _PREFER.getConnection().getName();
+        String host = "tcp://"+ _PREFER.getConnection().getHost()+":"+ _PREFER.getConnection().getPort();
+        String letter = _PREFER.getConnection().getName().substring(0,1).toUpperCase();
 
-        int color = _PERF.getConnection().getColor();
+        int color = _PREFER.getConnection().getColor();
         TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
 
         bottomMenuList = new ArrayList<>();

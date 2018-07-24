@@ -11,7 +11,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter {
 
@@ -68,8 +68,8 @@ public class BottomMenuAdapter extends RecyclerView.Adapter {
                     ((BottomMenuViewHolder) holder).mTextView1.setText(object.getText1());
                     break;
                 case 1:
-                    String letter = _PERF.getConnection().getName().substring(0,1).toUpperCase();
-                    int color = _PERF.getConnection().getColor();
+                    String letter = _PREFER.getConnection().getName().substring(0,1).toUpperCase();
+                    int color = _PREFER.getConnection().getColor();
                     TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
                     ((BottomMenuViewHolderLarge) holder).mImageView.setImageDrawable(drawable);
                     ((BottomMenuViewHolderLarge) holder).mTextView1.setText(object.getText1());
