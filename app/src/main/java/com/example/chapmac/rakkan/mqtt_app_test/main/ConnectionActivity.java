@@ -39,8 +39,8 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
 
 public class ConnectionActivity extends AppCompatActivity {
 

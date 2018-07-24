@@ -17,7 +17,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
 
 public class BottomMenu extends BottomSheetDialogFragment {
 

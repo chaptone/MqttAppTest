@@ -1,25 +1,15 @@
 package com.example.chapmac.rakkan.mqtt_app_test.detail;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.home.HomeAdapter;
-import com.example.chapmac.rakkan.mqtt_app_test.home.HomeItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,8 +20,8 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
 
 public class DetailActivity extends AppCompatActivity {
 

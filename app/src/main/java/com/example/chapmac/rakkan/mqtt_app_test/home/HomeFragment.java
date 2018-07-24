@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,8 +43,8 @@ import java.util.Calendar;
 import javax.annotation.Nullable;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.Notification.CHANNEL_1_ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._ID;
-import static com.example.chapmac.rakkan.mqtt_app_test.main.SplashActivity._PERF;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PERF;
 
 
 public class HomeFragment extends Fragment {
