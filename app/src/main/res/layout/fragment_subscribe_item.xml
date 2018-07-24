@@ -23,8 +23,7 @@
         android:paddingStart="40dp"
         android:layout_centerVertical="true"
         android:textColor="@color/from"
-        android:textSize="@dimen/msg_text_primary"
-        android:text="Line1" />
+        android:textSize="@dimen/msg_text_primary" />
 
     <TextView
         android:id="@+id/textView1"
@@ -33,8 +32,7 @@
         android:layout_toStartOf="@+id/image_delete"
         android:textSize="@dimen/msg_text_secondary"
         android:layout_marginEnd="8dp"
-        android:layout_centerVertical="true"
-        android:text="time" />
+        android:layout_centerVertical="true" />
 
     <ImageView
         android:id="@+id/image_delete"
