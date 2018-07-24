@@ -11,4 +11,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_connection">ConnectionActivity</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="topic_hint">Topic</string>
+    <string name="message_hint">Message</string>
 </resources>

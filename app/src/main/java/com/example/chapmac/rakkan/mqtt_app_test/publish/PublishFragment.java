@@ -2,7 +2,6 @@ package com.example.chapmac.rakkan.mqtt_app_test.publish;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -40,8 +38,6 @@ public class PublishFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("publish");
 
-    private PullRefreshLayout layout;
-
     public PublishFragment() {
         // Required empty public constructor
     }
@@ -63,22 +59,6 @@ public class PublishFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        layout = view.findViewById(R.id.swipeRefreshLayout);
-
-        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        publishAdapter.notifyDataSetChanged();
-                        layout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
 
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -102,8 +82,6 @@ public class PublishFragment extends Fragment {
         publishAdapter.setOnCilckItemListener(new PublishAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                publishList.get(position).setMessage("Click");
-//                publishAdapter.notifyItemChanged(position);
             }
             @Override
             public void onDeleteClick(int position) {
