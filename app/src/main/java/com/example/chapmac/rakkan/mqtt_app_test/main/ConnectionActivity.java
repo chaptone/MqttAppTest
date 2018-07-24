@@ -3,7 +3,6 @@ package com.example.chapmac.rakkan.mqtt_app_test.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.TabActivity;
@@ -51,8 +49,6 @@ public class ConnectionActivity extends AppCompatActivity {
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection");
 
-    private PullRefreshLayout layout;
-
     private ProgressDialog dialog;
 
     @Override
@@ -60,11 +56,9 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if(_PREFER.containsConnection()){
-            Intent intent = new Intent(this, TabActivity.class);
-            startActivity(intent);
-            onPause();
-            onStop();
+            openNextActivity();
         }
+
         setContentView(R.layout.activity_connection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,22 +78,6 @@ public class ConnectionActivity extends AppCompatActivity {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        layout = findViewById(R.id.swipeRefreshLayout);
-
-        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        connectionAdapter.notifyDataSetChanged();
-                        layout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
 
         collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -167,7 +145,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     setCurrentConnect(connection);
-                    openNextActivity();
+                    openNextActivityWithAnimation();
                     dialog.cancel();
                 }
 
@@ -193,6 +171,11 @@ public class ConnectionActivity extends AppCompatActivity {
     }
 
     public void openNextActivity(){
+        Intent intent = new Intent(this, TabActivity.class);
+        startActivity(intent);
+    }
+
+    public void openNextActivityWithAnimation(){
         Intent intent = new Intent(this, TabActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
