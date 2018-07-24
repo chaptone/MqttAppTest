@@ -4,7 +4,6 @@ package com.example.chapmac.rakkan.mqtt_app_test.home;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailActivity;
@@ -59,8 +57,6 @@ public class HomeFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("home");
 
-    private PullRefreshLayout layout;
-
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -84,22 +80,6 @@ public class HomeFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        layout = view.findViewById(R.id.swipeRefreshLayout);
-
-        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        homeAdapter.notifyDataSetChanged();
-                        layout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
 
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
