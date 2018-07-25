@@ -6,6 +6,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
 
+// This class for connection object.
 public class Connection {
 
      private String id;
