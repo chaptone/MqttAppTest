@@ -28,6 +28,7 @@ public class ConnectionCreator extends AppCompatActivity {
     private String user;
     private String pass;
 
+    // This activity will create only when user need to create new connection.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class ConnectionCreator extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Get in data from text input.
         textInputLayoutName = findViewById(R.id.textInputLayout1);
         textInputLayoutHost = findViewById(R.id.textInputLayout2);
         textInputLayoutPort = findViewById(R.id.textInputLayout3);
@@ -46,12 +48,14 @@ public class ConnectionCreator extends AppCompatActivity {
 
     }
 
+    // Create menu bar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create_connection, menu);
         return true;
     }
 
+    // Handle menu click
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu) {
@@ -64,6 +68,8 @@ public class ConnectionCreator extends AppCompatActivity {
     }
 
     public void sendAnswerBack(){
+
+        // Check text input is empty or not.
         if(!validateName() | !validateHost() | !validatePort()){
             return;
         }
@@ -77,6 +83,7 @@ public class ConnectionCreator extends AppCompatActivity {
         intent.putExtra("user",user);
         intent.putExtra("pass",pass);
 
+        // Send new connection to ConnectionActivity.
         setResult(RESULT_OK,intent);
         finish();
     }
@@ -126,6 +133,7 @@ public class ConnectionCreator extends AppCompatActivity {
         }
     };
 
+    // Dummy connection only for debug this application.
     private void addDummyConnection() {
         TextInputEditText eHost =findViewById(R.id.editText2);
         TextInputEditText ePort =findViewById(R.id.editText3);
