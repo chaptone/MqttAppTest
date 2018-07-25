@@ -44,7 +44,10 @@ public class ConnectionActivity extends AppCompatActivity {
     private ArrayList<Connection> connectionList;
     private ConnectionAdapter connectionAdapter;
 
+    // Define data base path.
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // collectionReference is the path for store connection in database.
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection");
 
@@ -54,7 +57,10 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Check _PREFER contain a connection or not.
         if(_PREFER.containsConnection()){
+
+            // If yes use the same previous. and go next activity.
             openNextActivity();
         }
 
@@ -62,6 +68,7 @@ public class ConnectionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // For loading dialog.
         dialog = new ProgressDialog(this);
         dialog.setTitle("Connecting");
         dialog.setMessage("Please wait ...");
@@ -78,6 +85,7 @@ public class ConnectionActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        // Retrieve every connection from database and show in list.
         collectionReference.orderBy("time")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -103,11 +111,15 @@ public class ConnectionActivity extends AppCompatActivity {
                 });
 
         connectionAdapter.setOnCilckItemListener(new ConnectionAdapter.OnItemClickListener() {
+
+            // If user select connection in the list.
             @Override
             public void onItemClick(int position) {
                 dialog.show();
                 connectTo(connectionList.get(position));
             }
+
+            // This for when user click the bin icon in list.
             @Override
             public void onDeleteClick(int position) {
                 deleteConnection(position);
@@ -122,6 +134,8 @@ public class ConnectionActivity extends AppCompatActivity {
         return true;
     }
 
+    // This method for when user need to create new connection.
+    // The check icon at the top right on menu bar can handle by this method.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, ConnectionCreator.class);
@@ -143,6 +157,9 @@ public class ConnectionActivity extends AppCompatActivity {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    // If success connect to broker then store current connection in _PERFER by
+                    // setCurrentConnect method.
                     setCurrentConnect(connection);
                     openNextActivityWithAnimation();
                     dialog.cancel();
@@ -150,6 +167,8 @@ public class ConnectionActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                    // If fail, inform user.
                     showFailSnackBar("Connected Failed");
                     dialog.cancel();
                 }
@@ -163,6 +182,7 @@ public class ConnectionActivity extends AppCompatActivity {
         _PREFER.edit().putConnection(connection).apply();
     }
 
+    // Delete connection from database.
     private void deleteConnection(int position) {
         collectionReference.document(connectionList.get(position).getId()).delete();
         connectionList.remove(position);
@@ -180,6 +200,7 @@ public class ConnectionActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+    // This method for get the result back from ConnectionCreatorActivity.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,6 +213,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 String user = data.getStringExtra("user");
                 String pass = data.getStringExtra("pass");
 
+                // Add the new connection which get form ConnectionCreator to database.
                 addConnection(new Connection(name,host,port,user,pass));
             }
         }
@@ -207,6 +229,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
     }
 
+    // Inform failure things to user.
     public void showFailSnackBar(String text){
         Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content), "I don't know anything.", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -218,6 +241,7 @@ public class ConnectionActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    // Handler back pressed.
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
