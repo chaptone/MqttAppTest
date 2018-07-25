@@ -23,7 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.sensor.SensorActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.home.HomeFragment;

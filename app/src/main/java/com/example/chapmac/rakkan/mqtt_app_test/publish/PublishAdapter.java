@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
-import com.example.chapmac.rakkan.mqtt_app_test.TimeConverter;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.TimeConverter;
 
 import java.util.ArrayList;
 

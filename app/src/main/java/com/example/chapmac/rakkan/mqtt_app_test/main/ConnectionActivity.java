@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;

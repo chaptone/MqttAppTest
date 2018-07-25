@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.detail.DetailItem;
@@ -40,7 +40,7 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-import static com.example.chapmac.rakkan.mqtt_app_test.Notification.CHANNEL_1_ID;
+import static com.example.chapmac.rakkan.mqtt_app_test.utility.Notification.CHANNEL_1_ID;
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._ID;
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 

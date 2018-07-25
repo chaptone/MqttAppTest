@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test;
+package com.example.chapmac.rakkan.mqtt_app_test.utility;
 
 import android.content.Context;
 import android.provider.Settings;

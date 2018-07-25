@@ -5,7 +5,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;

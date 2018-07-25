@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
