@@ -11,6 +11,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.R;
 
 import java.util.ArrayList;
 
+// This class is required by android for list.
 public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionViewHolder> {
 
     private ArrayList<Connection> connectionList;
