@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.home.HomeAdapter;
 
+// This class is required by android for list.
 public class DetailViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mTextView;

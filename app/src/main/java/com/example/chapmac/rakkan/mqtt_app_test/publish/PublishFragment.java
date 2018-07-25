@@ -34,6 +34,8 @@ public class PublishFragment extends Fragment {
     private PublishAdapter publishAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // collectionReference is the path for store every publish in database.
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("publish");
@@ -60,6 +62,9 @@ public class PublishFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        // Retrieve every publish from database and show in list.
+        // .addSnapshotListener will call when something update in database so
+        // this list will update simultaneously with database(real time update).
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -79,13 +84,19 @@ public class PublishFragment extends Fragment {
                     }
                 });
 
+        // List click handle.
         publishAdapter.setOnCilckItemListener(new PublishAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-            }
+            public void onItemClick(int position) { }
+
+            // List delete bin icon click handle.
             @Override
             public void onDeleteClick(int position) {
+
+                // Remove publish history from database.
                 collectionReference.document(publishList.get(position).getDocumentId()).delete();
+
+                // Remove publish history from list.
                 publishList.remove(position);
                 publishAdapter.notifyItemRemoved(position);
             }
@@ -94,7 +105,10 @@ public class PublishFragment extends Fragment {
         return view;
     }
 
+    // Add publish to database.
     public void addPublisher(String topic,String message){
+
+        // Put time stamp in every subscribe.
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                 .format(Calendar.getInstance().getTime());
 

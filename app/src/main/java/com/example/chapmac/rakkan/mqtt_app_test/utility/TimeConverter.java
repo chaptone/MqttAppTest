@@ -1,9 +1,9 @@
 package com.example.chapmac.rakkan.mqtt_app_test.utility;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+// This class for convert timestamp to appropriate time format.
 public class TimeConverter {
 
     private String nowDate;

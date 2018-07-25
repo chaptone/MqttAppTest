@@ -53,6 +53,8 @@ public class HomeFragment extends Fragment {
     private HomeAdapter homeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // collectionReference is the path for store every message received in database.
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("home");
@@ -81,6 +83,7 @@ public class HomeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        // Retrieve every message that received from database and show in list.
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -113,9 +116,12 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+        // Handle list click.
         homeAdapter.setOnCilckItemListener(new HomeAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
+
+                // Open detail activity.
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("TOPIC_ID",homeList.get(position).getDocumentId());
                 intent.putExtra("TOPIC_NAME",homeList.get(position).getTopic());
@@ -124,7 +130,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        // This call back for listen message arrive from broker.
         MqttHelper.CLIENT.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
@@ -132,13 +138,18 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
+
+                // Put time stamp in every message.
                 String messageStr = new String(message.getPayload());
                 String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                         .format(Calendar.getInstance().getTime());
 
                 HomeItem homeItem = new HomeItem(topic, messageStr,currentDate);
+
+                // Add message to database.
                 addToDatabase(homeItem);
 
+                // Create android notification.
                 Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_send)
                         .setContentTitle("Received topic : "+topic)
@@ -159,6 +170,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    // Add item to database.
     private void addToDatabase(final HomeItem homeItem) {
         collectionReference.whereEqualTo("topic",homeItem.getTopic())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -13,6 +13,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.utility.TimeConverter;
 
 import java.util.ArrayList;
 
+// This class is required by android for list.
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     private ArrayList<HomeItem> homeList;

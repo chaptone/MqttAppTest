@@ -13,6 +13,7 @@ import com.example.chapmac.rakkan.mqtt_app_test.utility.TimeConverter;
 
 import java.util.ArrayList;
 
+// This class is required by android for list.
 public class PublishAdapter extends RecyclerView.Adapter<PublishViewHolder> {
 
     private ArrayList<PublishItem> publishList;

@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 
+// This class is required by android for list.
 public class BottomMenuViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mTextView1;

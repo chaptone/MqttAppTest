@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.publish;
 
 import com.google.firebase.firestore.Exclude;
 
+// PublishItem object.
 public class PublishItem {
 
     private String documentId;

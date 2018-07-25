@@ -43,6 +43,8 @@ public class SubscribeFragment extends Fragment {
     private SubscribeAdapter subscribeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // collectionReference is the path for store every subscribe in database.
     private CollectionReference collectionReference = db.collection("database")
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("subscribe");
@@ -68,6 +70,9 @@ public class SubscribeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        // Retrieve every subscribe from database and show in list.
+        // .addSnapshotListener will call when something update in database so
+        // this list will update simultaneously with database(real time update).
         collectionReference.orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -87,10 +92,12 @@ public class SubscribeFragment extends Fragment {
             }
         });
 
+        // List click handle.
         subscribeAdapter.setOnCilckItemListener(new SubscribeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-            }
+            public void onItemClick(int position) { }
+
+            // List delete bin icon click handle.
             @Override
             public void onDeleteClick(int position) {
                 unSubscription(subscribeList.get(position).getTopic(),position);
@@ -100,6 +107,7 @@ public class SubscribeFragment extends Fragment {
         return view;
     }
 
+    // Unsubscribe topic from MQTT broker.
     private void unSubscription(String topic, final int position) {
         final int pos = position;
         try {
@@ -107,7 +115,11 @@ public class SubscribeFragment extends Fragment {
             unsubToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    // If success also delete from database too.
                     collectionReference.document(subscribeList.get(position).getDocumentId()).delete();
+
+                    // Delete from list.
                     subscribeList.remove(pos);
                     subscribeAdapter.notifyItemRemoved(pos);
                 }
@@ -125,7 +137,10 @@ public class SubscribeFragment extends Fragment {
         }
     }
 
+    // Add subscribe to database.
     public void addSubscription(String topic) {
+
+        // Put time stamp in every subscribe.
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss EEE:MMM W")
                 .format(Calendar.getInstance().getTime());
 
@@ -137,6 +152,7 @@ public class SubscribeFragment extends Fragment {
         collectionReference.add(item);
     }
 
+    // This method will call only once when this fragment(Subscribe tab) was created.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

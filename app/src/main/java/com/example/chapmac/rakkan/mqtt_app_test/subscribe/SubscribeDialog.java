@@ -41,18 +41,25 @@ public class SubscribeDialog extends AppCompatDialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
+
+                // Ok button
                 Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        // Check text input is empty or not.
                         if (!validateTopic()) {
                         }else{
+
+                            // Try to subscribe.
                             subscribe();
                             dialog.dismiss();
                         }
                     }
                 });
 
+                // Cancel button.
                 Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 negativeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -95,6 +102,7 @@ public class SubscribeDialog extends AppCompatDialogFragment {
         }
     }
 
+    // Start subscribe to MQTT broker.
     public void subscribe() {
         int qos = 1;
         try {
@@ -102,12 +110,16 @@ public class SubscribeDialog extends AppCompatDialogFragment {
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    // If success sent acknowledge back to TabActivity.
                     dialogListener.applyTextsFromSubscribeDialog("successful",subTopic);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken,
                                       Throwable exception) {
+
+                    // If fail sent acknowledge back to TabActivity.
                     dialogListener.applyTextsFromSubscribeDialog("Failed",subTopic);
                 }
             });

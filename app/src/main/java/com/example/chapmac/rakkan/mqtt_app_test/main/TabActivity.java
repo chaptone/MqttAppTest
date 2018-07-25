@@ -83,6 +83,8 @@ public class TabActivity extends AppCompatActivity implements
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            // Set menu bar title when the tab change.
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
@@ -100,14 +102,10 @@ public class TabActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
 
         mViewPager.setOffscreenPageLimit(2);
@@ -129,6 +127,8 @@ public class TabActivity extends AppCompatActivity implements
                 animationFab();
             }
         });
+
+        // Create publish button.
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +137,8 @@ public class TabActivity extends AppCompatActivity implements
                 publishDialog.show(getSupportFragmentManager(),"Publish Dialog");
             }
         });
+
+        // Create subscribe button.
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +147,8 @@ public class TabActivity extends AppCompatActivity implements
                 subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
             }
         });
+
+        // Create publish by using sensor button.
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +166,7 @@ public class TabActivity extends AppCompatActivity implements
         },1500);
     }
 
+    // For animation.
     public void animationFab(){
         if (isOpen) {
             fab.startAnimation(rotateBackward);
@@ -190,6 +195,7 @@ public class TabActivity extends AppCompatActivity implements
         }
     }
 
+    // Create menu item.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -198,6 +204,7 @@ public class TabActivity extends AppCompatActivity implements
         return true;
     }
 
+    // Handle menu click.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -215,23 +222,27 @@ public class TabActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    // When get the subscribe topic form SubscribeDialog.
     @Override
     public void applyTextsFromSubscribeDialog(String status ,String topic) {
         showSnackBar(status,"Subscribe",topic,"0");
         subscribeFragment.addSubscription(topic);
     }
 
+    // When get the publish topic message form PublishDialog.
     @Override
     public void applyTextsFromPublishDialog(String status ,String topic, String message) {
         showSnackBar(status,"Publish",topic,message);
         publishFragment.addPublisher(topic,message);
     }
 
+    // When get the action form BottomMenu.
     @Override
     public void applyTextsFromBottomMenu(String inform) {
         disconnect();
     }
 
+    // This inner class for combine 3 tabs in 1 page.
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -260,12 +271,15 @@ public class TabActivity extends AppCompatActivity implements
 
     }
 
+    // Disconnect client from MQTT broker.
     public void disconnect(){
         try {
             IMqttToken token = MqttHelper.CLIENT.disconnect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    // Remove connection in _PREFER.
                     _PREFER.edit().removeConnection().apply();
                     finish();
                 }
@@ -279,6 +293,7 @@ public class TabActivity extends AppCompatActivity implements
         }
     }
 
+    // Acknowledge to user.
     private void showSnackBar(String status,String operation,String topic,String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.main_content),"I don't know content.", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();

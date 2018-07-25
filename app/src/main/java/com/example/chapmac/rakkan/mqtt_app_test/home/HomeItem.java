@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.home;
 
 import com.google.firebase.firestore.Exclude;
 
+// HomeItem object.
 public class HomeItem {
 
     private String documentId;

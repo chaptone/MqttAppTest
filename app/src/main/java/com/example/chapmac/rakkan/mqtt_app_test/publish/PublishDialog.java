@@ -45,12 +45,18 @@ public class PublishDialog extends AppCompatDialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
+
+                // Ok button
                 Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        // Check text input are empty or not.
                         if (!validateTopic() | !validateMessage()) {
                         }else{
+
+                            // Try to publish.
                             publish();
                             dialog.dismiss();
                         }
@@ -112,17 +118,22 @@ public class PublishDialog extends AppCompatDialogFragment {
         }
     }
 
+    // Start publish a message to MQTT broker.
     public void publish() {
         try {
             MqttHelper.CLIENT.publish(topic, message.getBytes(),0,false)
                     .setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    // If success sent acknowledge back to TabActivity.
                     dialogListener.applyTextsFromPublishDialog("successful",topic,message);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                    // If success sent acknowledge back to TabActivity.
                     dialogListener.applyTextsFromPublishDialog("Failed",topic,message);
                 }
             });

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
+// This class is required by android for list.
 public class BottomMenuAdapter extends RecyclerView.Adapter {
 
     private ArrayList<BottomMenuItem> bottomMenuList;

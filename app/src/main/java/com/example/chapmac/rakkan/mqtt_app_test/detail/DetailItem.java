@@ -2,6 +2,7 @@ package com.example.chapmac.rakkan.mqtt_app_test.detail;
 
 import com.google.firebase.firestore.Exclude;
 
+// DetailItem object.
 public class DetailItem {
 
     private String documentId;
