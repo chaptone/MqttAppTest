@@ -18,7 +18,7 @@
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <activity
-            android:name=".TabActivity"
+            android:name=".main.TabActivity"
             android:label="@string/title_activity_tab"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -43,7 +43,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.chapmac.rakkan.mqtt_app_test.TabActivity" />
+                android:value="com.example.chapmac.rakkan.mqtt_app_test.main.TabActivity" />
         </activity>
         <activity android:name=".SensorActivity"></activity>
     </application>

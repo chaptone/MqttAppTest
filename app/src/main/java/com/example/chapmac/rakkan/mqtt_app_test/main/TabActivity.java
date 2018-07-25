@@ -1,4 +1,4 @@
-package com.example.chapmac.rakkan.mqtt_app_test;
+package com.example.chapmac.rakkan.mqtt_app_test.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.MqttHelper;
+import com.example.chapmac.rakkan.mqtt_app_test.R;
+import com.example.chapmac.rakkan.mqtt_app_test.SensorActivity;
 import com.example.chapmac.rakkan.mqtt_app_test.home.HomeFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.menu.BottomMenu;
 import com.example.chapmac.rakkan.mqtt_app_test.publish.PublishDialog;

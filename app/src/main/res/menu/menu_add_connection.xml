@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.chapmac.rakkan.mqtt_app_test.TabActivity">
+    tools:context="com.example.chapmac.rakkan.mqtt_app_test.main.TabActivity">
     <item
         android:id="@+id/menu"
         android:title="Item1"
