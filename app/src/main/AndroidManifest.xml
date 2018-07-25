@@ -45,7 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.chapmac.rakkan.mqtt_app_test.TabActivity" />
         </activity>
-        <activity android:name=".TemperatureActivity"></activity>
+        <activity android:name=".SensorActivity"></activity>
     </application>
 
 </manifest>

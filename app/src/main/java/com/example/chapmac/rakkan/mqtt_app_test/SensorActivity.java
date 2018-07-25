@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class TemperatureActivity extends AppCompatActivity {
+public class SensorActivity extends AppCompatActivity {
 
     private EditText editText;
     private Button button;
@@ -81,7 +81,7 @@ public class TemperatureActivity extends AppCompatActivity {
                             postTestData.run();
 
                             textView.setHint("Your device doesn't have "+radioButton.getText()+" sensor.\nPublish test data.");
-                            Toast.makeText(TemperatureActivity.this, "Temperature sensor is null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SensorActivity.this, "Temperature sensor is null", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else if(radioButton.getText().equals("Light")){
@@ -91,7 +91,7 @@ public class TemperatureActivity extends AppCompatActivity {
                         }else{
                             postTestData.run();
                             textView.setHint("Your device doesn't have "+radioButton.getText()+" sensor.\nPublish test data.");
-                            Toast.makeText(TemperatureActivity.this, "Light sensor is null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SensorActivity.this, "Light sensor is null", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else if(radioButton.getText().equals("Pressure")) {
@@ -101,7 +101,7 @@ public class TemperatureActivity extends AppCompatActivity {
                         } else {
                             postTestData.run();
                             textView.setHint("Your device doesn't have "+radioButton.getText()+" sensor.\nPublish test data.");
-                            Toast.makeText(TemperatureActivity.this, "Pressure sensor is null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SensorActivity.this, "Pressure sensor is null", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else if(radioButton.getText().equals("Humidity")) {
@@ -111,7 +111,7 @@ public class TemperatureActivity extends AppCompatActivity {
                         } else {
                             postTestData.run();
                             textView.setHint("Your device doesn't have "+radioButton.getText()+" sensor.\nPublish test data.");
-                            Toast.makeText(TemperatureActivity.this, "Humidity sensor is null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SensorActivity.this, "Humidity sensor is null", Toast.LENGTH_SHORT).show();
                         }
                     }
                     button.setText("Stop");

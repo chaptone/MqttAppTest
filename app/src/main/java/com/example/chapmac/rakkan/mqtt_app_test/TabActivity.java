@@ -146,7 +146,7 @@ public class TabActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 animationFab();
-                Intent intent = new Intent(TabActivity.this, TemperatureActivity.class);
+                Intent intent = new Intent(TabActivity.this, SensorActivity.class);
                 startActivity(intent);
             }
         });
