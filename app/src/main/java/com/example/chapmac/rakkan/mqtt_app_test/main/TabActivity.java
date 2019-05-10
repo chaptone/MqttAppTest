@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeItem;
 import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
 import com.example.chapmac.rakkan.mqtt_app_test.R;
 import com.example.chapmac.rakkan.mqtt_app_test.sensor.SensorActivity;
@@ -32,10 +34,21 @@ import com.example.chapmac.rakkan.mqtt_app_test.publish.PublishDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.publish.PublishFragment;
 import com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeDialog;
 import com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.chapmac.rakkan.mqtt_app_test.subscribe.SubscribeFragment.subscribeList;
 
 import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PREFER;
 
@@ -47,6 +60,10 @@ public class TabActivity extends AppCompatActivity implements
     FloatingActionButton fab,fab1,fab2,fab3;
     Animation fabOpen,fabClose,rotateForward,rotateBackward;
     boolean isOpen = false;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // chatRoomRef
+    private CollectionReference chatRoomRef = db.collection("chatRoom");
 
     private SubscribeFragment subscribeFragment;
     private PublishFragment publishFragment;
@@ -143,8 +160,33 @@ public class TabActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 animationFab();
-                SubscribeDialog subscribeDialog = new SubscribeDialog();
-                subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
+                final SubscribeDialog subscribeDialog = new SubscribeDialog();
+
+                chatRoomRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> topicList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                topicList.add(document.getId());
+                            }
+
+                            List<String> existTopicList = new ArrayList<>();
+                            for (SubscribeItem subTopic: subscribeList) {
+                                topicList.remove(subTopic.getTopic());
+                                existTopicList.add(subTopic.getTopic());
+                            }
+
+                            Bundle args = new Bundle();
+                            args.putStringArrayList("topic_list",(ArrayList<String>) topicList);
+                            args.putStringArrayList("exist_topic_list", (ArrayList<String>) existTopicList);
+                            subscribeDialog.setArguments(args);
+                            subscribeDialog.show(getSupportFragmentManager(),"Subscribe Dialog");
+                        }
+                    }
+                });
+
+
             }
         });
 

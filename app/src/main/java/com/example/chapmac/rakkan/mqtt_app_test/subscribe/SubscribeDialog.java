@@ -9,6 +9,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.example.chapmac.rakkan.mqtt_app_test.utility.MqttHelper;
@@ -18,11 +20,14 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.util.List;
+
 public class SubscribeDialog extends AppCompatDialogFragment {
 
     private TextInputLayout textInputTopic;
     private String subTopic;
     private DialogListener dialogListener;
+    private List<String> topicList, existTopicList;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,6 +35,15 @@ public class SubscribeDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_subscribe_dialog, null);
+
+        if (getArguments() != null) {
+            topicList = getArguments().getStringArrayList("topic_list");
+            existTopicList = getArguments().getStringArrayList("exist_topic_list");
+        }
+
+        AutoCompleteTextView editText = view.findViewById(R.id.actv);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, topicList.toArray(new String[topicList.size()]));
+        editText.setAdapter(adapter);
 
         builder.setView(view)
                 .setTitle("Add subscription")

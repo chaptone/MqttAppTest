@@ -39,7 +39,7 @@ import static com.example.chapmac.rakkan.mqtt_app_test.main.LoadingActivity._PRE
 
 public class SubscribeFragment extends Fragment {
 
-    private ArrayList<SubscribeItem> subscribeList;
+    public static ArrayList<SubscribeItem> subscribeList;
     private SubscribeAdapter subscribeAdapter;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

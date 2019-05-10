@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("home");
 
-    // collectionReference
+    // chatRoomRef
     private CollectionReference chatRoomRef = db.collection("chatRoom");
 
     public HomeFragment() {

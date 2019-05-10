@@ -33,4 +33,8 @@ public class SubscribeItem {
     public String getTime() {
         return time;
     }
+
+    public String toString() {
+        return topic;
+    }
 }
