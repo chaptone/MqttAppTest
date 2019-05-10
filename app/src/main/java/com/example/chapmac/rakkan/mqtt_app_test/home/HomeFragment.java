@@ -59,6 +59,9 @@ public class HomeFragment extends Fragment {
             .document(_ID).collection("connection")
             .document(_PREFER.getConnection().getId()).collection("home");
 
+    // collectionReference
+    private CollectionReference chatRoomRef = db.collection("chatRoom");
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -185,17 +188,23 @@ public class HomeFragment extends Fragment {
                                     String topicId = task.getResult().getId();
                                     DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
                                     collectionReference.document(topicId).collection("detail").add(detailItem);
+
+                                    // add to chartRoom too.
+                                    addToChatRoom(homeItem);
                                 }
                             }
                         });
                     }else{
                         final String topicId = task.getResult().getDocuments().get(0).getId();
-                        DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
+                        final DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
                         collectionReference.document(topicId).collection("detail").add(detailItem).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if(task.isComplete()){
                                     collectionReference.document(topicId).set(homeItem);
+
+                                    // add to chartRoom too.
+                                    addToChatRoom(homeItem);
                                 }
                             }
                         });
@@ -203,6 +212,11 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void addToChatRoom(final HomeItem homeItem) {
+        final DetailItem detailItem = new DetailItem(homeItem.getMessage(),homeItem.getTime());
+        chatRoomRef.document(homeItem.getTopic()).set(detailItem);
     }
 
 }
